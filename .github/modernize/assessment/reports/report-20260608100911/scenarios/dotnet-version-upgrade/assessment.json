@@ -1,0 +1,1334 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-06-08T10:11:33.2914445Z",
+  "analysisEndTime": "2026-06-08T10:11:34.4241464Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 1,
+      "issues": 11,
+      "incidents": 51,
+      "effort": 51
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 27,
+        "Optional": 9,
+        "Potential": 15,
+        "Information": 0
+      },
+      "category": {
+        "NuGet": 33,
+        "Project": 2,
+        "Feature": 2,
+        "Binding": 14
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+      "startingProject": true,
+      "issues": 11,
+      "storyPoints": 51,
+      "properties": {
+        "appName": "WebApp-Storage-DotNet",
+        "projectKind": "Wap",
+        "frameworks": [
+          "net48"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": false,
+        "numberOfFiles": 37,
+        "numberOfCodeFiles": 10,
+        "linesTotal": 22934,
+        "linesOfCode": 433,
+        "totalApiScanned": 0,
+        "minLinesOfCodeToChange": 0,
+        "maxLinesOfCodeToChange": 0
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "9125a404-d91d-40a8-b2d2-efa8b973c01e",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6",
+              "protected": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6",
+            "protectedSnippet": "Antlr, 3.4.1.9004\n\nRecommendation:\n\nRemove Antlr, and replace with new package Antlr4 4.6.6",
+            "label": "Antlr 3.4.1.9004",
+            "properties": {
+              "PackageId": "Antlr",
+              "PackageVersion": "3.4.1.9004",
+              "PackageNewVersion": null,
+              "PackageReplacements": "Replace with new package Antlr4=4.6.6"
+            }
+          }
+        },
+        {
+          "incidentId": "ab791dc0-679b-4627-b88b-e4d26a7e58bb",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Mvc, 5.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNet.Mvc, 5.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.AspNet.Mvc, 5.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNet.Mvc, 5.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNet.Mvc 5.2.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Mvc",
+              "PackageVersion": "5.2.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "c9c12072-d378-4f8f-8275-73347825708d",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Razor, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNet.Razor, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.AspNet.Razor, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNet.Razor, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNet.Razor 3.2.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Razor",
+              "PackageVersion": "3.2.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d6d24e57-a05d-4089-8f64-a7e4ab1b8004",
+          "ruleId": "NuGet.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found",
+              "protected": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found",
+            "protectedSnippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nNo supported version found",
+            "label": "Microsoft.AspNet.Web.Optimization 1.1.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Web.Optimization",
+              "PackageVersion": "1.1.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "fa870b02-c68a-4050-b084-f8195022fea8",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.WebPages, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.AspNet.WebPages, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.AspNet.WebPages, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.AspNet.WebPages, 3.2.3\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.AspNet.WebPages 3.2.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.WebPages",
+              "PackageVersion": "3.2.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "f9cdca71-c3aa-4d4b-b3d7-a1ba1f933bf6",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Bcl.AsyncInterfaces, 1.0.0\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.8",
+              "protected": "Microsoft.Bcl.AsyncInterfaces, 1.0.0\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Bcl.AsyncInterfaces, 1.0.0\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.8",
+            "protectedSnippet": "Microsoft.Bcl.AsyncInterfaces, 1.0.0\n\nRecommendation:\n\nRemove Microsoft.Bcl.AsyncInterfaces, and replace with new package Microsoft.Bcl.AsyncInterfaces 10.0.8",
+            "label": "Microsoft.Bcl.AsyncInterfaces 1.0.0",
+            "properties": {
+              "PackageId": "Microsoft.Bcl.AsyncInterfaces",
+              "PackageVersion": "1.0.0",
+              "PackageNewVersion": "10.0.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "5d9164c5-e359-4111-8bc9-541c33367224",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform 1.0.0",
+            "properties": {
+              "PackageId": "Microsoft.CodeDom.Providers.DotNetCompilerPlatform",
+              "PackageVersion": "1.0.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "746ea492-5298-4ac8-a24b-e302022bdb60",
+          "ruleId": "NuGet.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.Edm, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Edm, 5.8.5",
+              "protected": "Microsoft.Data.Edm, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Edm, 5.8.5"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Data.Edm, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Edm, 5.8.5",
+            "protectedSnippet": "Microsoft.Data.Edm, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Edm, 5.8.5",
+            "label": "Microsoft.Data.Edm 5.6.4",
+            "properties": {
+              "PackageId": "Microsoft.Data.Edm",
+              "PackageVersion": "5.6.4",
+              "PackageNewVersion": "5.8.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "7a2f938e-1c87-4e06-9c73-674999d17d19",
+          "ruleId": "NuGet.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5",
+              "protected": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5",
+            "protectedSnippet": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5",
+            "label": "Microsoft.Data.OData 5.6.4",
+            "properties": {
+              "PackageId": "Microsoft.Data.OData",
+              "PackageVersion": "5.6.4",
+              "PackageNewVersion": "5.8.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "3253ce91-1ba0-43b6-851c-646b0506c91d",
+          "ruleId": "NuGet.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.Services.Client, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Services.Client, 5.8.5",
+              "protected": "Microsoft.Data.Services.Client, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Services.Client, 5.8.5"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Data.Services.Client, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Services.Client, 5.8.5",
+            "protectedSnippet": "Microsoft.Data.Services.Client, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.Services.Client, 5.8.5",
+            "label": "Microsoft.Data.Services.Client 5.6.4",
+            "properties": {
+              "PackageId": "Microsoft.Data.Services.Client",
+              "PackageVersion": "5.6.4",
+              "PackageNewVersion": "5.8.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "43d5477b-9629-41cf-91f9-4dc57b63a56d",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Net.Compilers, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.Net.Compilers, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Net.Compilers, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.Net.Compilers, 1.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.Net.Compilers 1.0.0",
+            "properties": {
+              "PackageId": "Microsoft.Net.Compilers",
+              "PackageVersion": "1.0.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "45aa5dd2-44a0-459c-9368-2ed58de443f9",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Web.Infrastructure, 1.0.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "Microsoft.Web.Infrastructure, 1.0.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Web.Infrastructure, 1.0.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "Microsoft.Web.Infrastructure, 1.0.0.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "Microsoft.Web.Infrastructure 1.0.0.0",
+            "properties": {
+              "PackageId": "Microsoft.Web.Infrastructure",
+              "PackageVersion": "1.0.0.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "00f6147e-15b3-4f9e-8e30-49c04eda0108",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4",
+              "protected": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4",
+            "protectedSnippet": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nRemove Newtonsoft.Json, and replace with new package Newtonsoft.Json 13.0.4",
+            "label": "Newtonsoft.Json 6.0.8",
+            "properties": {
+              "PackageId": "Newtonsoft.Json",
+              "PackageVersion": "6.0.8",
+              "PackageNewVersion": "13.0.4",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "412d6413-de0b-4c3e-978a-fcbe437483aa",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Buffers, 4.5.1\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Buffers 4.5.1",
+            "properties": {
+              "PackageId": "System.Buffers",
+              "PackageVersion": "4.5.1",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "2d483f38-ad03-4313-a49f-c48910c04d62",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Diagnostics.DiagnosticSource, 4.6.0\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.8",
+              "protected": "System.Diagnostics.DiagnosticSource, 4.6.0\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Diagnostics.DiagnosticSource, 4.6.0\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.8",
+            "protectedSnippet": "System.Diagnostics.DiagnosticSource, 4.6.0\n\nRecommendation:\n\nRemove System.Diagnostics.DiagnosticSource, and replace with new package System.Diagnostics.DiagnosticSource 10.0.8",
+            "label": "System.Diagnostics.DiagnosticSource 4.6.0",
+            "properties": {
+              "PackageId": "System.Diagnostics.DiagnosticSource",
+              "PackageVersion": "4.6.0",
+              "PackageNewVersion": "10.0.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "602fd90f-11e6-4364-9b25-a5f6d5cee2fe",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Memory, 4.5.4\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Memory 4.5.4",
+            "properties": {
+              "PackageId": "System.Memory",
+              "PackageVersion": "4.5.4",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0f327488-741e-4319-9dc2-32f250112388",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Memory.Data, 1.0.2\n\nRecommendation:\n\nRemove System.Memory.Data, and replace with new package System.Memory.Data 10.0.8",
+              "protected": "System.Memory.Data, 1.0.2\n\nRecommendation:\n\nRemove System.Memory.Data, and replace with new package System.Memory.Data 10.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Memory.Data, 1.0.2\n\nRecommendation:\n\nRemove System.Memory.Data, and replace with new package System.Memory.Data 10.0.8",
+            "protectedSnippet": "System.Memory.Data, 1.0.2\n\nRecommendation:\n\nRemove System.Memory.Data, and replace with new package System.Memory.Data 10.0.8",
+            "label": "System.Memory.Data 1.0.2",
+            "properties": {
+              "PackageId": "System.Memory.Data",
+              "PackageVersion": "1.0.2",
+              "PackageNewVersion": "10.0.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "5ed35c82-e909-471d-b0a0-34249c486c14",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Numerics.Vectors, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Numerics.Vectors 4.5.0",
+            "properties": {
+              "PackageId": "System.Numerics.Vectors",
+              "PackageVersion": "4.5.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "b5990f3c-299c-44fc-a43a-276754ffb913",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Runtime.CompilerServices.Unsafe, 4.6.0\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2",
+              "protected": "System.Runtime.CompilerServices.Unsafe, 4.6.0\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Runtime.CompilerServices.Unsafe, 4.6.0\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2",
+            "protectedSnippet": "System.Runtime.CompilerServices.Unsafe, 4.6.0\n\nRecommendation:\n\nRemove System.Runtime.CompilerServices.Unsafe, and replace with new package System.Runtime.CompilerServices.Unsafe 6.1.2",
+            "label": "System.Runtime.CompilerServices.Unsafe 4.6.0",
+            "properties": {
+              "PackageId": "System.Runtime.CompilerServices.Unsafe",
+              "PackageVersion": "4.6.0",
+              "PackageNewVersion": "6.1.2",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "9bdf4ec2-df17-4c9d-ba67-eb2044f018b3",
+          "ruleId": "NuGet.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Spatial, 5.6.4\n\nRecommendation:\n\nSystem.Spatial, 5.8.5",
+              "protected": "System.Spatial, 5.6.4\n\nRecommendation:\n\nSystem.Spatial, 5.8.5"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Spatial, 5.6.4\n\nRecommendation:\n\nSystem.Spatial, 5.8.5",
+            "protectedSnippet": "System.Spatial, 5.6.4\n\nRecommendation:\n\nSystem.Spatial, 5.8.5",
+            "label": "System.Spatial 5.6.4",
+            "properties": {
+              "PackageId": "System.Spatial",
+              "PackageVersion": "5.6.4",
+              "PackageNewVersion": "5.8.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "46542f9c-b647-4b3e-b8a2-ad7959d7e71e",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Text.Encodings.Web, 4.7.2\n\nRecommendation:\n\nRemove System.Text.Encodings.Web, and replace with new package System.Text.Encodings.Web 10.0.8",
+              "protected": "System.Text.Encodings.Web, 4.7.2\n\nRecommendation:\n\nRemove System.Text.Encodings.Web, and replace with new package System.Text.Encodings.Web 10.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Text.Encodings.Web, 4.7.2\n\nRecommendation:\n\nRemove System.Text.Encodings.Web, and replace with new package System.Text.Encodings.Web 10.0.8",
+            "protectedSnippet": "System.Text.Encodings.Web, 4.7.2\n\nRecommendation:\n\nRemove System.Text.Encodings.Web, and replace with new package System.Text.Encodings.Web 10.0.8",
+            "label": "System.Text.Encodings.Web 4.7.2",
+            "properties": {
+              "PackageId": "System.Text.Encodings.Web",
+              "PackageVersion": "4.7.2",
+              "PackageNewVersion": "10.0.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "4b09b7ce-7552-422a-92d2-fabc817cf6a7",
+          "ruleId": "NuGet.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.8",
+              "protected": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.8",
+            "protectedSnippet": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nRemove System.Text.Json, and replace with new package System.Text.Json 10.0.8",
+            "label": "System.Text.Json 4.6.0",
+            "properties": {
+              "PackageId": "System.Text.Json",
+              "PackageVersion": "4.6.0",
+              "PackageNewVersion": "10.0.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0718e1c7-9d0d-46ca-9aac-02353a0a0a4b",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Threading.Tasks.Extensions, 4.5.2\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.Threading.Tasks.Extensions, 4.5.2\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Threading.Tasks.Extensions, 4.5.2\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.Threading.Tasks.Extensions, 4.5.2\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.Threading.Tasks.Extensions 4.5.2",
+            "properties": {
+              "PackageId": "System.Threading.Tasks.Extensions",
+              "PackageVersion": "4.5.2",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "c8c017a3-34cb-44ed-ad43-b53e7280f3b3",
+          "ruleId": "NuGet.0003",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.ValueTuple, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+              "protected": "System.ValueTuple, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.ValueTuple, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "protectedSnippet": "System.ValueTuple, 4.5.0\n\nRecommendation:\n\nPackage functionality included with new framework reference",
+            "label": "System.ValueTuple 4.5.0",
+            "properties": {
+              "PackageId": "System.ValueTuple",
+              "PackageVersion": "4.5.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "11a2f43f-e140-42a0-95d9-dfc1081e2a82",
+          "ruleId": "NuGet.0004",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Azure.Storage.Blobs, 12.9.1\n\nRecommendation:\n\nAzure.Storage.Blobs, 12.29.0",
+              "protected": "Azure.Storage.Blobs, 12.9.1\n\nRecommendation:\n\nAzure.Storage.Blobs, 12.29.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Azure.Storage.Blobs, 12.9.1\n\nRecommendation:\n\nAzure.Storage.Blobs, 12.29.0",
+            "protectedSnippet": "Azure.Storage.Blobs, 12.9.1\n\nRecommendation:\n\nAzure.Storage.Blobs, 12.29.0",
+            "label": "Azure.Storage.Blobs 12.9.1",
+            "properties": {
+              "PackageId": "Azure.Storage.Blobs",
+              "PackageVersion": "12.9.1",
+              "PackageNewVersion": "12.29.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0df50c98-624d-4e30-84fb-d52de5b5ce76",
+          "ruleId": "NuGet.0004",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "bootstrap, 3.0.0\n\nRecommendation:\n\nbootstrap, 5.3.8",
+              "protected": "bootstrap, 3.0.0\n\nRecommendation:\n\nbootstrap, 5.3.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "bootstrap, 3.0.0\n\nRecommendation:\n\nbootstrap, 5.3.8",
+            "protectedSnippet": "bootstrap, 3.0.0\n\nRecommendation:\n\nbootstrap, 5.3.8",
+            "label": "bootstrap 3.0.0",
+            "properties": {
+              "PackageId": "bootstrap",
+              "PackageVersion": "3.0.0",
+              "PackageNewVersion": "5.3.8",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "2f80702b-aec1-42ea-8b63-241ebc63070f",
+          "ruleId": "NuGet.0004",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "jQuery, 1.10.2\n\nRecommendation:\n\njQuery, 3.7.1",
+              "protected": "jQuery, 1.10.2\n\nRecommendation:\n\njQuery, 3.7.1"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "jQuery, 1.10.2\n\nRecommendation:\n\njQuery, 3.7.1",
+            "protectedSnippet": "jQuery, 1.10.2\n\nRecommendation:\n\njQuery, 3.7.1",
+            "label": "jQuery 1.10.2",
+            "properties": {
+              "PackageId": "jQuery",
+              "PackageVersion": "1.10.2",
+              "PackageNewVersion": "3.7.1",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "56a421ac-ef46-4a7f-83ce-af3ab3d35094",
+          "ruleId": "NuGet.0004",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "jQuery.Validation, 1.11.1\n\nRecommendation:\n\njQuery.Validation, 1.21.0",
+              "protected": "jQuery.Validation, 1.11.1\n\nRecommendation:\n\njQuery.Validation, 1.21.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "jQuery.Validation, 1.11.1\n\nRecommendation:\n\njQuery.Validation, 1.21.0",
+            "protectedSnippet": "jQuery.Validation, 1.11.1\n\nRecommendation:\n\njQuery.Validation, 1.21.0",
+            "label": "jQuery.Validation 1.11.1",
+            "properties": {
+              "PackageId": "jQuery.Validation",
+              "PackageVersion": "1.11.1",
+              "PackageNewVersion": "1.21.0",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "d0ba3259-f549-4601-9165-1b559209c759",
+          "ruleId": "NuGet.0005",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477",
+              "protected": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477",
+            "protectedSnippet": "Microsoft.AspNet.Web.Optimization, 1.1.3\n\nRecommendation:\n\nShould be replaced.\nRemove Microsoft.AspNet.Web.Optimization, and replace with new package LigerShark.WebOptimizer.Core, 3.0.477",
+            "label": "Microsoft.AspNet.Web.Optimization 1.1.3",
+            "properties": {
+              "PackageId": "Microsoft.AspNet.Web.Optimization",
+              "PackageVersion": "1.1.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "5dcfba6a-fda2-458d-8844-e7df8c632328",
+          "ruleId": "NuGet.0004",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5",
+              "protected": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5",
+            "protectedSnippet": "Microsoft.Data.OData, 5.6.4\n\nRecommendation:\n\nMicrosoft.Data.OData, 5.8.5",
+            "label": "Microsoft.Data.OData 5.6.4",
+            "properties": {
+              "PackageId": "Microsoft.Data.OData",
+              "PackageVersion": "5.6.4",
+              "PackageNewVersion": "5.8.5",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "0f3f837a-de74-4412-af4d-e5b38772525a",
+          "ruleId": "NuGet.0005",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Microsoft.jQuery.Unobtrusive.Validation, 3.2.3\n\nRecommendation:\n\nThis package has been deprecated as part of the .NET Package Deprecation effort. You can learn more about it from https://github.com/dotnet/announcements/issues/217\nRemove Microsoft.jQuery.Unobtrusive.Validation, and replace with new package Microsoft.jQuery.Unobtrusive.Validation, 4.0.0",
+              "protected": "Microsoft.jQuery.Unobtrusive.Validation, 3.2.3\n\nRecommendation:\n\nThis package has been deprecated as part of the .NET Package Deprecation effort. You can learn more about it from https://github.com/dotnet/announcements/issues/217\nRemove Microsoft.jQuery.Unobtrusive.Validation, and replace with new package Microsoft.jQuery.Unobtrusive.Validation, 4.0.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Microsoft.jQuery.Unobtrusive.Validation, 3.2.3\n\nRecommendation:\n\nThis package has been deprecated as part of the .NET Package Deprecation effort. You can learn more about it from https://github.com/dotnet/announcements/issues/217\nRemove Microsoft.jQuery.Unobtrusive.Validation, and replace with new package Microsoft.jQuery.Unobtrusive.Validation, 4.0.0",
+            "protectedSnippet": "Microsoft.jQuery.Unobtrusive.Validation, 3.2.3\n\nRecommendation:\n\nThis package has been deprecated as part of the .NET Package Deprecation effort. You can learn more about it from https://github.com/dotnet/announcements/issues/217\nRemove Microsoft.jQuery.Unobtrusive.Validation, and replace with new package Microsoft.jQuery.Unobtrusive.Validation, 4.0.0",
+            "label": "Microsoft.jQuery.Unobtrusive.Validation 3.2.3",
+            "properties": {
+              "PackageId": "Microsoft.jQuery.Unobtrusive.Validation",
+              "PackageVersion": "3.2.3",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "4b425c30-d8a9-4cd2-952d-c9e84c15ef47",
+          "ruleId": "NuGet.0004",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nNewtonsoft.Json, 13.0.4",
+              "protected": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nNewtonsoft.Json, 13.0.4"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nNewtonsoft.Json, 13.0.4",
+            "protectedSnippet": "Newtonsoft.Json, 6.0.8\n\nRecommendation:\n\nNewtonsoft.Json, 13.0.4",
+            "label": "Newtonsoft.Json 6.0.8",
+            "properties": {
+              "PackageId": "Newtonsoft.Json",
+              "PackageVersion": "6.0.8",
+              "PackageNewVersion": "13.0.4",
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "e0f8a8d8-2442-467a-bf79-b6c5856b02bc",
+          "ruleId": "NuGet.0005",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Text.Json, and replace with new package System.Text.Json, 10.0.8",
+              "protected": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Text.Json, and replace with new package System.Text.Json, 10.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Text.Json, and replace with new package System.Text.Json, 10.0.8",
+            "protectedSnippet": "System.Text.Json, 4.6.0\n\nRecommendation:\n\nVersions targeting out-of-support .NET versions\nRemove System.Text.Json, and replace with new package System.Text.Json, 10.0.8",
+            "label": "System.Text.Json 4.6.0",
+            "properties": {
+              "PackageId": "System.Text.Json",
+              "PackageVersion": "4.6.0",
+              "PackageNewVersion": null,
+              "PackageReplacements": null
+            }
+          }
+        },
+        {
+          "incidentId": "55c5bfc0-e44f-4b78-9924-ca2da980c298",
+          "ruleId": "Project.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj"
+          }
+        },
+        {
+          "incidentId": "c3832f95-5978-44da-a23a-86aaa0acaf6c",
+          "ruleId": "Project.0002",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0",
+              "protected": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+            "snippet": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0",
+            "protectedSnippet": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0",
+            "properties": {
+              "CurrentTargetFramework": ".NETFramework,Version=v4.8",
+              "RecommendedTargetFramework": "net10.0"
+            }
+          }
+        },
+        {
+          "incidentId": "b38856c5-d01a-4914-877e-ca3df07bdeac",
+          "ruleId": "Feature.0001",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Views\\Shared\\_Layout.cshtml"
+          }
+        },
+        {
+          "incidentId": "25fb6ea2-05d0-4761-a3f6-07280b97b9f2",
+          "ruleId": "Feature.1000",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Global.asax.cs"
+          }
+        },
+        {
+          "incidentId": "20ab2142-b723-4a38-8ae8-b209d1ee9c2b",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for Newtonsoft.Json targets 6.0.0.0 but auto-generation would target 6.0.8 (MSB3836 conflict)",
+              "protected": "Manual redirect for Newtonsoft.Json targets 6.0.0.0 but auto-generation would target 6.0.8 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for Newtonsoft.Json targets 6.0.0.0 but auto-generation would target 6.0.8 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for Newtonsoft.Json targets 6.0.0.0 but auto-generation would target 6.0.8 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "Newtonsoft.Json",
+              "AssemblyCurrentVersion": "6.0.0.0",
+              "AssemblyNewVersion": "6.0.8"
+            }
+          }
+        },
+        {
+          "incidentId": "1a02e294-1b3b-4644-ac0b-5c025574f0cf",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Numerics.Vectors targets 4.1.4.0 but auto-generation would target 4.5.0 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Numerics.Vectors targets 4.1.4.0 but auto-generation would target 4.5.0 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for System.Numerics.Vectors targets 4.1.4.0 but auto-generation would target 4.5.0 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Numerics.Vectors targets 4.1.4.0 but auto-generation would target 4.5.0 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Numerics.Vectors",
+              "AssemblyCurrentVersion": "4.1.4.0",
+              "AssemblyNewVersion": "4.5.0"
+            }
+          }
+        },
+        {
+          "incidentId": "204efb58-1a45-4237-ab83-0867b8bacda0",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but auto-generation would target 4.6.0 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but auto-generation would target 4.6.0 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but auto-generation would target 4.6.0 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but auto-generation would target 4.6.0 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Runtime.CompilerServices.Unsafe",
+              "AssemblyCurrentVersion": "4.0.5.0",
+              "AssemblyNewVersion": "4.6.0"
+            }
+          }
+        },
+        {
+          "incidentId": "8adce2ff-3546-41d4-86a5-f46d7789ebf4",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Buffers targets 4.0.3.0 but auto-generation would target 4.5.1 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Buffers targets 4.0.3.0 but auto-generation would target 4.5.1 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for System.Buffers targets 4.0.3.0 but auto-generation would target 4.5.1 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Buffers targets 4.0.3.0 but auto-generation would target 4.5.1 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Buffers",
+              "AssemblyCurrentVersion": "4.0.3.0",
+              "AssemblyNewVersion": "4.5.1"
+            }
+          }
+        },
+        {
+          "incidentId": "fc26e343-1a93-46cb-a8c6-6e75a3059014",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Memory targets 4.0.1.1 but auto-generation would target 4.5.4 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Memory",
+              "AssemblyCurrentVersion": "4.0.1.1",
+              "AssemblyNewVersion": "4.5.4"
+            }
+          }
+        },
+        {
+          "incidentId": "7714ada9-71bd-44e9-970c-d4a70e068802",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.ValueTuple targets 4.0.3.0 but auto-generation would target 4.5.0 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.ValueTuple targets 4.0.3.0 but auto-generation would target 4.5.0 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for System.ValueTuple targets 4.0.3.0 but auto-generation would target 4.5.0 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.ValueTuple targets 4.0.3.0 but auto-generation would target 4.5.0 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.ValueTuple",
+              "AssemblyCurrentVersion": "4.0.3.0",
+              "AssemblyNewVersion": "4.5.0"
+            }
+          }
+        },
+        {
+          "incidentId": "fa08f187-f80f-4d12-bb2f-4949ad6b5208",
+          "ruleId": "Binding.0006",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Manual redirect for System.Text.Encodings.Web targets 4.0.5.1 but auto-generation would target 4.7.2 (MSB3836 conflict)",
+              "protected": "Manual redirect for System.Text.Encodings.Web targets 4.0.5.1 but auto-generation would target 4.7.2 (MSB3836 conflict)"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Manual redirect for System.Text.Encodings.Web targets 4.0.5.1 but auto-generation would target 4.7.2 (MSB3836 conflict)",
+            "protectedSnippet": "Manual redirect for System.Text.Encodings.Web targets 4.0.5.1 but auto-generation would target 4.7.2 (MSB3836 conflict)",
+            "properties": {
+              "AssemblyName": "System.Text.Encodings.Web",
+              "AssemblyCurrentVersion": "4.0.5.1",
+              "AssemblyNewVersion": "4.7.2"
+            }
+          }
+        },
+        {
+          "incidentId": "5c119348-8186-4860-9e59-c253d2571172",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for Newtonsoft.Json targets 6.0.0.0 but package provides 6.0.8",
+              "protected": "Binding redirect for Newtonsoft.Json targets 6.0.0.0 but package provides 6.0.8"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for Newtonsoft.Json targets 6.0.0.0 but package provides 6.0.8",
+            "protectedSnippet": "Binding redirect for Newtonsoft.Json targets 6.0.0.0 but package provides 6.0.8",
+            "properties": {
+              "AssemblyName": "Newtonsoft.Json",
+              "AssemblyCurrentVersion": "6.0.0.0",
+              "AssemblyNewVersion": "6.0.8"
+            }
+          }
+        },
+        {
+          "incidentId": "787e5252-093d-4624-a154-a85f2d383bd1",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Buffers targets 4.0.3.0 but package provides 4.5.1",
+              "protected": "Binding redirect for System.Buffers targets 4.0.3.0 but package provides 4.5.1"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for System.Buffers targets 4.0.3.0 but package provides 4.5.1",
+            "protectedSnippet": "Binding redirect for System.Buffers targets 4.0.3.0 but package provides 4.5.1",
+            "properties": {
+              "AssemblyName": "System.Buffers",
+              "AssemblyCurrentVersion": "4.0.3.0",
+              "AssemblyNewVersion": "4.5.1"
+            }
+          }
+        },
+        {
+          "incidentId": "edcf5fd8-daaa-491f-a8fb-66659f878934",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4",
+              "protected": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4",
+            "protectedSnippet": "Binding redirect for System.Memory targets 4.0.1.1 but package provides 4.5.4",
+            "properties": {
+              "AssemblyName": "System.Memory",
+              "AssemblyCurrentVersion": "4.0.1.1",
+              "AssemblyNewVersion": "4.5.4"
+            }
+          }
+        },
+        {
+          "incidentId": "d8143eda-37f7-4df1-9fe7-327a75eb9919",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Numerics.Vectors targets 4.1.4.0 but package provides 4.5.0",
+              "protected": "Binding redirect for System.Numerics.Vectors targets 4.1.4.0 but package provides 4.5.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for System.Numerics.Vectors targets 4.1.4.0 but package provides 4.5.0",
+            "protectedSnippet": "Binding redirect for System.Numerics.Vectors targets 4.1.4.0 but package provides 4.5.0",
+            "properties": {
+              "AssemblyName": "System.Numerics.Vectors",
+              "AssemblyCurrentVersion": "4.1.4.0",
+              "AssemblyNewVersion": "4.5.0"
+            }
+          }
+        },
+        {
+          "incidentId": "50ede81e-729b-45c3-ae90-25e07196116e",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but package provides 4.6.0",
+              "protected": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but package provides 4.6.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but package provides 4.6.0",
+            "protectedSnippet": "Binding redirect for System.Runtime.CompilerServices.Unsafe targets 4.0.5.0 but package provides 4.6.0",
+            "properties": {
+              "AssemblyName": "System.Runtime.CompilerServices.Unsafe",
+              "AssemblyCurrentVersion": "4.0.5.0",
+              "AssemblyNewVersion": "4.6.0"
+            }
+          }
+        },
+        {
+          "incidentId": "1aceb6d0-eb61-4144-bb0a-1e1fb7caf2c5",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.Text.Encodings.Web targets 4.0.5.1 but package provides 4.7.2",
+              "protected": "Binding redirect for System.Text.Encodings.Web targets 4.0.5.1 but package provides 4.7.2"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for System.Text.Encodings.Web targets 4.0.5.1 but package provides 4.7.2",
+            "protectedSnippet": "Binding redirect for System.Text.Encodings.Web targets 4.0.5.1 but package provides 4.7.2",
+            "properties": {
+              "AssemblyName": "System.Text.Encodings.Web",
+              "AssemblyCurrentVersion": "4.0.5.1",
+              "AssemblyNewVersion": "4.7.2"
+            }
+          }
+        },
+        {
+          "incidentId": "41b49714-4afb-4308-937e-cc6ce1d2d2f2",
+          "ruleId": "Binding.0007",
+          "projectPath": "WebApp-Storage-DotNet\\WebApp-Storage-DotNet.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Binding redirect for System.ValueTuple targets 4.0.3.0 but package provides 4.5.0",
+              "protected": "Binding redirect for System.ValueTuple targets 4.0.3.0 but package provides 4.5.0"
+            },
+            "kind": "File",
+            "path": "WebApp-Storage-DotNet\\Web.config",
+            "snippet": "Binding redirect for System.ValueTuple targets 4.0.3.0 but package provides 4.5.0",
+            "protectedSnippet": "Binding redirect for System.ValueTuple targets 4.0.3.0 but package provides 4.5.0",
+            "properties": {
+              "AssemblyName": "System.ValueTuple",
+              "AssemblyCurrentVersion": "4.0.3.0",
+              "AssemblyNewVersion": "4.5.0"
+            }
+          }
+        }
+      ],
+      "features": []
+    }
+  ],
+  "rules": {
+    "NuGet.0002": {
+      "id": "NuGet.0002",
+      "isFeature": false,
+      "description": "NuGet package upgrade is recommended for selected target framework.\n\nStandard .NET packages are recommended to have versions matching version of .NET that project targets.\n\nSome other packages also are known to work better for selected target frameworks.",
+      "label": "NuGet package upgrade is recommended",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262530",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0003": {
+      "id": "NuGet.0003",
+      "isFeature": false,
+      "description": "NuGet package functionality is included with framework reference.\n\nPackage needs to be removed.",
+      "label": "NuGet package functionality is included with framework reference",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262609",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0001": {
+      "id": "NuGet.0001",
+      "isFeature": false,
+      "description": "NuGet package is incompatible with selected target framework.\n\nPackage needs to be upgraded to a version supporting selected project target framework. If there no new package versions supporting new target framework, different package needs to be used and all code needs to be upgraded to new API.",
+      "label": "NuGet package is incompatible",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262529",
+          "isCustom": false
+        }
+      ]
+    },
+    "NuGet.0004": {
+      "id": "NuGet.0004",
+      "isFeature": false,
+      "description": "NuGet package contains security vulnerabilities.\n\nPackage needs to be upgraded to a newer version that addresses known security vulnerabilities.",
+      "label": "NuGet package contains security vulnerability",
+      "severity": "Optional",
+      "effort": 1
+    },
+    "NuGet.0005": {
+      "id": "NuGet.0005",
+      "isFeature": false,
+      "description": "NuGet package is deprecated.\n\nGo to its documentation and if there is a guidance for replacement of functionality provided by this package.",
+      "label": "NuGet package is deprecated",
+      "severity": "Optional",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262531",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0001": {
+      "id": "Project.0001",
+      "isFeature": false,
+      "description": "Project file needs to be converted to SDK-style. Modern .NET framework projects require a change in the project file format and use SDK corresponding to project flavor and functionality.",
+      "label": "Project file needs to be converted to SDK-style",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Feature.0001": {
+      "id": "Feature.0001",
+      "isFeature": true,
+      "description": "System.Web.Optimization bundling and minification is not supported in .NET Core and should be replaced with actual html tags pointing to content files.",
+      "label": "System.Web.Optimization bundling and minification is not supported in .NET Core and should be replaced with actual html tags pointing to content files",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        }
+      ]
+    },
+    "Feature.1000": {
+      "id": "Feature.1000",
+      "isFeature": true,
+      "description": "Convert application initialization code from Global.asax.cs to .NET Core and clean up Global.asax.cs.",
+      "label": "Convert application initialization code from Global.asax.cs to .NET Core and clean up Global.asax.cs",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        }
+      ]
+    },
+    "Binding.0006": {
+      "id": "Binding.0006",
+      "isFeature": false,
+      "description": "An explicit binding redirect targets a different version than what auto-generation would produce. MSBuild will throw MSB3836 conflict error because it cannot determine which redirect wins.",
+      "label": "Manual redirect conflicts with auto-generated version",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Assembly binding redirection",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262689",
+          "isCustom": false
+        }
+      ]
+    },
+    "Binding.0007": {
+      "id": "Binding.0007",
+      "isFeature": false,
+      "description": "A binding redirect\u0027s newVersion is lower than the version provided by the NuGet package. This forced downgrade usually causes a load failure at runtime because the expected assembly version is not available.",
+      "label": "Binding redirect forces version downgrade",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Assembly binding redirection",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262689",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
