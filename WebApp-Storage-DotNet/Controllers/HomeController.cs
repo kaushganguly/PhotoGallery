@@ -15,13 +15,13 @@ namespace WebApp_Storage_DotNet.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.IO;
     using System.Threading.Tasks;
-    using System.Web;
-    using System.Web.Mvc;
     using Azure.Storage.Blobs;
     using Azure.Storage.Blobs.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
     /// <summary> 
     /// Azure Blob Storage Photo Gallery - Demonstrates how to use the Blob Storage service.  
@@ -43,8 +43,13 @@ namespace WebApp_Storage_DotNet.Controllers
 
     public class HomeController : Controller
     {
-        const string blobContainerName = "webappstoragedotnet-imagecontainer";
-        static BlobContainerClient blobContainer;
+        private const string BlobContainerName = "webappstoragedotnet-imagecontainer";
+        private readonly IConfiguration configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
         /// <summary> 
         /// Task<ActionResult> Index() 
@@ -58,12 +63,7 @@ namespace WebApp_Storage_DotNet.Controllers
         {
             try
             {
-                // Retrieve storage account information from connection string
-                // How to create a storage connection string - http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx
-                BlobServiceClient blobServiceClient = new BlobServiceClient(ConfigurationManager.AppSettings["StorageConnectionString"].ToString());
-
-                blobContainer = blobServiceClient.GetBlobContainerClient(blobContainerName);
-                await blobContainer.CreateIfNotExistsAsync(PublicAccessType.Blob);
+                var blobContainer = await GetBlobContainerAsync();
 
                 // To view the uploaded blob in a browser, you have two options. The first option is to use a Shared Access Signature (SAS) token to delegate  
                 // access to the resource. See the documentation links at the top for more information on SAS. The second approach is to set permissions  
@@ -72,7 +72,7 @@ namespace WebApp_Storage_DotNet.Controllers
 
                 // Gets all Block Blobs in the blobContainerName and passes them to the view
                 List<Uri> allBlobs = new List<Uri>();
-                foreach (BlobItem blob in blobContainer.GetBlobs())
+                await foreach (BlobItem blob in blobContainer.GetBlobsAsync())
                 {
                     if (blob.Properties.BlobType == BlobType.Block)
                         allBlobs.Add(blobContainer.GetBlobClient(blob.Name).Uri);
@@ -98,7 +98,8 @@ namespace WebApp_Storage_DotNet.Controllers
         {
             try
             {
-                HttpFileCollectionBase files = Request.Files;
+                var blobContainer = await GetBlobContainerAsync();
+                IFormFileCollection files = Request.Form.Files;
                 int fileCount = files.Count;
 
                 if (fileCount > 0)
@@ -106,7 +107,8 @@ namespace WebApp_Storage_DotNet.Controllers
                     for (int i = 0; i < fileCount; i++)
                     {
                         BlobClient blob = blobContainer.GetBlobClient(GetRandomBlobName(files[i].FileName));
-                        await blob.UploadAsync(files[i].FileName);
+                        await using Stream stream = files[i].OpenReadStream();
+                        await blob.UploadAsync(stream);
                     }
                 }
                 return RedirectToAction("Index");
@@ -129,6 +131,7 @@ namespace WebApp_Storage_DotNet.Controllers
         {
             try
             {
+                var blobContainer = await GetBlobContainerAsync();
                 Uri uri = new Uri(name);
                 string filename = Path.GetFileName(uri.LocalPath);
 
@@ -155,7 +158,8 @@ namespace WebApp_Storage_DotNet.Controllers
         {
             try
             {
-                foreach (var blob in blobContainer.GetBlobs())
+                var blobContainer = await GetBlobContainerAsync();
+                await foreach (var blob in blobContainer.GetBlobsAsync())
                 {
                     if (blob.Properties.BlobType == BlobType.Block)
                     {
@@ -180,6 +184,20 @@ namespace WebApp_Storage_DotNet.Controllers
         {
             string ext = Path.GetExtension(filename);
             return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), ext);
+        }
+
+        private async Task<BlobContainerClient> GetBlobContainerAsync()
+        {
+            var storageConnectionString = configuration.GetValue<string>("StorageConnectionString");
+            if (string.IsNullOrWhiteSpace(storageConnectionString))
+            {
+                throw new InvalidOperationException("StorageConnectionString is not configured.");
+            }
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
+            var blobContainer = blobServiceClient.GetBlobContainerClient(BlobContainerName);
+            await blobContainer.CreateIfNotExistsAsync(PublicAccessType.Blob);
+            return blobContainer;
         }
     }
 }
