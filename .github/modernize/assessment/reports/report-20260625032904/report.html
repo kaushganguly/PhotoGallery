@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assessment - </title>
+<style>
+:root {
+  --bg-primary: #ffffff;
+  --bg-card: #f8f9fa;
+  --bg-page: #f0f1f3;
+  --text-primary: #24292f;
+  --text-secondary: #57606a;
+  --text-muted: #6b7280;
+  --border-color: #d0d7de;
+  --border-light: #e1e4e8;
+  --link-color: #2563eb;
+  --color-mandatory: #E3008C;
+  --color-potential: #637CEF;
+  --color-optional: #A19F9D;
+  --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-family); font-size: 13px; color: var(--text-primary); background: var(--bg-primary); line-height: 1.5; margin: 0; padding: 0; }
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Page layout ───────────────────────────────────────────── */
+.main { margin: 0; padding: 24px 32px; background: var(--bg-primary); }
+.back-link { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; display: block; }
+h1 { font-weight: 600; font-size: 20px; color: var(--text-primary); margin-bottom: 20px; }
+
+/* ── Report cards (matches VS Code .vscode-report-card) ──── */
+.report-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 4px; padding: 12px; margin-bottom: 20px; }
+.report-card h2 { font-size: 14px; font-weight: 600; margin: 0; color: var(--text-primary); }
+.report-card-body { margin-top: 16px; }
+
+/* ── Component Information (two-column) ────────────────── */
+.app-info-container { display: flex; gap: 8px; flex-wrap: wrap; }
+.app-info-column { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px; }
+.app-info-row { display: flex; align-items: baseline; }
+.app-info-label { width: 136px; flex-shrink: 0; font-weight: 600; color: var(--text-primary); }
+.app-info-value { flex: 1; color: var(--text-primary); }
+
+/* ── Issue Summary (pie charts + legend) ─────────────────── */
+.cards-container { display: flex; align-items: stretch; gap: 20px; flex-wrap: wrap; }
+.issue-summary-card { flex: 2; }
+.domain-summary-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; }
+.domain-summary-item { flex: 1; min-width: 120px; text-align: center; padding: 0 16px; border-right: 1px solid var(--border-light); }
+.domain-summary-item:last-child { border-right: none; }
+.domain-summary-item h3 { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-top: 8px; }
+.domain-summary-item .count { font-size: 12px; color: var(--text-secondary); }
+.criticality-legend { display: flex; flex-wrap: wrap; gap: 15px; padding-top: 12px; justify-content: center; }
+.criticality-legend .legend-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { display: inline-block; width: 1em; height: 1em; border-radius: 2px; }
+
+/* ── Issue list tables ───────────────────────────────────── */
+.issue-section { margin-top: 20px; }
+.issue-section h2 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.issue-table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 600px; }
+.issue-table th { text-align: left; text-transform: uppercase; font-weight: 600; font-size: calc(13px * 0.875); padding: 6px 8px; background: var(--bg-card); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); position: sticky; top: 0; z-index: 1; }
+.issue-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.col-issue { width: 55%; }
+.col-criticality { width: 25%; }
+.col-storypoint { width: 20%; }
+
+/* ── Target dropdown ─────────────────────────────────────── */
+.target-select-container { margin: 4px 0 16px 0; display: flex; align-items: center; gap: 8px; }
+.target-select-container label { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+.target-select-container select { font-family: var(--font-family); font-size: 13px; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; }
+
+/* ── Filter bar ──────────────────────────────────────────── */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px 0; align-items: center; }
+.multi-select { position: relative; display: inline-block; min-width: 140px; }
+.multi-select-btn { font-family: var(--font-family); font-size: 13px; padding: 4px 24px 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; width: 100%; text-align: left; position: relative; white-space: nowrap; }
+.multi-select-btn::after { content: '\25BE'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--text-secondary); }
+.multi-select-dropdown { display: none; position: absolute; top: 100%; left: 0; min-width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 100; margin-top: 2px; }
+.multi-select.open .multi-select-dropdown { display: block; }
+.multi-select-option { display: flex; align-items: center; gap: 6px; padding: 5px 10px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+.multi-select-option:hover { background: var(--bg-secondary); }
+.multi-select-option input[type=checkbox] { margin: 0; cursor: pointer; }
+.clear-filters { font-size: 12px; color: var(--link-color); cursor: pointer; margin-left: 4px; }
+
+/* ── Criticality labels (colored square + text) ──────────── */
+.crit-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; white-space: nowrap; }
+.crit-square { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.crit-square-mandatory { background: var(--color-mandatory); }
+.crit-square-potential { background: var(--color-potential); }
+.crit-square-optional { background: var(--color-optional); }
+
+/* ── Expandable rows ─────────────────────────────────────── */
+.expand-btn { background: none; border: none; cursor: pointer; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; transition: transform 0.15s; padding: 0; vertical-align: middle; flex-shrink: 0; }
+.expand-btn.open { transform: rotate(90deg); }
+.issue-title-cell { display: flex; align-items: center; gap: 4px; }
+.detail-row td { padding: 0; border-bottom: 1px solid var(--border-light); white-space: normal; overflow: visible; text-overflow: clip; }
+.detail-content { display: flex; gap: 0; padding: 8px 8px 8px 32px; min-width: 0; }
+.file-list { flex: 0 0 50%; min-width: 0; overflow: hidden; }
+.file-list table { width: 100%; border-collapse: collapse; }
+.file-list th { font-size: calc(13px * 0.875); text-transform: uppercase; font-weight: 600; color: var(--text-secondary); padding: 6px 8px; border-bottom: 1px solid var(--border-color); text-align: left; height: 32px; }
+.file-list td { font-size: 13px; padding: 6px 8px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); }
+.file-list .file-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px; display: block; }
+.file-list .position { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.explanation-panel { flex: 1; padding-left: 16px; min-width: 0; overflow-wrap: break-word; word-wrap: break-word; }
+.explanation-panel h4 { font-size: calc(13px * 0.875); text-transform: uppercase; font-weight: 600; color: var(--text-secondary); padding: 6px 0; border-bottom: 1px solid var(--border-color); height: 32px; margin: 0; }
+.explanation-panel p { font-size: 13px; padding: 8px 0; color: var(--text-primary); line-height: 1.6; white-space: normal; word-break: break-word; }
+
+/* ── Experimental badge ──────────────────────────────────── */
+.badge-experimental { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: #fef9c3; color: #854d0e; vertical-align: middle; margin-left: 8px; cursor: default; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.footer { text-align: center; margin-top: 24px; color: var(--text-muted); font-size: 13px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .main { padding: 16px; }
+  .app-info-container { flex-direction: column; }
+  .domain-summary-container { flex-direction: column; }
+  .domain-summary-item { border-right: none; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
+  .detail-content { flex-direction: column; }
+  .file-list { flex: none; width: 100%; }
+  .explanation-panel { padding-left: 0; padding-top: 8px; }
+}
+/* ── Tab navigation ──────────────────────────────────────── */
+.tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border-color); margin-bottom: 28px; flex-wrap: wrap; }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; font-size: 13px; font-family: var(--font-family); color: var(--text-secondary); cursor: pointer; margin-bottom: -1px; white-space: nowrap; position: relative; }
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--link-color); border-bottom-color: var(--link-color); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Tooltip on tab ──────────────────────────────────────── */
+.tab-btn[data-tooltip]::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #24292f; color: #ffffff; font-size: 12px; font-weight: 400; padding: 6px 10px; border-radius: 4px; white-space: normal; width: max-content; max-width: 260px; text-align: center; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; }
+.tab-btn[data-tooltip]:hover::after { opacity: 1; }
+
+/* ── Fact content — prose column ─────────────────────────── */
+.fact-content { max-width: 860px; margin: 0 auto; line-height: 1.75; color: var(--text-primary); font-size: 14px; }
+.fact-content h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px 0; color: var(--text-primary); letter-spacing: -0.01em; }
+.fact-content h1 + p { margin-top: 6px; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; }
+.fact-content h2 { font-size: 17px; font-weight: 700; margin: 36px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); letter-spacing: -0.01em; }
+.fact-content h3 { font-size: 14px; font-weight: 700; margin: 24px 0 8px 0; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em; font-size: 12px; color: var(--text-secondary); }
+.fact-content p { margin: 10px 0; color: var(--text-primary); }
+.fact-content ul, .fact-content ol { margin: 10px 0 10px 22px; }
+.fact-content li { margin: 5px 0; }
+.fact-content a { color: var(--link-color); }
+.fact-content a:hover { text-decoration: underline; }
+
+/* ── Fact tables ─────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+.fact-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
+.fact-content thead { background: var(--bg-card); }
+.fact-content th { text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
+.fact-content td { padding: 9px 14px; border-bottom: 1px solid var(--border-light); vertical-align: top; color: var(--text-primary); }
+.fact-content tr:last-child td { border-bottom: none; }
+.fact-content tbody tr:hover { background: #f6f8fa; }
+
+/* ── Fact code ───────────────────────────────────────────── */
+.fact-content code { font-family: var(--font-mono); font-size: 12px; background: #f0f1f3; padding: 2px 6px; border-radius: 4px; color: #c7254e; }
+.fact-content pre { background: #f6f8fa; border: 1px solid var(--border-light); border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 14px 0; }
+.fact-content pre code { background: none; color: var(--text-primary); padding: 0; border-radius: 0; }
+.fact-content hr { border: none; border-top: 1px solid var(--border-light); margin: 28px 0; }
+.fact-content strong { font-weight: 600; }
+.fact-content em { font-style: italic; }
+.fact-content blockquote { border-left: 3px solid var(--border-color); margin: 12px 0; padding: 4px 16px; color: var(--text-secondary); }
+.fact-unavailable { padding: 32px 0; }
+.fact-unavailable h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); text-transform: none; letter-spacing: 0; margin: 0 0 12px 0; }
+.fact-unavailable p { margin: 0 0 8px 0; color: var(--text-secondary); }
+.fact-unavailable ol, .fact-unavailable ul { margin: 0 0 0 22px; color: var(--text-primary); }
+.fact-unavailable li { margin: 6px 0; }
+
+/* ── Mermaid diagram card ─────────────────────────────────── */
+.mermaid { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 24px 16px; margin: 20px 0; overflow-x: auto; text-align: center; cursor: pointer; position: relative; }
+.mermaid:hover { border-color: var(--border-color); }
+.mermaid svg { max-width: 100%; height: auto !important; display: inline-block; }
+.mermaid-zoom-hint { position: absolute; top: 8px; right: 10px; font-size: 11px; color: var(--text-muted); opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+.mermaid:hover .mermaid-zoom-hint { opacity: 1; }
+
+/* ── Diagram lightbox ────────────────────────────────────── */
+.diagram-lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); align-items: center; justify-content: center; cursor: zoom-out; padding: 48px 32px; }
+.diagram-lightbox.open { display: flex; }
+.diagram-lightbox-inner { background: #ffffff; border-radius: 10px; padding: 32px; width: 88vw; max-height: 88vh; overflow: hidden; cursor: default; box-shadow: 0 24px 64px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; }
+.diagram-lightbox-inner svg { width: 100% !important; height: auto !important; max-height: 76vh; display: block; }
+.diagram-lightbox-close { position: fixed; top: 20px; right: 24px; background: #ffffff; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1001; }
+.diagram-lightbox-close:hover { background: var(--bg-card); }
+.diagram-lightbox-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: #ffffff; font-size: 12px; padding: 6px 14px; border-radius: 20px; pointer-events: none; white-space: nowrap; z-index: 1001; }
+</style>
+<script>
+window.__mermaidPending = [];
+window.__mermaidReady = false;
+window.__renderMermaidIn = function(container) {
+  if (container) { window.__mermaidPending.push(container); }
+};
+</script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: false, theme: 'default', flowchart: { useMaxWidth: true }, sequence: { useMaxWidth: true } });
+
+window.__renderMermaidIn = function(container) {
+  var nodes = container ? container.querySelectorAll('.mermaid:not([data-processed])') : [];
+  if (nodes.length > 0) {
+    mermaid.run({ nodes: Array.from(nodes) }).then(function() {
+      nodes.forEach(function(node) {
+        if (!node.querySelector('.mermaid-zoom-hint')) {
+          var hint = document.createElement('span');
+          hint.className = 'mermaid-zoom-hint';
+          hint.textContent = 'Click to expand';
+          node.appendChild(hint);
+        }
+      });
+    });
+  }
+};
+
+var drained = new Set();
+(window.__mermaidPending || []).forEach(function(c) {
+  if (!drained.has(c)) { drained.add(c); window.__renderMermaidIn(c); }
+});
+window.__mermaidPending = [];
+window.__mermaidReady = true;
+
+function renderActivePanels() {
+  document.querySelectorAll('.tab-panel.active').forEach(function(p) {
+    if (!drained.has(p)) { drained.add(p); window.__renderMermaidIn(p); }
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderActivePanels);
+} else {
+  renderActivePanels();
+}
+</script>
+</head><body>
+<div id="diagram-lightbox" class="diagram-lightbox" role="dialog" aria-modal="true">
+  <button class="diagram-lightbox-close" id="diagram-lightbox-close" aria-label="Close">&#x2715;</button>
+  <div class="diagram-lightbox-hint">Scroll to zoom &nbsp;&middot;&nbsp; Drag to pan &nbsp;&middot;&nbsp; Double-click to reset</div>
+  <div class="diagram-lightbox-inner" id="diagram-lightbox-inner"></div>
+</div>
+<div class="main">
+<h1></h1>
+<div class="report-card">
+  <h2>Component Information</h2>
+  <div class="report-card-body">
+    <div class="app-info-container">
+      <div class="app-info-column">
+        <div class="app-info-row"><span class="app-info-label">Component Name</span><span class="app-info-value"></span></div>
+        <div class="app-info-row"><span class="app-info-label">Effort</span><span class="app-info-value" id="effort-display">S (total story points: 6)</span></div>
+      </div>
+      <div class="app-info-column">
+        <div class="app-info-row"><span class="app-info-label">Build Tools</span><span class="app-info-value">N/A</span></div>
+        <div class="app-info-row"><span class="app-info-label">Frameworks</span><span class="app-info-value">N/A</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="tab-issues" data-tooltip="Issues detected in the source code">Issues</button>
+  <button class="tab-btn" data-tab="tab-arch" data-tooltip="How the app&#x27;s layers connect — from UI to data.">Architecture</button>
+  <button class="tab-btn" data-tab="tab-api" data-tooltip="Endpoints exposed by this app and how services communicate.">API Contracts</button>
+  <button class="tab-btn" data-tab="tab-config" data-tooltip="Environment settings, runtime profiles, and deployment manifests.">Configuration</button>
+  <button class="tab-btn" data-tab="tab-workflows" data-tooltip="Domain entities and the core flows users move through.">Business Workflows</button>
+  <button class="tab-btn" data-tab="tab-deps" data-tooltip="Libraries and frameworks this app depends on, grouped by category.">Dependencies</button>
+  <button class="tab-btn" data-tab="tab-data" data-tooltip="Database schema, entity relationships, and persistence behavior.">Data Model</button>
+</nav>
+<div id="tab-issues" class="tab-panel active">
+<div class="target-select-container">
+  <label for="target-select">Target Compute Service:</label>
+  <select id="target-select" onchange="onTargetChange(this.value)">
+    <option value="AppService.Windows">Azure App Service</option>
+    <option value="AppService.Linux">Azure Kubernetes Service</option>
+    <option value="AKS.Linux">Azure Container Apps</option>
+    <option value="AKS.Windows">Azure App Service Container</option>
+    <option value="ACA">Azure App Service Managed Instance</option>
+  </select>
+</div>
+<div class="report-card">
+  <h2>Issue Summary</h2>
+  <div class="report-card-body">
+    <div class="domain-summary-container" id="donut-container">
+      <div class="domain-summary-item">
+<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-optional)" stroke-width="15" stroke-dasharray="219.91 219.91" stroke-dashoffset="-0.00"/>
+</svg>
+
+        <h3>Cloud Readiness</h3>
+        <div class="count">2 issues</div>
+      </div>
+    </div>
+    <div class="criticality-legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-mandatory)"></span>Mandatory</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-potential)"></span>Potential</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-optional)"></span>Optional</div>
+    </div>
+  </div>
+</div>
+<div class="filter-bar" id="filter-bar">
+  <a class="clear-filters" href="javascript:void(0)" onclick="clearAllFilters()">Clear all</a>
+</div>
+<div class="issue-section" data-domain="cloud-readiness">
+  <h2>Cloud Readiness</h2>
+  <table class="issue-table">
+    <colgroup><col class="col-issue"/><col class="col-criticality"/><col class="col-storypoint"/></colgroup>
+    <thead><tr><th>Issue Category</th><th>Criticality</th><th>Story Point</th></tr></thead>
+    <tbody>
+    <tr class="issue-row" data-criticality="optional" data-targets='{&quot;AppService.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppService.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;ACA&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceManagedInstance.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;}}' data-default-effort="3" data-default-severity="optional" data-rule="Scale.0001" onclick="toggleRow('row-cloudreadiness-0', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-cloudreadiness-0">&#x276F;</button> Static content detected</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">3</td>
+    </tr>
+    <tr class="detail-row" id="row-cloudreadiness-0" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet">WebApp-Storage-DotNet</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Static content detected.</p><p>Your current approach of serving static content directly might lead to increased costs, performance issues, maintenance challenges (requiring application redeployment for content changes), and security risks.</p><p>Consider moving static content to Azure Blob Storage and adding Azure CDN.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" data-targets='{&quot;AppService.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppService.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;ACA&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceManagedInstance.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;}}' data-default-effort="3" data-default-severity="optional" data-rule="Security.0002" onclick="toggleRow('row-cloudreadiness-1', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-cloudreadiness-1">&#x276F;</button> Connection strings without configuration builders detected</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">3</td>
+    </tr>
+    <tr class="detail-row" id="row-cloudreadiness-1" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Web.config">WebApp-Storage-DotNet/Web.config</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Connection strings without configuration builders detected.  </p><p> Keeping connection strings directly in the app is not the best practice and might introduce security risks, increased maintenance, scalability challenges or compliance standards (such as PCI DSS, GDPR, etc.). </p><p> Instead, it is recommended to use configuration builders to get secrets from secure sources in Azure environment.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div><!-- #tab-issues -->
+<div id="tab-arch" class="tab-panel">
+  <div class="fact-content"><h1 id="architecture-diagram">Architecture Diagram</h1>
+<p>This document provides a two-layer architectural visualization of the Azure Blob Storage Photo Gallery application: a high-level application architecture diagram and a detailed component relationship diagram.</p>
+<h2 id="application-architecture">Application Architecture</h2>
+<div class="mermaid">
+flowchart TD
+    subgraph Client["Client Layer"]
+        Browser["Web Browser (Bootstrap 3 + jQuery 1.10)"]
+    end
+    subgraph App["Application Layer - ASP.NET MVC 5 (.NET Framework 4.8)"]
+        MVC["ASP.NET MVC 5 + Razor Views"]
+        Controller["HomeController"]
+        BundleOpt["Bundle Optimization (WebGrease)"]
+    end
+    subgraph Storage["External Storage Service"]
+        BlobSDK["Azure.Storage.Blobs SDK v12.9.1"]
+        AzureBlob[("Azure Blob Storage\nwebappstoragedotnet-imagecontainer")]
+    end
+    subgraph Config["Configuration"]
+        WebConfig["Web.config\n(StorageConnectionString)"]
+    end
+
+    Browser -->|"HTTP GET/POST requests"| MVC
+    MVC -->|"routes to"| Controller
+    Controller -->|"reads connection string"| WebConfig
+    Controller -->|"BlobServiceClient"| BlobSDK
+    BlobSDK -->|"REST API calls"| AzureBlob
+    AzureBlob -->|"blob URIs"| Controller
+    Controller -->|"returns view with blob URIs"| MVC
+    MVC -->|"renders HTML"| Browser
+    BundleOpt -.->|"bundles CSS/JS"| MVC
+</div>
+<h3 id="technology-stack-summary">Technology Stack Summary</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>Presentation</td><td>ASP.NET MVC</td><td>5.2.3</td><td>Server-side MVC web framework</td></tr>
+<tr><td>Presentation</td><td>Razor Views</td><td>3.2.3</td><td>Server-side HTML templating</td></tr>
+<tr><td>Presentation</td><td>Bootstrap</td><td>3.0.0</td><td>Responsive CSS framework</td></tr>
+<tr><td>Presentation</td><td>jQuery</td><td>1.10.2</td><td>Client-side scripting</td></tr>
+<tr><td>Application</td><td>.NET Framework</td><td>4.8</td><td>Runtime platform</td></tr>
+<tr><td>Application</td><td>C#</td><td>6.0</td><td>Application programming language</td></tr>
+<tr><td>Application</td><td>Microsoft.AspNet.Web.Optimization</td><td>1.1.3</td><td>CSS/JS bundling and minification</td></tr>
+<tr><td>Storage Client</td><td>Azure.Storage.Blobs</td><td>12.9.1</td><td>Azure Blob Storage SDK</td></tr>
+<tr><td>Storage Client</td><td>Azure.Core</td><td>1.18.0</td><td>Azure SDK core primitives</td></tr>
+<tr><td>External Storage</td><td>Azure Blob Storage</td><td>-</td><td>Unstructured binary/image storage</td></tr>
+</tbody></table></div>
+<h3 id="data-storage-external-services">Data Storage & External Services</h3>
+<p>The application uses <strong>Azure Blob Storage</strong> as its sole data store, accessed via the <code>Azure.Storage.Blobs</code> SDK (v12.9.1). A single blob container named <code>webappstoragedotnet-imagecontainer</code> stores uploaded photo files as Block Blobs with public read access. The connection string is read from <code>Web.config</code> (<code>StorageConnectionString</code>), defaulting to local Azure Storage Emulator (<code>UseDevelopmentStorage=true</code>) for development. There is no relational database, cache, or message broker involved.</p>
+<h3 id="key-architectural-decisions">Key Architectural Decisions</h3>
+<ul>
+<li><strong>Direct SDK integration</strong>: The application communicates with Azure Blob Storage directly using the <code>Azure.Storage.Blobs</code> SDK from the MVC controller layer — there is no service abstraction or repository pattern.</li>
+<li><strong>Asynchronous I/O</strong>: All blob operations (<code>CreateIfNotExistsAsync</code>, <code>UploadAsync</code>, <code>DeleteIfExistsAsync</code>) use the async/await pattern to avoid blocking the ASP.NET thread pool.</li>
+<li><strong>Public blob access</strong>: The container is created with <code>PublicAccessType.Blob</code>, making individual blob URLs publicly accessible via direct HTTP links without SAS tokens.</li>
+</ul>
+<h2 id="component-relationships">Component Relationships</h2>
+<div class="mermaid">
+flowchart LR
+    subgraph Presentation["Presentation Layer"]
+        IndexView["Index.cshtml\n(Gallery View)"]
+        ErrorView["Error.cshtml"]
+        Layout["_Layout.cshtml\n(Master Layout)"]
+    end
+    subgraph Controllers["Controllers"]
+        HomeCtrl["HomeController"]
+    end
+    subgraph AppStart["App Startup / Infrastructure"]
+        RouteConfig["RouteConfig"]
+        BundleConfig["BundleConfig"]
+        FilterConfig["FilterConfig"]
+        GlobalAsax["Global.asax"]
+    end
+    subgraph AzureSDK["Azure Storage SDK"]
+        BlobSvcClient["BlobServiceClient"]
+        BlobContClient["BlobContainerClient"]
+        BlobClient["BlobClient"]
+    end
+
+    GlobalAsax -->|"registers routes"| RouteConfig
+    GlobalAsax -->|"registers bundles"| BundleConfig
+    GlobalAsax -->|"registers filters"| FilterConfig
+    RouteConfig -->|"routes default to"| HomeCtrl
+    HomeCtrl -->|"GET Index: returns blob URIs"| IndexView
+    HomeCtrl -->|"on error: returns"| ErrorView
+    IndexView -->|"inherits"| Layout
+    HomeCtrl -->|"creates"| BlobSvcClient
+    BlobSvcClient -->|"gets container"| BlobContClient
+    BlobContClient -->|"gets blob ref"| BlobClient
+    BlobClient -.->|"upload/delete ops"| BlobContClient
+</div>
+<h3 id="component-inventory">Component Inventory</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Component</th><th>Layer</th><th>Type</th><th>Responsibility</th>
+</tr></thead><tbody>
+<tr><td>HomeController</td><td>Controllers</td><td>MVC Controller</td><td>Handles Index (list blobs), UploadAsync (upload files), DeleteImage (delete single blob), DeleteAll (delete all blobs)</td></tr>
+<tr><td>Index.cshtml</td><td>Presentation</td><td>Razor View</td><td>Renders the photo gallery grid with upload form and per-image delete controls</td></tr>
+<tr><td>Error.cshtml</td><td>Presentation</td><td>Razor View</td><td>Displays exception message and stack trace on error</td></tr>
+<tr><td>_Layout.cshtml</td><td>Presentation</td><td>Razor Master Layout</td><td>Provides shared HTML structure, Bootstrap CSS, and navigation</td></tr>
+<tr><td>RouteConfig</td><td>App Startup</td><td>Route Configuration</td><td>Registers default MVC route <code>{controller}/{action}/{id}</code></td></tr>
+<tr><td>BundleConfig</td><td>App Startup</td><td>Bundle Configuration</td><td>Configures CSS/JS bundle paths for optimization</td></tr>
+<tr><td>FilterConfig</td><td>App Startup</td><td>Filter Configuration</td><td>Registers global MVC action filters (HandleErrorAttribute)</td></tr>
+<tr><td>Global.asax</td><td>App Startup</td><td>Application Entry Point</td><td>Bootstraps routes, bundles, and filters on application start</td></tr>
+</tbody></table></div></div>
+</div>
+<div id="tab-api" class="tab-panel">
+  <div class="fact-content"><h1 id="api-service-communication-contracts">API & Service Communication Contracts</h1>
+<p>This is a single-service ASP.NET MVC 5 web application exposing <strong>4 HTTP endpoints</strong> (3 form POST actions and 1 GET page) with no inter-service communication — all external interaction occurs via synchronous calls to the Azure Blob Storage REST API through the Azure SDK.</p>
+<h2 id="service-catalog">Service Catalog</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Port</th><th>Category</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>80/443 (IIS-hosted)</td><td>Business</td><td>ASP.NET MVC 5 web application providing a photo gallery backed by Azure Blob Storage</td></tr>
+</tbody></table></div>
+<h2 id="api-endpoints-inventory">API Endpoints Inventory</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Method</th><th>Path</th><th>Request Type</th><th>Response Type</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>GET</td><td><code>/</code> or <code>/Home/Index</code></td><td>None</td><td>HTML view with <code>List<Uri></code> (blob URLs)</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td>POST</td><td><code>/Home/UploadAsync</code></td><td><code>multipart/form-data</code> (file collection via <code>HttpFileCollectionBase</code>)</td><td>Redirect to <code>/Home/Index</code> (HTTP 302)</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td>POST</td><td><code>/Home/DeleteImage</code></td><td>Form field: <code>name</code> (string — full blob URI)</td><td>Redirect to <code>/Home/Index</code> (HTTP 302) or JSON (via jQuery <code>$.post</code>)</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td>POST</td><td><code>/Home/DeleteAll</code></td><td><code>multipart/form-data</code> (no body fields)</td><td>Redirect to <code>/Home/Index</code> (HTTP 302)</td></tr>
+</tbody></table></div>
+<p>> Note: No API versioning scheme is in use. All routes follow the default ASP.NET MVC convention <code>{controller}/{action}/{id?}</code>.</p>
+<h2 id="management-observability-endpoints">Management & Observability Endpoints</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Endpoint</th><th>Custom Metrics</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>None configured</td><td>None</td></tr>
+</tbody></table></div>
+<p>No health check endpoints (<code>/health</code>, <code>/healthz</code>), Swagger UI, or Application Insights integration are present. Error information is surfaced via the <code>/Views/Shared/Error.cshtml</code> view when exceptions are caught.</p>
+<h2 id="dtos-contracts">DTOs & Contracts</h2>
+<p>The application uses no dedicated DTO or request/response model classes. Contracts are implicit:</p>
+<ul>
+<li><strong><code>List<Uri></code></strong> — passed as the view model from <code>HomeController.Index()</code> to <code>Index.cshtml</code>. Contains the publicly accessible blob URLs for each image in the container.</li>
+<li><strong><code>HttpFileCollectionBase</code></strong> (ASP.NET MVC built-in) — used in <code>UploadAsync</code> to receive multipart file uploads via <code>Request.Files</code>.</li>
+<li><strong><code>string name</code></strong> — plain action parameter in <code>DeleteImage</code>, bound from a form POST field containing the full blob URI.</li>
+</ul>
+<p>No OpenAPI/Swagger specification, protobuf schema, or GraphQL schema exists. JSON serialization is not used at the HTTP boundary (all responses are HTML views or redirects). <code>Newtonsoft.Json</code> is present as a dependency but is not used by application code directly.</p>
+<h2 id="communication-patterns">Communication Patterns</h2>
+<p><strong>Synchronous only.</strong> The application follows a simple request/response pattern:</p>
+<ul>
+<li><strong>Client ↔ Application</strong>: Standard HTTP form submissions (GET for gallery listing, POST for upload/delete). No REST JSON API, gRPC, or message queue involvement.</li>
+<li><strong>Application ↔ Azure Blob Storage</strong>: Synchronous SDK calls using <code>Azure.Storage.Blobs</code> v12.9.1 (<code>BlobServiceClient</code>, <code>BlobContainerClient</code>, <code>BlobClient</code>) over HTTPS to the Azure Storage REST API. Operations used: <code>CreateIfNotExistsAsync</code>, <code>GetBlobs</code> (synchronous enumeration), <code>UploadAsync</code>, <code>DeleteIfExistsAsync</code>, <code>DeleteBlobIfExistsAsync</code>.</li>
+</ul>
+<p><strong>No resilience patterns are implemented.</strong> There is no retry policy, circuit breaker (Polly or equivalent), timeout configuration, or fallback behavior. If the Azure Storage service is unavailable, the exception propagates to the <code>catch</code> block in the controller and is displayed to the user via the Error view.</p>
+<p><strong>Service discovery</strong>: None — the Azure Storage connection string (endpoint + credentials) is read directly from <code>Web.config</code> <code>AppSettings["StorageConnectionString"]</code> at request time. No Eureka, Consul, or Kubernetes DNS in use.</p>
+<p><strong>Security posture</strong>: No authentication or authorization is configured at the application layer. All four endpoints are publicly accessible with no login requirement, no JWT/OAuth2 validation, and no <code>[Authorize]</code> attribute on any controller or action. The application relies on IIS-level configuration for TLS termination. The blob container is created with <code>PublicAccessType.Blob</code>, making all stored images publicly readable via their direct Azure CDN/storage URLs without any access token.</p>
+<h2 id="service-technology-matrix">Service Technology Matrix</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Web Framework</th><th>Data Access</th><th>Discovery</th><th>Gateway</th><th>Health Checks</th><th>Cache</th><th>Metrics</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>ASP.NET MVC 5</td><td>Azure Blob Storage SDK v12.9.1 (no ORM)</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
+</tbody></table></div>
+<h2 id="service-communication-sequence">Service Communication Sequence</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant Client as "Web Browser"
+    participant IIS as "IIS / ASP.NET MVC"
+    participant HomeCtrl as "HomeController"
+    participant AzureSDK as "Azure.Storage.Blobs SDK"
+    participant BlobStore as "Azure Blob Storage"
+
+    Note over Client,BlobStore: Gallery Load (GET /Home/Index)
+    Client->>IIS: GET /Home/Index
+    IIS->>HomeCtrl: Index()
+    HomeCtrl->>AzureSDK: new BlobServiceClient(connectionString)
+    HomeCtrl->>AzureSDK: GetBlobContainerClient(containerName)
+    HomeCtrl->>AzureSDK: CreateIfNotExistsAsync(PublicAccessType.Blob)
+    AzureSDK->>BlobStore: PUT container (if not exists)
+    BlobStore-->>AzureSDK: 200 OK / 409 Conflict
+    HomeCtrl->>AzureSDK: GetBlobs()
+    AzureSDK->>BlobStore: GET blobs list
+    BlobStore-->>AzureSDK: BlobItem list
+    AzureSDK-->>HomeCtrl: IEnumerable of BlobItems
+    HomeCtrl-->>IIS: View(List of blob URIs)
+    IIS-->>Client: 200 HTML gallery page
+
+    Note over Client,BlobStore: File Upload (POST /Home/UploadAsync)
+    Client->>IIS: POST /Home/UploadAsync (multipart/form-data)
+    IIS->>HomeCtrl: UploadAsync()
+    loop For each selected file
+        HomeCtrl->>AzureSDK: GetBlobClient(randomName)
+        HomeCtrl->>AzureSDK: UploadAsync(filePath)
+        AzureSDK->>BlobStore: PUT blob
+        BlobStore-->>AzureSDK: 201 Created
+    end
+    HomeCtrl-->>IIS: RedirectToAction("Index")
+    IIS-->>Client: 302 Redirect to /Home/Index
+
+    Note over Client,BlobStore: Delete Single Image (POST /Home/DeleteImage)
+    Client->>IIS: POST /Home/DeleteImage (name=blobUri)
+    IIS->>HomeCtrl: DeleteImage(name)
+    HomeCtrl->>AzureSDK: GetBlobClient(filename)
+    HomeCtrl->>AzureSDK: DeleteIfExistsAsync()
+    AzureSDK->>BlobStore: DELETE blob
+    BlobStore-->>AzureSDK: 202 Accepted
+    HomeCtrl-->>IIS: RedirectToAction("Index")
+    IIS-->>Client: 302 Redirect to /Home/Index
+
+    Note over Client,BlobStore: Error Path (any action)
+    alt Exception thrown
+        HomeCtrl-->>IIS: View("Error", exceptionDetails)
+        IIS-->>Client: 200 Error.cshtml with message and stack trace
+    end
+</div></div>
+</div>
+<div id="tab-config" class="tab-panel">
+  <div class="fact-content"><h1 id="configuration-externalized-settings-inventory">Configuration & Externalized Settings Inventory</h1>
+<p>The application has a minimal configuration surface: a single <code>Web.config</code> file with one environment-specific secret (<code>StorageConnectionString</code>), two standard MSBuild build profiles (Debug/Release), and no runtime environment profiles or external config server.</p>
+<h2 id="configuration-sources">Configuration Sources</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Source</th><th>Type</th><th>Path / Location</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Web.config</td><td>XML application config</td><td><code>WebApp-Storage-DotNet/Web.config</code></td><td>Primary runtime config; contains app settings, assembly binding redirects, and compiler settings</td></tr>
+<tr><td>Views/Web.config</td><td>XML Razor config</td><td><code>WebApp-Storage-DotNet/Views/Web.config</code></td><td>Restricts direct access to <code>.cshtml</code> view files; Razor namespace imports</td></tr>
+<tr><td>WebApp-Storage-DotNet.csproj</td><td>MSBuild project file</td><td><code>WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</code></td><td>Build configuration, NuGet references, Debug/Release property groups</td></tr>
+<tr><td>packages.config</td><td>NuGet package manifest</td><td><code>WebApp-Storage-DotNet/packages.config</code></td><td>Declares all NuGet package versions (34 packages)</td></tr>
+<tr><td>AssemblyInfo.cs</td><td>Assembly metadata</td><td><code>WebApp-Storage-DotNet/Properties/AssemblyInfo.cs</code></td><td>Assembly version (<code>1.0.0.0</code>), GUID, copyright</td></tr>
+</tbody></table></div>
+<p>No Spring Cloud Config, Azure App Configuration, AWS AppConfig, Consul KV, <code>.env</code> files, <code>appsettings.json</code>, <code>launchSettings.json</code>, <code>docker-compose.yml</code>, or Kubernetes ConfigMaps are present.</p>
+<h2 id="build-profiles">Build Profiles</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>Activation</th><th>Purpose</th><th>Key Behavior</th>
+</tr></thead><tbody>
+<tr><td>Debug</td><td>Default; <code>-p:Configuration=Debug</code></td><td>Local development</td><td><code>DebugSymbols=true</code>, <code>DebugType=full</code>, <code>Optimize=false</code>, <code>DefineConstants=DEBUG;TRACE</code>, output to <code>bin\</code></td></tr>
+<tr><td>Release</td><td><code>-p:Configuration=Release</code></td><td>Production packaging</td><td><code>DebugType=pdbonly</code>, <code>Optimize=true</code>, <code>DefineConstants=TRACE</code>, output to <code>bin\</code></td></tr>
+</tbody></table></div>
+<p>Both profiles target <code>AnyCPU</code> platform and <code>.NET Framework 4.8</code>. The C# language version is fixed to <strong>C# 6</strong> via <code>compilerOptions="/langversion:6"</code> in <code>Web.config</code>. <code>MvcBuildViews=false</code> means Razor view compilation errors are not caught at build time — they surface only at runtime.</p>
+<h2 id="runtime-profiles">Runtime Profiles</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>Activation</th><th>Config Files</th><th>Key Overrides</th>
+</tr></thead><tbody>
+<tr><td>(Single profile — no environment split)</td><td>N/A</td><td><code>Web.config</code> only</td><td><code>StorageConnectionString</code> must be manually changed for each environment</td></tr>
+</tbody></table></div>
+<p>No <code>ASPNETCORE_ENVIRONMENT</code> variable, <code>appsettings.{Environment}.json</code>, or <code>@Profile</code>-annotated beans are present. The application targets the classic ASP.NET (non-Core) pipeline, which does not support environment-based config file layering natively.</p>
+<h2 id="properties-inventory">Properties Inventory</h2>
+<h3 id="webapp-storage-dotnet-web-config-appsettings">WebApp-Storage-DotNet (Web.config AppSettings)</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Property Key</th><th>Default Value</th><th>Profiles</th><th>Source</th>
+</tr></thead><tbody>
+<tr><td><code>StorageConnectionString</code></td><td><code>UseDevelopmentStorage=true</code></td><td>All</td><td><code>Web.config</code> (hardcoded — should be externalized)</td></tr>
+<tr><td><code>webpages:Version</code></td><td><code>3.0.0.0</code></td><td>All</td><td><code>Web.config</code> (ASP.NET WebPages framework version lock)</td></tr>
+<tr><td><code>webpages:Enabled</code></td><td><code>false</code></td><td>All</td><td><code>Web.config</code> (disables WebPages routing to avoid conflict with MVC)</td></tr>
+<tr><td><code>ClientValidationEnabled</code></td><td><code>true</code></td><td>All</td><td><code>Web.config</code> (enables jQuery unobtrusive client-side validation)</td></tr>
+<tr><td><code>UnobtrusiveJavaScriptEnabled</code></td><td><code>true</code></td><td>All</td><td><code>Web.config</code> (emits <code>data-val-*</code> attributes instead of inline JS)</td></tr>
+</tbody></table></div>
+<h3 id="web-config-httpruntime-settings">Web.config httpRuntime Settings</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Setting</th><th>Value</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td><code>targetFramework</code> (compilation)</td><td><code>4.8</code></td><td>Compilation target</td></tr>
+<tr><td><code>targetFramework</code> (httpRuntime)</td><td><code>4.5.2</code></td><td>Request processing pipeline target</td></tr>
+<tr><td><code>maxRequestLength</code></td><td><code>2100000000</code> (≈ 2 GB)</td><td>Max file upload size</td></tr>
+<tr><td><code>executionTimeout</code></td><td><code>12000000</code> seconds (≈ 139 days)</td><td>Effectively unlimited request timeout — <strong>security risk</strong></td></tr>
+</tbody></table></div>
+<h2 id="startup-parameters-resource-requirements">Startup Parameters & Resource Requirements</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Runtime Options</th><th>Memory</th><th>Instance Count</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>IIS/IIS Express hosted; no explicit JVM/CLR heap flags</td><td>Not configured</td><td>Not configured</td></tr>
+</tbody></table></div>
+<p>No Docker containers, Kubernetes deployments, <code>mem_limit</code>, CPU quotas, or explicit CLR startup flags (<code>-Xms</code>/<code>-Xmx</code> equivalent) are configured. The application runs inside an IIS application pool; memory and process recycling are controlled via IIS configuration (not in this repository).</p>
+<h2 id="startup-dependency-chain">Startup Dependency Chain</h2>
+<p>The application has a single startup sequence with no inter-service dependencies:</p>
+<ol>
+<li><strong>IIS Application Pool starts</strong> → loads <code>System.Web</code> pipeline</li>
+<li><strong><code>Global.asax Application_Start()</code></strong> →</li>
+</ol>
+<ul>
+<li><code>AreaRegistration.RegisterAllAreas()</code></li>
+<li><code>FilterConfig.RegisterGlobalFilters()</code> (registers <code>HandleErrorAttribute</code>)</li>
+<li><code>RouteConfig.RegisterRoutes()</code> (registers default <code>{controller}/{action}/{id}</code> route)</li>
+<li><code>BundleConfig.RegisterBundles()</code> (registers jQuery, Bootstrap, Modernizr CSS/JS bundles)</li>
+</ul>
+<ol>
+<li><strong>First HTTP request arrives</strong> → <code>HomeController.Index()</code> creates <code>BlobServiceClient</code> using <code>StorageConnectionString</code> and calls <code>CreateIfNotExistsAsync()</code> to provision the container</li>
+</ol>
+<p>No readiness probes, health checks, <code>dockerize</code> wait-for-TCP, or Spring Cloud Config retry mechanisms are present. If Azure Blob Storage is unreachable at startup, the error surfaces as an unhandled exception on the first request (caught by the controller's <code>try/catch</code> and rendered via <code>Error.cshtml</code>).</p>
+<h2 id="secrets-sensitive-configuration">Secrets & Sensitive Configuration</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Secret Reference</th><th>Type</th><th>Storage</th>
+</tr></thead><tbody>
+<tr><td><code>StorageConnectionString</code></td><td>Azure Storage account connection string (includes account key)</td><td>Plaintext in <code>Web.config</code> — <strong>[MASKED]</strong></td></tr>
+</tbody></table></div>
+<p>The storage connection string includes the Azure Storage account name and a 512-bit account key, granting full control over the storage account. It is currently stored as plaintext in a committed <code>Web.config</code> file.</p>
+<h3 id="secrets-provisioning-workflow">Secrets Provisioning Workflow</h3>
+<p><strong>Current state (insecure)</strong>: The connection string is hardcoded in <code>Web.config</code> as <code>UseDevelopmentStorage=true</code> (Azure Storage Emulator). For production deployments, this value must be manually replaced with the real connection string before publishing — no automated secrets injection, environment variable binding, or secret store integration is in place.</p>
+<p><strong>Recommended workflow for Azure migration</strong>:</p>
+<ol>
+<li>Remove the connection string from <code>Web.config</code> and replace with a Managed Identity reference</li>
+<li>Assign a <strong>system-assigned Managed Identity</strong> to the Azure App Service instance</li>
+<li>Grant the identity <strong>Storage Blob Data Contributor</strong> RBAC role on the target storage account</li>
+<li>Update <code>HomeController</code> to use <code>new BlobServiceClient(new Uri(...), new DefaultAzureCredential())</code> instead of the connection string constructor</li>
+</ol>
+<p>No HashiCorp Vault, Azure Key Vault, AWS Secrets Manager, Jasypt encryption, or DPAPI-protected values are in use.</p>
+<h2 id="feature-flags">Feature Flags</h2>
+<p>No feature flag framework, <code>@ConditionalOnProperty</code>, <code>[FeatureGate]</code>, LaunchDarkly, or Unleash integration is present.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Flag Name</th><th>Default</th><th>Controlled By</th>
+</tr></thead><tbody>
+<tr><td>(none detected)</td><td>—</td><td>—</td></tr>
+</tbody></table></div>
+<p>The only conditional behavior is <code>webpages:Enabled=false</code> (disables ASP.NET WebPages to avoid route conflicts with MVC), which is a static configuration entry rather than a dynamic feature flag.</p>
+<h2 id="framework-runtime-versions">Framework & Runtime Versions</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Component</th><th>Version</th><th>Source</th>
+</tr></thead><tbody>
+<tr><td>.NET Framework (target)</td><td>4.8</td><td><code>WebApp-Storage-DotNet.csproj</code> <code>TargetFrameworkVersion</code></td></tr>
+<tr><td>ASP.NET MVC</td><td>5.2.3</td><td><code>packages.config</code></td></tr>
+<tr><td>ASP.NET Razor</td><td>3.2.3</td><td><code>packages.config</code></td></tr>
+<tr><td>ASP.NET WebPages</td><td>3.2.3</td><td><code>packages.config</code></td></tr>
+<tr><td>C# language version</td><td>6.0</td><td><code>Web.config</code> <code>compilerOptions="/langversion:6"</code></td></tr>
+<tr><td>Microsoft.Net.Compilers (Roslyn)</td><td>1.0.0</td><td><code>packages.config</code></td></tr>
+<tr><td>Azure.Storage.Blobs SDK</td><td>12.9.1</td><td><code>packages.config</code></td></tr>
+<tr><td>Azure.Core</td><td>1.18.0</td><td><code>packages.config</code></td></tr>
+<tr><td>jQuery</td><td>1.10.2</td><td><code>packages.config</code></td></tr>
+<tr><td>Bootstrap</td><td>3.0.0</td><td><code>packages.config</code></td></tr>
+<tr><td>Newtonsoft.Json</td><td>6.0.8</td><td><code>packages.config</code></td></tr>
+<tr><td>MSBuild ToolsVersion</td><td>14.0</td><td><code>WebApp-Storage-DotNet.csproj</code></td></tr>
+<tr><td>Assembly version</td><td>1.0.0.0</td><td><code>Properties/AssemblyInfo.cs</code></td></tr>
+<tr><td>IIS Express</td><td>(system default)</td><td><code>WebApp-Storage-DotNet.csproj</code> <code>UseIISExpress=true</code></td></tr>
+</tbody></table></div></div>
+</div>
+<div id="tab-workflows" class="tab-panel">
+  <div class="fact-content"><h1 id="core-business-workflows">Core Business Workflows</h1>
+<p>The application provides a self-service <strong>photo gallery</strong> backed by Azure Blob Storage, allowing users to upload, browse, and delete images through a web interface with no authentication requirement.</p>
+<h2 id="domain-entities">Domain Entities</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Entity</th><th>Service / Bounded Context</th><th>Description</th><th>Key Relationships</th>
+</tr></thead><tbody>
+<tr><td>Photo (Block Blob)</td><td>Photo Gallery</td><td>An image file stored in Azure Blob Storage, identified by a randomly generated name. Represents the core asset managed by the application.</td><td>Belongs to the single gallery container</td></tr>
+<tr><td>Gallery Container</td><td>Photo Gallery</td><td>The Azure Blob Storage container (<code>webappstoragedotnet-imagecontainer</code>) that acts as the root collection for all photos. Provisioned automatically on first use.</td><td>Contains zero or more Photos</td></tr>
+</tbody></table></div>
+<p>The domain model is deliberately minimal: there are no users, albums, tags, comments, metadata records, or ownership concepts. All images are publicly accessible and the gallery is a flat, unorganized collection.</p>
+<h2 id="service-to-domain-mapping">Service-to-Domain Mapping</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Domain Context</th><th>Owned Entities</th><th>External Dependencies</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Photo Gallery Management</td><td>Gallery Container, Photo (Block Blob)</td><td>Azure Blob Storage (REST API via SDK)</td></tr>
+</tbody></table></div>
+<p>As a single-service application there are no cross-context or cross-service data exchange patterns. All domain state lives exclusively in Azure Blob Storage; the web application is stateless.</p>
+<h2 id="primary-workflows">Primary Workflows</h2>
+<h3 id="workflow-1-browse-gallery">Workflow 1: Browse Gallery</h3>
+<p><strong>Actor</strong>: Anonymous user  </p>
+<p><strong>Entry point</strong>: <code>GET /Home/Index</code></p>
+<ol>
+<li>User navigates to the application root URL</li>
+<li>Application ensures the blob container exists (<code>CreateIfNotExistsAsync</code> with public blob access)</li>
+<li>Application enumerates all Block Blobs in the container (<code>GetBlobs()</code>)</li>
+<li>For each blob, the public HTTP URL is extracted and added to a list</li>
+<li>The Index view renders a grid of image thumbnails, each linked to its public blob URL</li>
+<li>Upload form and "Delete All" button are shown if any images exist</li>
+</ol>
+<p><strong>Business rules involved</strong>: Only <code>BlobType.Block</code> items are included in the gallery view (page blobs and append blobs are filtered out).</p>
+<p>---</p>
+<h3 id="workflow-2-upload-photo-s">Workflow 2: Upload Photo(s)</h3>
+<p><strong>Actor</strong>: Anonymous user  </p>
+<p><strong>Entry point</strong>: <code>POST /Home/UploadAsync</code> (multipart/form-data)</p>
+<ol>
+<li>User selects one or more image files via the file picker</li>
+<li>Browser-side JavaScript (<code>DisplayFilesToUpload()</code>) shows a preview list and reveals the Upload button</li>
+<li>User submits the upload form</li>
+<li>For each selected file:</li>
+</ol>
+<p>   a. A random, collision-resistant blob name is generated: <code>{DateTime.Now.Ticks}_{Guid.NewGuid()}{extension}</code></p>
+<p>   b. The file is uploaded to Azure Blob Storage via <code>BlobClient.UploadAsync()</code></p>
+<ol>
+<li>After all files are uploaded, the user is redirected to the gallery (<code>GET /Home/Index</code>)</li>
+<li>On failure, the error message and stack trace are displayed</li>
+</ol>
+<p><strong>Business rules involved</strong>:</p>
+<ul>
+<li>Blob name uniqueness is enforced by combining current ticks and a new GUID — no user-supplied names are persisted</li>
+<li>Maximum upload size is controlled by <code>maxRequestLength=2100000000</code> (~2 GB) in <code>Web.config</code></li>
+<li>No file type validation is performed — any file type may be uploaded</li>
+<li>No file size limit below the 2 GB maximum is enforced per file</li>
+</ul>
+<p>---</p>
+<h3 id="workflow-3-delete-single-photo">Workflow 3: Delete Single Photo</h3>
+<p><strong>Actor</strong>: Anonymous user  </p>
+<p><strong>Entry point</strong>: <code>POST /Home/DeleteImage</code> (via jQuery <code>$.post</code>)</p>
+<ol>
+<li>User clicks the delete icon overlaid on a gallery thumbnail</li>
+<li>Client-side JavaScript calls <code>$.post("/Home/DeleteImage", { Name: blobUri })</code></li>
+<li>Controller extracts the blob filename from the full URI (<code>Path.GetFileName(uri.LocalPath)</code>)</li>
+<li>The blob is deleted from Azure Blob Storage via <code>BlobClient.DeleteIfExistsAsync()</code></li>
+<li>Page is reloaded via <code>window.location.href = "/Home/Index"</code></li>
+<li>On failure, the error message is displayed (though the jQuery callback does not currently handle error responses)</li>
+</ol>
+<p><strong>Business rules involved</strong>:</p>
+<ul>
+<li>Only the filename segment of the URI is used as the blob identifier — the host and path prefix are stripped</li>
+<li><code>DeleteIfExistsAsync</code> is used, so deleting an already-absent blob does not cause an error</li>
+</ul>
+<p>---</p>
+<h3 id="workflow-4-delete-all-photos">Workflow 4: Delete All Photos</h3>
+<p><strong>Actor</strong>: Anonymous user  </p>
+<p><strong>Entry point</strong>: <code>POST /Home/DeleteAll</code></p>
+<ol>
+<li>User clicks "Delete All Files" submit button</li>
+<li>Controller iterates over all blobs in the container (<code>GetBlobs()</code>)</li>
+<li>For each Block Blob, <code>BlobContainerClient.DeleteBlobIfExistsAsync(blob.Name)</code> is called individually in a loop</li>
+<li>After all blobs are deleted, the user is redirected to the gallery</li>
+<li>On failure, the error is displayed</li>
+</ol>
+<p><strong>Business rules involved</strong>:</p>
+<ul>
+<li>Deletion is applied only to Block Blobs (page blobs are skipped by the <code>BlobType.Block</code> filter)</li>
+<li>No confirmation dialog is shown before deleting all photos — the form submission is the only gate</li>
+<li>No soft-delete or recycle bin; deletion is permanent</li>
+</ul>
+<h2 id="cross-service-data-flows">Cross-Service Data Flows</h2>
+<p>The application is a single-service system with no microservice boundaries. There are no inter-service data composition flows, aggregation patterns, or circuit breaker fallback paths between services.</p>
+<p>The only cross-system data flow is between the web application and Azure Blob Storage:</p>
+<ul>
+<li><strong>Read</strong>: <code>GetBlobs()</code> returns metadata (blob name, type) from which the SDK constructs public blob URIs — no blob content is transferred to the web server</li>
+<li><strong>Write</strong>: File upload streams the raw bytes from the web server to Azure Blob Storage</li>
+<li><strong>Delete</strong>: A simple identifier (blob name) is sent to the Azure Storage REST API</li>
+</ul>
+<p><strong>Degradation behavior (no fallback implemented)</strong>: If Azure Blob Storage is unavailable, all four workflows fail with an unhandled <code>Exception</code> that is caught at the controller level and rendered via the Error view. There is no retry logic, circuit breaker, or graceful degradation path.</p>
+<h2 id="business-workflow-sequence">Business Workflow Sequence</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant User as "Anonymous User"
+    participant Browser as "Web Browser"
+    participant HomeCtrl as "HomeController"
+    participant BlobStore as "Azure Blob Storage"
+
+    Note over User,BlobStore: Browse Gallery
+    User->>Browser: Navigate to gallery URL
+    Browser->>HomeCtrl: GET /Home/Index
+    HomeCtrl->>BlobStore: CreateIfNotExistsAsync (PublicAccessType.Blob)
+    BlobStore-->>HomeCtrl: Container ready
+    HomeCtrl->>BlobStore: GetBlobs() - list all Block Blobs
+    BlobStore-->>HomeCtrl: List of BlobItems with names
+    HomeCtrl-->>Browser: HTML gallery with public blob image URLs
+    Browser-->>User: Rendered photo grid
+
+    Note over User,BlobStore: Upload Photo
+    User->>Browser: Select files, click Upload
+    Browser->>HomeCtrl: POST /Home/UploadAsync (multipart)
+    loop For each selected file
+        HomeCtrl->>HomeCtrl: Generate random blob name (ticks + GUID + ext)
+        HomeCtrl->>BlobStore: UploadAsync(randomName, fileStream)
+        BlobStore-->>HomeCtrl: 201 Created
+    end
+    HomeCtrl-->>Browser: 302 Redirect to /Home/Index
+    Browser-->>User: Updated gallery
+
+    Note over User,BlobStore: Delete Single Photo
+    User->>Browser: Click delete icon on photo
+    Browser->>HomeCtrl: POST /Home/DeleteImage (name=blobUri)
+    HomeCtrl->>HomeCtrl: Extract filename from URI
+    HomeCtrl->>BlobStore: DeleteIfExistsAsync(filename)
+    BlobStore-->>HomeCtrl: Blob deleted
+    HomeCtrl-->>Browser: JS reloads page (window.location)
+    Browser-->>User: Updated gallery without deleted photo
+
+    Note over User,BlobStore: Error Path
+    alt Azure Blob Storage unavailable
+        BlobStore-->>HomeCtrl: Exception (network/auth error)
+        HomeCtrl-->>Browser: Error.cshtml with message and stack trace
+        Browser-->>User: Error page (no retry offered)
+    end
+</div>
+<h2 id="business-rules-decision-logic">Business Rules & Decision Logic</h2>
+<h3 id="validation-rules">Validation Rules</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Rule</th><th>Scope</th><th>Behavior</th>
+</tr></thead><tbody>
+<tr><td>Block Blob type filter</td><td>Browse Gallery, Delete All</td><td>Only blobs with <code>BlobType == BlobType.Block</code> are included; page/append blobs are ignored</td></tr>
+<tr><td>File count check</td><td>Upload</td><td><code>if (fileCount > 0)</code> — zero-file submissions are silently ignored (no error, redirects to gallery)</td></tr>
+<tr><td>Max upload size</td><td>Upload</td><td>HTTP runtime enforces <code>maxRequestLength=2100000000</code> (~2 GB); oversized requests receive HTTP 413 from IIS before reaching the controller</td></tr>
+<tr><td>No file type validation</td><td>Upload</td><td>Any file type (not just images) may be uploaded — there is no MIME type check, extension allowlist, or antivirus scan</td></tr>
+</tbody></table></div>
+<h3 id="state-transitions">State Transitions</h3>
+<p>The gallery has no stateful entity lifecycle. The only implicit state is:</p>
+<ul>
+<li><strong>Container</strong>: Does Not Exist → Exists (one-time transition on first request)</li>
+<li><strong>Blob</strong>: Absent → Present (upload) → Absent (delete)</li>
+</ul>
+<h3 id="business-constraints">Business Constraints</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Constraint</th><th>Enforcement</th>
+</tr></thead><tbody>
+<tr><td>No authentication</td><td>All operations are open to any anonymous user with network access</td></tr>
+<tr><td>No authorization</td><td>There are no roles, ownership checks, or access controls</td></tr>
+<tr><td>No duplicate detection</td><td>Multiple uploads of the same image create separate blobs with different random names</td></tr>
+<tr><td>No quota or rate limit</td><td>No per-user or per-session upload quota is enforced</td></tr>
+<tr><td>Permanent deletion</td><td><code>DeleteIfExistsAsync</code> / <code>DeleteBlobIfExistsAsync</code> are irreversible; no soft-delete</td></tr>
+</tbody></table></div>
+<h3 id="error-handling">Error Handling</h3>
+<p>All four controller actions use a uniform <code>try/catch (Exception ex)</code> pattern:</p>
+<ul>
+<li>On success: redirect to gallery or return gallery view</li>
+<li>On any exception: set <code>ViewData["message"]</code> and <code>ViewData["trace"]</code>, render <code>Error.cshtml</code></li>
+</ul>
+<p>There is no domain-specific exception hierarchy, no compensating action for partial failures (e.g., if 3 of 5 uploads succeed before an error, the 3 uploaded blobs remain), and no dead-letter or retry mechanism.</p>
+<h3 id="transactions-consistency">Transactions & Consistency</h3>
+<p>No database transactions apply. Each blob operation (upload, delete) is independently committed to Azure Blob Storage. A "Delete All" operation that fails midway leaves the container in a partially-deleted state with no rollback capability.</p>
+<h3 id="audit-authorization">Audit & Authorization</h3>
+<p>No audit logging, change tracking, session state, or authorization checks are implemented. The application has no concept of a logged-in user.</p></div>
+</div>
+<div id="tab-deps" class="tab-panel">
+  <div class="fact-content"><h1 id="dependency-map">Dependency Map</h1>
+<p>This document maps all external dependencies of the <strong>Azure Blob Storage Photo Gallery</strong> (.NET Framework 4.8 / ASP.NET MVC 5) application. A total of <strong>34 declared packages</strong> are referenced via <code>packages.config</code>.</p>
+<h2 id="dependencies">Dependencies</h2>
+<div class="mermaid">
+flowchart LR
+    App["WebApp-Storage-DotNet\n(.NET Framework 4.8)"]
+
+    subgraph Web["Web Frameworks"]
+        AspNetMvc["ASP.NET MVC v5.2.3"]
+        AspNetRazor["ASP.NET Razor v3.2.3"]
+        AspNetWebPages["ASP.NET WebPages v3.2.3"]
+        WebOptimization["Web.Optimization v1.1.3"]
+    end
+
+    subgraph Cloud["Azure Cloud Storage"]
+        AzureBlobs["Azure.Storage.Blobs v12.9.1"]
+        AzureCommon["Azure.Storage.Common v12.8.0"]
+        AzureCore["Azure.Core v1.18.0"]
+    end
+
+    subgraph Frontend["Frontend / UI"]
+        Bootstrap["Bootstrap v3.0.0"]
+        jQuery["jQuery v1.10.2"]
+        jQueryVal["jQuery.Validation v1.11.1"]
+        UnobtrusiveVal["Unobtrusive.Validation v3.2.3"]
+        Modernizr["Modernizr v2.6.2"]
+        Respond["Respond v1.2.0"]
+    end
+
+    subgraph Util["Utilities"]
+        NewtonsoftJson["Newtonsoft.Json v6.0.8"]
+        BclAsync["Bcl.AsyncInterfaces v1.0.0"]
+        SysTextJson["System.Text.Json v4.6.0"]
+        SysTextEnc["Text.Encodings.Web v4.7.2"]
+        SysMemory["System.Memory v4.5.4"]
+        SysBuffers["System.Buffers v4.5.1"]
+        SysUnsafe["CompilerServices.Unsafe v4.6.0"]
+        SysValueTuple["System.ValueTuple v4.5.0"]
+        TasksExt["Tasks.Extensions v4.5.2"]
+        MemoryData["System.Memory.Data v1.0.2"]
+        NumVectors["System.Numerics.Vectors v4.5.0"]
+    end
+
+    subgraph Build["Build / Compiler Tools"]
+        CodeDom["CodeDom.DotNetCompilerPlatform v1.0.0"]
+        NetCompilers["Microsoft.Net.Compilers v1.0.0"]
+        WebInfra["Web.Infrastructure v1.0.0"]
+        WebGrease["WebGrease v1.5.2"]
+        Antlr["Antlr v3.4.1.9004"]
+    end
+
+    subgraph OData["OData / Data Services"]
+        DataEdm["Microsoft.Data.Edm v5.6.4"]
+        DataOData["Microsoft.Data.OData v5.6.4"]
+        DataSvcClient["Data.Services.Client v5.6.4"]
+        SysSpatial["System.Spatial v5.6.4"]
+    end
+
+    subgraph Diagnostics["Diagnostics"]
+        DiagSource["DiagnosticSource v4.6.0"]
+    end
+
+    App -->|"web framework"| Web
+    App -->|"blob storage"| Cloud
+    App -->|"frontend UI"| Frontend
+    App -->|"utilities"| Util
+    App -->|"build tools"| Build
+    App -->|"OData client"| OData
+    App -->|"diagnostics"| Diagnostics
+    AzureBlobs -.->|"depends on"| AzureCommon
+    AzureCommon -.->|"depends on"| AzureCore
+    WebGrease -.->|"uses"| Antlr
+</div>
+<h3 id="dependency-summary">Dependency Summary</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Category</th><th>Count</th><th>Key Libraries</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Web Frameworks</td><td>4</td><td>ASP.NET MVC 5.2.3, Razor 3.2.3, Web.Optimization 1.1.3</td><td>Legacy MVC stack on .NET Framework 4.8</td></tr>
+<tr><td>Azure Cloud Storage</td><td>3</td><td>Azure.Storage.Blobs 12.9.1, Azure.Core 1.18.0</td><td>Azure SDK v12 — current but tied to .NET Framework</td></tr>
+<tr><td>Frontend / UI</td><td>6</td><td>Bootstrap 3.0.0, jQuery 1.10.2, Modernizr 2.6.2</td><td>All significantly outdated client-side libraries</td></tr>
+<tr><td>Utilities</td><td>11</td><td>Newtonsoft.Json 6.0.8, System.Text.Json 4.6.0</td><td>Many are polyfill/backport packages for .NET Framework compatibility</td></tr>
+<tr><td>Build / Compiler Tools</td><td>5</td><td>Microsoft.Net.Compilers 1.0.0, WebGrease 1.5.2</td><td>Development-time tools; Antlr is a transitive dependency of WebGrease</td></tr>
+<tr><td>OData / Data Services</td><td>4</td><td>Microsoft.Data.OData 5.6.4, Data.Edm 5.6.4</td><td>Unused at the application layer — likely pulled in transitively</td></tr>
+<tr><td>Diagnostics</td><td>1</td><td>System.Diagnostics.DiagnosticSource 4.6.0</td><td>Azure SDK telemetry dependency</td></tr>
+</tbody></table></div>
+<h3 id="version-compatibility-risks">Version & Compatibility Risks</h3>
+<p>The application runs on <strong>.NET Framework 4.8</strong>, which is in long-term maintenance mode with no future feature development. <strong>ASP.NET MVC 5.2.3</strong> is a legacy framework superseded by ASP.NET Core MVC; migrating to .NET 8/10 requires a full rewrite of the web layer. <strong>Newtonsoft.Json 6.0.8</strong> is significantly outdated (current is 13.x) and contains known serialization edge-case bugs. <strong>Bootstrap 3.0.0</strong> reached end-of-life in July 2019 and has known accessibility and security gaps. <strong>jQuery 1.10.2</strong> is critically outdated (current is 3.7+) with multiple CVEs. <strong>Modernizr 2.6.2</strong> and <strong>Respond 1.2.0</strong> are only needed for IE8/IE9 polyfills and can be removed entirely for modern targets. The <code>Azure.Storage.Blobs</code> v12.9.1 package is reasonably current but an older minor — v12.22+ is available.</p>
+<h3 id="notable-observations">Notable Observations</h3>
+<ul>
+<li><strong>Polyfill bloat for legacy browsers</strong>: <code>Modernizr 2.6.2</code>, <code>Respond 1.2.0</code>, and several <code>System.*</code> backport packages (e.g., <code>System.ValueTuple</code>, <code>System.Memory</code>, <code>System.Buffers</code>) exist solely to support .NET Framework 4.x or IE8/IE9 — they would be eliminated on a migration to .NET 8+.</li>
+<li><strong>Duplicate JSON libraries</strong>: Both <code>Newtonsoft.Json 6.0.8</code> and <code>System.Text.Json 4.6.0</code> are present. The application likely only uses <code>Newtonsoft.Json</code>; <code>System.Text.Json</code> is pulled in by the Azure SDK as a transitive dependency.</li>
+<li><strong>Unused OData stack</strong>: The <code>Microsoft.Data.Edm</code>, <code>Microsoft.Data.OData</code>, <code>Microsoft.Data.Services.Client</code>, and <code>System.Spatial</code> packages (all v5.6.4) are not referenced by any application code and appear to be leftover transitive dependencies from an earlier version of the Azure Storage SDK.</li>
+<li><strong>Build-time compilers pinned to old versions</strong>: <code>Microsoft.Net.Compilers 1.0.0</code> (C# 6.0 / VB 14) and <code>Microsoft.CodeDom.Providers.DotNetCompilerPlatform 1.0.0</code> are both pinned to very old Roslyn versions; the <code>compilerOptions="/langversion:6"</code> setting in Web.config restricts the project to C# 6 language features.</li>
+</ul>
+<h2 id="test-dependencies">Test Dependencies</h2>
+<p>No test-scoped dependencies were detected in <code>packages.config</code> or the project file.</p>
+<p>Total test-scope dependencies: <strong>0</strong></p>
+<p>The repository contains no automated test project or test package references. Adding a unit test project (e.g., xUnit or MSTest) with a mocking library (e.g., Moq) is recommended before undertaking any modernization work.</p></div>
+</div>
+<div id="tab-data" class="tab-panel">
+  <div class="fact-content"><h1 id="data-architecture-persistence-layer">Data Architecture & Persistence Layer</h1>
+<p>The application uses <strong>Azure Blob Storage</strong> as its sole data store — there is no relational database, ORM framework, or in-process cache. All persistent data consists of binary image files stored as Block Blobs in a single container.</p>
+<h2 id="database-configuration">Database Configuration</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service/Module</th><th>DB Type</th><th>Profile</th><th>Driver/SDK</th><th>Connection</th><th>Migration Tool</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Azure Blob Storage</td><td>All (single profile)</td><td>Azure.Storage.Blobs v12.9.1</td><td><code>StorageConnectionString</code> from <code>Web.config</code> (defaults to <code>UseDevelopmentStorage=true</code>)</td><td>None — container is created on first request via <code>CreateIfNotExistsAsync</code></td></tr>
+</tbody></table></div>
+<p>No relational database, schema migration tool (Flyway, EF Migrations, Liquibase), or seed data mechanism is configured. The blob container (<code>webappstoragedotnet-imagecontainer</code>) is provisioned lazily at application startup when the first HTTP request arrives.</p>
+<h2 id="data-ownership-per-service">Data Ownership per Service</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Storage Owned</th><th>Framework</th><th>Caching</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td><code>webappstoragedotnet-imagecontainer</code> (Block Blobs)</td><td>Azure.Storage.Blobs SDK v12.9.1 (no ORM)</td><td>None</td><td>Container access type is <code>PublicAccessType.Blob</code>; no private/shared-access boundary</td></tr>
+</tbody></table></div>
+<h2 id="entity-model">Entity Model</h2>
+<p>The application has no ORM entity classes. The only data object surfaced at the application level is the <code>BlobItem</code> returned by the Azure SDK during listing, from which the blob URI is derived. The conceptual storage model is:</p>
+<div class="mermaid">
+erDiagram
+    BlobContainer ||--o{ BlockBlob : "contains"
+    BlobContainer {
+        string Name "webappstoragedotnet-imagecontainer"
+        string AccessType "PublicAccessType.Blob"
+    }
+    BlockBlob {
+        string Name PK "random ticks + GUID + extension"
+        string Uri "public HTTP URL"
+        string BlobType "Block"
+        long   ContentLength
+    }
+</div>
+<p>> Note: <code>BlobContainer</code> and <code>BlockBlob</code> are Azure Storage concepts, not application-defined entity classes. The application never defines a model/POCO for these — it works directly with <code>BlobContainerClient</code> and <code>BlobClient</code> from the Azure SDK.</p>
+<h2 id="key-repository-methods">Key Repository Methods</h2>
+<p>There is no repository interface or repository pattern in the application. Data access is performed inline within <code>HomeController</code> using the Azure SDK clients directly:</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Access Object</th><th>Method / Operation</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td><code>BlobContainerClient</code></td><td><code>CreateIfNotExistsAsync(PublicAccessType.Blob)</code></td><td>Ensure container exists on first request</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td><code>BlobContainerClient</code></td><td><code>GetBlobs()</code> (synchronous paged enumeration)</td><td>List all Block Blobs to populate gallery view</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td><code>BlobClient</code></td><td><code>UploadAsync(filePath)</code></td><td>Upload a single image file to blob storage</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td><code>BlobClient</code></td><td><code>DeleteIfExistsAsync()</code></td><td>Delete a specific blob by name</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td><code>BlobContainerClient</code></td><td><code>DeleteBlobIfExistsAsync(blobName)</code></td><td>Delete individual blobs during delete-all operation</td></tr>
+</tbody></table></div>
+<p>> Note: <code>GetBlobs()</code> is called synchronously within an <code>async</code> controller action — this is a potential threading concern as it blocks an ASP.NET thread pool thread during enumeration. See <code>api-service-contracts.md</code> for the full endpoint context.</p>
+<h2 id="caching-strategy">Caching Strategy</h2>
+<p>No caching layer is implemented. Each request to the gallery page (<code>GET /Home/Index</code>) performs a fresh enumeration of all blobs in the container via a live SDK call to Azure Blob Storage. There is no in-memory cache, distributed cache (Redis, Azure Cache), or HTTP response cache (<code>OutputCache</code>) configured.</p>
+<p>For a production deployment this means gallery load time scales linearly with the number of stored blobs, and every page load counts as a billable Blob Storage list transaction.</p>
+<h2 id="data-ownership-boundaries">Data Ownership Boundaries</h2>
+<p>The application is a single-service monolith. There is no cross-service data access, shared database, or database-per-service topology to describe. All persistent state is owned exclusively by one Azure Blob Storage container (<code>webappstoragedotnet-imagecontainer</code>).</p>
+<p><strong>Read/write pattern</strong>: Simple CRUD — list all blobs (read), upload blob (write), delete one blob (delete), delete all blobs (bulk delete). No CQRS, event sourcing, or outbox pattern is in use.</p>
+<h3 id="data-classification-sensitivity">Data Classification & Sensitivity</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Storage Object</th><th>Sensitive Fields</th><th>Classification</th><th>Controls in Place</th>
+</tr></thead><tbody>
+<tr><td>BlockBlob (image files)</td><td>None — binary image data only</td><td>None (Public)</td><td>Container created with <code>PublicAccessType.Blob</code>; all blobs are publicly accessible by URL with no authentication</td></tr>
+<tr><td>Blob name</td><td>None — auto-generated random name (<code>{ticks}_{guid}{ext}</code>)</td><td>None</td><td>No PII encoded in blob names</td></tr>
+<tr><td><code>StorageConnectionString</code> (Web.config)</td><td>Storage account key (credential)</td><td>Confidential</td><td>Stored in plaintext in <code>Web.config</code>; no Azure Key Vault, environment variable injection, or secret management in use</td></tr>
+</tbody></table></div>
+<p>No PII, PHI, or PCI data is stored in blob content by design (the application stores only user-uploaded photos). However, the <strong>storage account key</strong> embedded in <code>Web.config</code> is a high-sensitivity credential that grants full control over the storage account and should be migrated to Azure Managed Identity or Azure Key Vault before any cloud deployment.</p></div>
+</div>
+<p class="footer">Your feedback is invaluable &mdash; <a href="https://aka.ms/ghcp-appmod/feedback">Share feedback</a></p>
+<script>
+function toggleRow(rowId, triggerRow) {
+  var detail = document.getElementById(rowId);
+  var btn = document.getElementById('btn-' + rowId);
+  if (!detail) return;
+  var visible = detail.style.display !== 'none';
+  detail.style.display = visible ? 'none' : 'table-row';
+  if (btn) btn.classList.toggle('open', !visible);
+}
+(function() {
+  var nav = document.querySelector('.tab-nav');
+  if (!nav) return;
+  nav.addEventListener('click', function(e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    var targetId = btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    var panel = document.getElementById(targetId);
+    if (panel) {
+      panel.classList.add('active');
+      if (window.__mermaidReady) { window.__renderMermaidIn(panel); }
+    }
+  });
+})();
+
+// ── Diagram lightbox ────────────────────────────────────────
+(function() {
+  var lightbox = document.getElementById('diagram-lightbox');
+  var inner = document.getElementById('diagram-lightbox-inner');
+  var closeBtn = document.getElementById('diagram-lightbox-close');
+  if (!lightbox || !inner || !closeBtn) return;
+
+  var scale = 1;
+  var translateX = 0;
+  var translateY = 0;
+  var isDragging = false;
+  var dragStartX = 0;
+  var dragStartY = 0;
+
+  function applyTransform() {
+    var svg = inner.querySelector('svg');
+    if (svg) {
+      svg.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+      svg.style.transformOrigin = 'center center';
+      svg.style.transition = 'none';
+    }
+  }
+
+  function resetTransform() {
+    scale = 1; translateX = 0; translateY = 0;
+    applyTransform();
+  }
+
+  function openLightbox(svgEl) {
+    inner.innerHTML = svgEl.outerHTML;
+    var injected = inner.querySelector('svg');
+    if (injected) {
+      injected.removeAttribute('width');
+      injected.removeAttribute('height');
+      injected.style.cursor = 'grab';
+    }
+    resetTransform();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    inner.innerHTML = '';
+    document.body.style.overflow = '';
+    resetTransform();
+  }
+
+  inner.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    var delta = e.deltaY > 0 ? 0.9 : 1.1;
+    scale = Math.min(Math.max(scale * delta, 0.3), 8);
+    applyTransform();
+  }, { passive: false });
+
+  inner.addEventListener('mousedown', function(e) {
+    if (e.button !== 0) return;
+    isDragging = true;
+    dragStartX = e.clientX - translateX;
+    dragStartY = e.clientY - translateY;
+    var svg = inner.querySelector('svg');
+    if (svg) { svg.style.cursor = 'grabbing'; }
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    translateX = e.clientX - dragStartX;
+    translateY = e.clientY - dragStartY;
+    applyTransform();
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (!isDragging) return;
+    isDragging = false;
+    var svg = inner.querySelector('svg');
+    if (svg) { svg.style.cursor = 'grab'; }
+  });
+
+  inner.addEventListener('dblclick', function() { resetTransform(); });
+
+  document.addEventListener('click', function(e) {
+    var card = e.target.closest('.mermaid');
+    if (!card) return;
+    if (e.target.closest('.diagram-lightbox-close')) return;
+    var svg = card.querySelector('svg');
+    if (svg) { openLightbox(svg); }
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) { closeLightbox(); }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeLightbox(); }
+  });
+})();
+
+var _currentTarget = '';
+
+function toggleMultiSelect(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  document.querySelectorAll('.multi-select.open').forEach(function(ms) { if (ms.id !== id) ms.classList.remove('open'); });
+  el.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.multi-select')) {
+    document.querySelectorAll('.multi-select.open').forEach(function(ms) { ms.classList.remove('open'); });
+  }
+});
+
+function getMultiSelectValues(msId) {
+  var el = document.getElementById(msId);
+  if (!el) return [];
+  var checked = el.querySelectorAll('input[type=checkbox]:checked');
+  var vals = [];
+  for (var i = 0; i < checked.length; i++) vals.push(checked[i].value);
+  return vals;
+}
+
+function onMultiSelectChange(msId, label) {
+  var el = document.getElementById(msId);
+  if (!el) return;
+  var vals = getMultiSelectValues(msId);
+  var total = el.querySelectorAll('input[type=checkbox]').length;
+  var btn = el.querySelector('.multi-select-btn');
+  if (btn) {
+    btn.textContent = vals.length > 0 && vals.length < total ? label + ' (' + vals.length + ')' : label;
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  var selectedDomains = getMultiSelectValues('domain-ms');
+  var selectedCrits = getMultiSelectValues('criticality-ms');
+
+  var sections = document.querySelectorAll('.issue-section');
+  for (var i = 0; i < sections.length; i++) {
+    var domain = sections[i].getAttribute('data-domain');
+    sections[i].style.display = (selectedDomains.length === 0 || selectedDomains.indexOf(domain) >= 0) ? '' : 'none';
+  }
+
+  var rows = document.querySelectorAll('.issue-row');
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var section = row.closest('.issue-section');
+    if (section && section.style.display === 'none') {
+      row.style.display = 'none';
+      var next = row.nextElementSibling;
+      if (next && next.classList.contains('detail-row')) next.style.display = 'none';
+      continue;
+    }
+
+    var show = true;
+    if (_currentTarget && row.hasAttribute('data-targets')) {
+      var targetsStr = row.getAttribute('data-targets');
+      if (targetsStr && targetsStr !== '{}') {
+        try {
+          var targets = JSON.parse(targetsStr);
+          if (Object.keys(targets).length > 0 && !targets[_currentTarget]) {
+            show = false;
+          }
+        } catch(e) {}
+      }
+    }
+
+    if (show && selectedCrits.length > 0) {
+      var crit = row.getAttribute('data-criticality');
+      if (selectedCrits.indexOf(crit) < 0) show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+    var nextRow = row.nextElementSibling;
+    if (nextRow && nextRow.classList.contains('detail-row')) {
+      if (!show) nextRow.style.display = 'none';
+    }
+  }
+}
+
+function clearAllFilters() {
+  document.querySelectorAll('.multi-select input[type=checkbox]').forEach(function(cb) { cb.checked = false; });
+  var domainBtn = document.querySelector('#domain-ms .multi-select-btn');
+  if (domainBtn) domainBtn.textContent = 'Domain';
+  var critBtn = document.querySelector('#criticality-ms .multi-select-btn');
+  if (critBtn) critBtn.textContent = 'Criticality';
+  applyFilters();
+}
+
+function onTargetChange(targetId) {
+  _currentTarget = targetId;
+  var rows = document.querySelectorAll('.issue-row[data-targets]');
+  var totalEffort = 0;
+  var domainCrits = {};
+
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var targets = JSON.parse(row.getAttribute('data-targets'));
+    var section = row.closest('.issue-section');
+    var domain = section ? section.getAttribute('data-domain') : '';
+
+    if (!targets || Object.keys(targets).length === 0) {
+      var sp = parseFloat(row.querySelector('.sp-cell').textContent) || 0;
+      totalEffort += sp;
+      if (!domainCrits[domain]) domainCrits[domain] = {mandatory:0,potential:0,optional:0};
+      var crit = row.getAttribute('data-criticality') || 'optional';
+      domainCrits[domain][crit] = (domainCrits[domain][crit] || 0) + 1;
+      continue;
+    }
+
+    var override = targets[targetId];
+    if (!override) {
+      continue;
+    }
+
+    var newSeverity = (override.severity || row.getAttribute('data-default-severity') || '').toLowerCase();
+    row.setAttribute('data-criticality', newSeverity);
+    var critCell = row.querySelector('.crit-cell');
+    if (critCell) {
+      var critText = newSeverity === 'mandatory' ? 'Mandatory' : newSeverity === 'potential' ? 'Potential' : 'Optional';
+      var cssClass = newSeverity === 'mandatory' ? 'crit-square-mandatory' : newSeverity === 'potential' ? 'crit-square-potential' : 'crit-square-optional';
+      critCell.innerHTML = '<span class="crit-label"><span class="crit-square ' + cssClass + '"></span>' + critText + '</span>';
+    }
+
+    var newEffort = override.effort !== undefined ? override.effort : parseFloat(row.getAttribute('data-default-effort')) || 0;
+    var spCell = row.querySelector('.sp-cell');
+    if (spCell) spCell.textContent = newEffort;
+    totalEffort += newEffort;
+
+    if (!domainCrits[domain]) domainCrits[domain] = {mandatory:0,potential:0,optional:0};
+    domainCrits[domain][newSeverity] = (domainCrits[domain][newSeverity] || 0) + 1;
+  }
+
+  var secSection = document.querySelector('.issue-section[data-domain="security"]');
+  if (secSection) {
+    var secRows = secSection.querySelectorAll('.issue-row');
+    for (var j = 0; j < secRows.length; j++) {
+      if (!secRows[j].hasAttribute('data-targets') || secRows[j].getAttribute('data-targets') === '') {
+        var sp = parseFloat(secRows[j].querySelector('.sp-cell').textContent) || 0;
+        totalEffort += sp;
+        if (!domainCrits['security']) domainCrits['security'] = {mandatory:0,potential:0,optional:0};
+        var sc = secRows[j].getAttribute('data-criticality') || 'optional';
+        domainCrits['security'][sc] = (domainCrits['security'][sc] || 0) + 1;
+      }
+    }
+  }
+
+  var label = totalEffort < 20 ? 'S' : totalEffort < 50 ? 'M' : totalEffort < 100 ? 'L' : 'XL';
+  var effortEl = document.getElementById('effort-display');
+  if (effortEl) effortEl.textContent = label + ' (total story points: ' + totalEffort + ')';
+
+  updateDonuts(domainCrits);
+  applyFilters();
+}
+
+function updateDonuts(domainCrits) {
+  var container = document.getElementById('donut-container');
+  if (!container) return;
+  container.innerHTML = '';
+  var domainNames = {'cloud-readiness':'Cloud Readiness','java-upgrade':'Java Upgrade','dotnet-upgrade':'DotNET Upgrade','security':'Security'};
+  var domainOrder = ['cloud-readiness','java-upgrade','dotnet-upgrade','security'];
+  for (var d = 0; d < domainOrder.length; d++) {
+    var key = domainOrder[d];
+    var c = domainCrits[key];
+    if (!c || (c.mandatory + c.potential + c.optional) === 0) continue;
+    var total = c.mandatory + c.potential + c.optional;
+    var div = document.createElement('div');
+    div.className = 'domain-summary-item';
+    div.innerHTML = buildDonutSvg(c.mandatory, c.potential, c.optional) +
+      '<h3>' + domainNames[key] + '</h3>' +
+      '<div class="count">' + total + ' issue' + (total !== 1 ? 's' : '') + '</div>';
+    container.appendChild(div);
+  }
+}
+
+function buildDonutSvg(m, p, o) {
+  var total = m + p + o;
+  if (total === 0) return '<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;"><circle cx="50" cy="50" r="35" fill="none" stroke="#d0d7de" stroke-width="15" opacity="0.5"/></svg>';
+  var r = 35, circ = 2 * Math.PI * r, offset = 0;
+  var svg = '<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">';
+  var segs = [{c:m,color:'var(--color-mandatory)'},{c:p,color:'var(--color-potential)'},{c:o,color:'var(--color-optional)'}];
+  for (var i = 0; i < segs.length; i++) {
+    if (segs[i].c === 0) continue;
+    var segLen = (segs[i].c / total) * circ;
+    var gap = total > segs[i].c ? 1.5 : 0;
+    var drawLen = Math.max(segLen - gap, 0.5);
+    svg += '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + segs[i].color + '" stroke-width="15" stroke-dasharray="' + drawLen.toFixed(2) + ' ' + circ.toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '"/>';
+    offset += segLen;
+  }
+  svg += '</svg>';
+  return svg;
+}
+</script>
+<script>document.addEventListener('DOMContentLoaded', function() { onTargetChange('AppService.Windows'); });</script>
+</div></body></html>
