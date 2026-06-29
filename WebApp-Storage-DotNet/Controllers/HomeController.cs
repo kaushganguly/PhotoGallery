@@ -166,8 +166,8 @@ namespace WebApp_Storage_DotNet.Controllers
 
         private string GetRandomBlobName(string filename)
         {
-            string ext = Path.GetExtension(filename);
-            return $"{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}{ext}";
+            string extension = Path.GetExtension(filename);
+            return $"{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}{extension}";
         }
     }
 }
