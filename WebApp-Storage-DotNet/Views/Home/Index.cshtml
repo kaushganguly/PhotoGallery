@@ -1,4 +1,5 @@
-﻿@*
+﻿@model IReadOnlyList<System.Uri>
+@*
 //----------------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation. All rights reserved.
 //
@@ -44,13 +45,13 @@
     - The Image (159x159) - [Set in .thumb css class]
     - A delete icon (30X30) - [Set in .deleteDiv css class] (~/Images/deleteImage.png) that calls deleteImage JS function
     - A DeleteAll button if there are any items that calls the DeleteAll controller Action*@
-@if (Model != null && Model.Count > 0)
+@if (Model is not null && Model.Count > 0)
 {
     foreach (var item in Model)
     {
         <div class="imageBlock">
             <a href="@item" target="_blank"><img class="thumb" src="@item" alt="images"/></a><br />
-            <div class="deleteDiv"><img class="deleteIcon" src="~/Images/deleteImage.png" title="Delete Image" onclick="deleteImage('@item');" /></div>
+            <div class="deleteDiv"><img class="deleteIcon" src="@Url.Content("~/Images/deleteImage.png")" title="Delete Image" onclick="deleteImage('@item');" /></div>
         </div>
     }
 

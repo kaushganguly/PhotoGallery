@@ -15,67 +15,36 @@ namespace WebApp_Storage_DotNet.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.IO;
     using System.Threading.Tasks;
-    using System.Web;
-    using System.Web.Mvc;
     using Azure.Storage.Blobs;
     using Azure.Storage.Blobs.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
-    /// <summary> 
-    /// Azure Blob Storage Photo Gallery - Demonstrates how to use the Blob Storage service.  
-    /// Blob storage stores unstructured data such as text, binary data, documents or media files.  
-    /// Blobs can be accessed from anywhere in the world via HTTP or HTTPS. 
-    /// 
-    /// Note: This sample uses the .NET 4.5 asynchronous programming model to demonstrate how to call the Storage Service using the  
-    /// storage client libraries asynchronous API's. When used in real applications this approach enables you to improve the  
-    /// responsiveness of your application. Calls to the storage service are prefixed by the await keyword.  
-    ///  
-    /// Documentation References:  
-    /// - What is a Storage Account - http://azure.microsoft.com/en-us/documentation/articles/storage-whatis-account/ 
-    /// - Getting Started with Blobs - http://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/ 
-    /// - Blob Service Concepts - http://msdn.microsoft.com/en-us/library/dd179376.aspx  
-    /// - Blob Service REST API - http://msdn.microsoft.com/en-us/library/dd135733.aspx 
-    /// - Blob Service C# API - http://go.microsoft.com/fwlink/?LinkID=398944 
-    /// - Delegating Access with Shared Access Signatures - http://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-shared-access-signature-part-1/ 
-    /// </summary> 
-
-    public class HomeController : Controller
+    /// <summary>
+    /// Azure Blob Storage Photo Gallery - Demonstrates how to use the Blob Storage service.
+    /// Blob storage stores unstructured data such as text, binary data, documents or media files.
+    /// Blobs can be accessed from anywhere in the world via HTTP or HTTPS.
+    /// </summary>
+    public class HomeController(IConfiguration configuration) : Controller
     {
-        const string blobContainerName = "webappstoragedotnet-imagecontainer";
-        static BlobContainerClient blobContainer;
+        private const string BlobContainerName = "webappstoragedotnet-imagecontainer";
 
-        /// <summary> 
-        /// Task<ActionResult> Index() 
-        /// Documentation References:  
-        /// - What is a Storage Account: http://azure.microsoft.com/en-us/documentation/articles/storage-whatis-account/ 
-        /// - Create a Storage Account: https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/#create-an-azure-storage-account
-        /// - Create a Storage Container: https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/#create-a-container
-        /// - List all Blobs in a Storage Container: https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/#list-the-blobs-in-a-container
-        /// </summary> 
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                // Retrieve storage account information from connection string
-                // How to create a storage connection string - http://msdn.microsoft.com/en-us/library/azure/ee758697.aspx
-                BlobServiceClient blobServiceClient = new BlobServiceClient(ConfigurationManager.AppSettings["StorageConnectionString"].ToString());
+                var blobContainer = await GetBlobContainerAsync();
+                var allBlobs = new List<Uri>();
 
-                blobContainer = blobServiceClient.GetBlobContainerClient(blobContainerName);
-                await blobContainer.CreateIfNotExistsAsync(PublicAccessType.Blob);
-
-                // To view the uploaded blob in a browser, you have two options. The first option is to use a Shared Access Signature (SAS) token to delegate  
-                // access to the resource. See the documentation links at the top for more information on SAS. The second approach is to set permissions  
-                // to allow public access to blobs in this container. Comment the line below to not use this approach and to use SAS. Then you can view the image  
-                // using: https://[InsertYourStorageAccountNameHere].blob.core.windows.net/webappstoragedotnet-imagecontainer/FileName 
-
-                // Gets all Block Blobs in the blobContainerName and passes them to the view
-                List<Uri> allBlobs = new List<Uri>();
-                foreach (BlobItem blob in blobContainer.GetBlobs())
+                await foreach (BlobItem blob in blobContainer.GetBlobsAsync())
                 {
                     if (blob.Properties.BlobType == BlobType.Block)
+                    {
                         allBlobs.Add(blobContainer.GetBlobClient(blob.Name).Uri);
+                    }
                 }
 
                 return View(allBlobs);
@@ -88,28 +57,39 @@ namespace WebApp_Storage_DotNet.Controllers
             }
         }
 
-        /// <summary> 
-        /// Task<ActionResult> UploadAsync() 
-        /// Documentation References:  
-        /// - UploadFromFileAsync Method: https://msdn.microsoft.com/en-us/library/azure/microsoft.windowsazure.storage.blob.cloudpageblob.uploadfromfileasync.aspx
-        /// </summary> 
         [HttpPost]
-        public async Task<ActionResult> UploadAsync()
+        public async Task<IActionResult> UploadAsync(List<IFormFile>? selectFiles)
         {
             try
             {
-                HttpFileCollectionBase files = Request.Files;
-                int fileCount = files.Count;
+                var blobContainer = await GetBlobContainerAsync();
 
-                if (fileCount > 0)
+                if (selectFiles is not null)
                 {
-                    for (int i = 0; i < fileCount; i++)
+                    foreach (var file in selectFiles)
                     {
-                        BlobClient blob = blobContainer.GetBlobClient(GetRandomBlobName(files[i].FileName));
-                        await blob.UploadAsync(files[i].FileName);
+                        if (file.Length <= 0)
+                        {
+                            continue;
+                        }
+
+                        BlobClient blob = blobContainer.GetBlobClient(GetRandomBlobName(file.FileName));
+                        await using var stream = file.OpenReadStream();
+                        await blob.UploadAsync(
+                            stream,
+                            new BlobUploadOptions
+                            {
+                                HttpHeaders = new BlobHttpHeaders
+                                {
+                                    ContentType = string.IsNullOrWhiteSpace(file.ContentType)
+                                        ? "application/octet-stream"
+                                        : file.ContentType
+                                }
+                            });
                     }
                 }
-                return RedirectToAction("Index");
+
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -119,23 +99,18 @@ namespace WebApp_Storage_DotNet.Controllers
             }
         }
 
-        /// <summary> 
-        /// Task<ActionResult> DeleteImage(string name) 
-        /// Documentation References:  
-        /// - Delete Blobs: https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/#delete-blobs
-        /// </summary> 
         [HttpPost]
-        public async Task<ActionResult> DeleteImage(string name)
+        public async Task<IActionResult> DeleteImage(string name)
         {
             try
             {
-                Uri uri = new Uri(name);
+                var blobContainer = await GetBlobContainerAsync();
+                Uri uri = new(name);
                 string filename = Path.GetFileName(uri.LocalPath);
 
-                var blob = blobContainer.GetBlobClient(filename);
-                await blob.DeleteIfExistsAsync();
+                await blobContainer.DeleteBlobIfExistsAsync(filename);
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -145,17 +120,14 @@ namespace WebApp_Storage_DotNet.Controllers
             }
         }
 
-        /// <summary> 
-        /// Task<ActionResult> DeleteAll(string name) 
-        /// Documentation References:  
-        /// - Delete Blobs: https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs/#delete-blobs
-        /// </summary> 
         [HttpPost]
-        public async Task<ActionResult> DeleteAll()
+        public async Task<IActionResult> DeleteAll()
         {
             try
             {
-                foreach (var blob in blobContainer.GetBlobs())
+                var blobContainer = await GetBlobContainerAsync();
+
+                await foreach (var blob in blobContainer.GetBlobsAsync())
                 {
                     if (blob.Properties.BlobType == BlobType.Block)
                     {
@@ -163,7 +135,7 @@ namespace WebApp_Storage_DotNet.Controllers
                     }
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
@@ -173,13 +145,29 @@ namespace WebApp_Storage_DotNet.Controllers
             }
         }
 
-        /// <summary> 
-        /// string GetRandomBlobName(string filename): Generates a unique random file name to be uploaded  
-        /// </summary> 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View();
+        }
+
+        private async Task<BlobContainerClient> GetBlobContainerAsync()
+        {
+            var connectionString = configuration["StorageConnectionString"];
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new InvalidOperationException("StorageConnectionString is not configured.");
+            }
+
+            BlobContainerClient blobContainer = new BlobServiceClient(connectionString).GetBlobContainerClient(BlobContainerName);
+            await blobContainer.CreateIfNotExistsAsync(PublicAccessType.Blob);
+            return blobContainer;
+        }
+
         private string GetRandomBlobName(string filename)
         {
             string ext = Path.GetExtension(filename);
-            return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), ext);
+            return $"{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}{ext}";
         }
     }
 }

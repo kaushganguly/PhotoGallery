@@ -14,7 +14,13 @@
         "generateNewUnitTests": "false",
         "passUnitTests": "true"
       },
-      "status": "pending"
+      "status": "success",
+      "taskSummary": "Converted the legacy ASP.NET MVC 5/.NET Framework 4.8 project to an SDK-style ASP.NET Core MVC app targeting net10.0, migrated configuration to appsettings.json, updated the Blob Storage dependency to Azure.Storage.Blobs 12.29.1, and validated the upgraded solution with a successful dotnet build and runtime smoke test.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": "true",
+        "passUnitTests": "true"
+      }
     }
   ],
   "metadata": {
