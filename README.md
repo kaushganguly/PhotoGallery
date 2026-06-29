@@ -14,28 +14,28 @@ This sample application creates a web photo gallery that allows you to host and 
 ![Azure Blob Storage Photo Gallery Web Application Sample .NET](./images/photo-gallery.png)
 
 ## Technologies used
-- ASP.NET MVC 5
-- .NET 4.5
-- Azure Storage emulator
-- Azure Web Apps
-- Azure Storage
+- ASP.NET Core MVC
+- .NET 10
+- Azurite or Azure Storage emulator-compatible local storage
+- Azure App Service
+- Azure Blob Storage
 
-Azure Blob Storage Photo Gallery Web Application using ASP.NET MVC 5. The sample uses the .NET 4.5 asynchronous programming model to demonstrate how to call the Storage Service using the Storage .NET client library's asynchronous APIs.
+Azure Blob Storage Photo Gallery Web Application using ASP.NET Core MVC. The sample uses the Azure Storage .NET client library's asynchronous APIs to upload, list, and delete blobs from a photo gallery web front end.
 
 ## Running this sample
 1. Before you can run this sample, you must have the following prerequisites:
-	- The Azure Storage Emulator, which you can download [here](https://go.microsoft.com/fwlink/?linkid=717179&clcid=0x409). You can also read more about [Using the Azure Storage emulator for development](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-emulator).
-	- Visual Studio 2015 or Visual Studio 2017.
+	- .NET 10 SDK.
+	- Azurite, or another Azure Storage connection string you can use for development.
 
 2. Open the Azure Storage emulator. Once the emulator is running it will be able to process the images from the application.
 
 3. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
 
-4. From Visual Studio, open the **WebApp-Storage-DotNet.sln** file from the root directory.
+4. Update `WebApp-Storage-DotNet/appsettings.json` with the storage connection string you want to use locally.
 
-5. In Visual Studio Build menu, select **Build Solution** (or Press F6).
+5. From the repository root, run `dotnet build WebApp-Storage-DotNet.sln`.
 
-6. You can now run and debug the application locally by pressing **F5** in Visual Studio.
+6. Run the app with `dotnet run --project WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj` and browse to the local URL shown in the console output.
 
 ## Deploy this sample to Azure
 
@@ -43,9 +43,9 @@ Azure Blob Storage Photo Gallery Web Application using ASP.NET MVC 5. The sample
 
 2. Retrieve the STORAGE ACCOUNT NAME and PRIMARY ACCESS KEY (or SECONDARY ACCESS KEY) values from the Keys blade of your Storage account in the Azure Preview portal. For more information on obtaining keys for your Storage account refer to [View, copy, and regenerate storage access keys](https://azure.microsoft.com/en-us/documentation/articles/storage-create-storage-account/#view-copy-and-regenerate-storage-access-keys)
 
-2. In the **Web.config** file, located in the project root, find the **StorageConnectionString** app setting and replace the placeholder values with the values obtained for your account.
+2. In `WebApp-Storage-DotNet/appsettings.json`, update the **StorageConnectionString** setting with the values obtained for your account.
 
-  <add key="StorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=[Enter Your Storage AccountName];AccountKey=[Enter Your Storage AccountKey]" />
+  "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=[Enter Your Storage AccountName];AccountKey=[Enter Your Storage AccountKey]"
 
 3. In Visual Studio Solution Explorer, right-click on the project name and select **Publish...**
 
