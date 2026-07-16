@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assessment - WebApp-Storage-DotNet</title>
+<style>
+:root {
+  --bg-primary: #ffffff;
+  --bg-card: #f8f9fa;
+  --bg-page: #f0f1f3;
+  --text-primary: #24292f;
+  --text-secondary: #57606a;
+  --text-muted: #6b7280;
+  --border-color: #d0d7de;
+  --border-light: #e1e4e8;
+  --link-color: #2563eb;
+  --color-mandatory: #E3008C;
+  --color-potential: #637CEF;
+  --color-optional: #A19F9D;
+  --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-family); font-size: 13px; color: var(--text-primary); background: var(--bg-primary); line-height: 1.5; margin: 0; padding: 0; }
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Page layout ───────────────────────────────────────────── */
+.main { margin: 0; padding: 24px 32px; background: var(--bg-primary); }
+.back-link { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; display: block; }
+h1 { font-weight: 600; font-size: 20px; color: var(--text-primary); margin-bottom: 20px; }
+
+/* ── Report cards (matches VS Code .vscode-report-card) ──── */
+.report-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 4px; padding: 12px; margin-bottom: 20px; }
+.report-card h2 { font-size: 14px; font-weight: 600; margin: 0; color: var(--text-primary); }
+.report-card-body { margin-top: 16px; }
+
+/* ── Component Information (two-column) ────────────────── */
+.app-info-container { display: flex; gap: 8px; flex-wrap: wrap; }
+.app-info-column { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px; }
+.app-info-row { display: flex; align-items: baseline; }
+.app-info-label { width: 136px; flex-shrink: 0; font-weight: 600; color: var(--text-primary); }
+.app-info-value { flex: 1; color: var(--text-primary); }
+
+/* ── Issue Summary (pie charts + legend) ─────────────────── */
+.cards-container { display: flex; align-items: stretch; gap: 20px; flex-wrap: wrap; }
+.issue-summary-card { flex: 2; }
+.domain-summary-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; }
+.domain-summary-item { flex: 1; min-width: 120px; text-align: center; padding: 0 16px; border-right: 1px solid var(--border-light); }
+.domain-summary-item:last-child { border-right: none; }
+.domain-summary-item h3 { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-top: 8px; }
+.domain-summary-item .count { font-size: 12px; color: var(--text-secondary); }
+.criticality-legend { display: flex; flex-wrap: wrap; gap: 15px; padding-top: 12px; justify-content: center; }
+.criticality-legend .legend-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { display: inline-block; width: 1em; height: 1em; border-radius: 2px; }
+
+/* ── Issue list tables ───────────────────────────────────── */
+.issue-section { margin-top: 20px; }
+.issue-section h2 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.issue-table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 600px; }
+.issue-table th { text-align: left; text-transform: uppercase; font-weight: 600; font-size: calc(13px * 0.875); padding: 6px 8px; background: var(--bg-card); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); position: sticky; top: 0; z-index: 1; }
+.issue-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.col-issue { width: 55%; }
+.col-criticality { width: 25%; }
+.col-storypoint { width: 20%; }
+
+/* ── Target dropdown ─────────────────────────────────────── */
+.target-select-container { margin: 4px 0 16px 0; display: flex; align-items: center; gap: 8px; }
+.target-select-container label { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+.target-select-container select { font-family: var(--font-family); font-size: 13px; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; }
+
+/* ── Filter bar ──────────────────────────────────────────── */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px 0; align-items: center; }
+.multi-select { position: relative; display: inline-block; min-width: 140px; }
+.multi-select-btn { font-family: var(--font-family); font-size: 13px; padding: 4px 24px 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; width: 100%; text-align: left; position: relative; white-space: nowrap; }
+.multi-select-btn::after { content: '\25BE'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--text-secondary); }
+.multi-select-dropdown { display: none; position: absolute; top: 100%; left: 0; min-width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 100; margin-top: 2px; }
+.multi-select.open .multi-select-dropdown { display: block; }
+.multi-select-option { display: flex; align-items: center; gap: 6px; padding: 5px 10px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+.multi-select-option:hover { background: var(--bg-secondary); }
+.multi-select-option input[type=checkbox] { margin: 0; cursor: pointer; }
+.clear-filters { font-size: 12px; color: var(--link-color); cursor: pointer; margin-left: 4px; }
+
+/* ── Criticality labels (colored square + text) ──────────── */
+.crit-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; white-space: nowrap; }
+.crit-square { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.crit-square-mandatory { background: var(--color-mandatory); }
+.crit-square-potential { background: var(--color-potential); }
+.crit-square-optional { background: var(--color-optional); }
+
+/* ── Expandable rows ─────────────────────────────────────── */
+.expand-btn { background: none; border: none; cursor: pointer; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; transition: transform 0.15s; padding: 0; vertical-align: middle; flex-shrink: 0; }
+.expand-btn.open { transform: rotate(90deg); }
+.issue-title-cell { display: flex; align-items: center; gap: 4px; }
+.detail-row td { padding: 0; border-bottom: 1px solid var(--border-light); white-space: normal; overflow: visible; text-overflow: clip; }
+.detail-content { display: flex; gap: 0; padding: 8px 8px 8px 32px; min-width: 0; }
+.file-list { flex: 0 0 50%; min-width: 0; overflow: hidden; }
+.file-list table { width: 100%; border-collapse: collapse; }
+.file-list th { font-size: calc(13px * 0.875); text-transform: uppercase; font-weight: 600; color: var(--text-secondary); padding: 6px 8px; border-bottom: 1px solid var(--border-color); text-align: left; height: 32px; }
+.file-list td { font-size: 13px; padding: 6px 8px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); }
+.file-list .file-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px; display: block; }
+.file-list .position { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.explanation-panel { flex: 1; padding-left: 16px; min-width: 0; overflow-wrap: break-word; word-wrap: break-word; }
+.explanation-panel h4 { font-size: calc(13px * 0.875); text-transform: uppercase; font-weight: 600; color: var(--text-secondary); padding: 6px 0; border-bottom: 1px solid var(--border-color); height: 32px; margin: 0; }
+.explanation-panel p { font-size: 13px; padding: 8px 0; color: var(--text-primary); line-height: 1.6; white-space: normal; word-break: break-word; }
+
+/* ── Experimental badge ──────────────────────────────────── */
+.badge-experimental { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: #fef9c3; color: #854d0e; vertical-align: middle; margin-left: 8px; cursor: default; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.footer { text-align: center; margin-top: 24px; color: var(--text-muted); font-size: 13px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .main { padding: 16px; }
+  .app-info-container { flex-direction: column; }
+  .domain-summary-container { flex-direction: column; }
+  .domain-summary-item { border-right: none; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
+  .detail-content { flex-direction: column; }
+  .file-list { flex: none; width: 100%; }
+  .explanation-panel { padding-left: 0; padding-top: 8px; }
+}
+/* ── Tab navigation ──────────────────────────────────────── */
+.tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border-color); margin-bottom: 28px; flex-wrap: wrap; }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; font-size: 13px; font-family: var(--font-family); color: var(--text-secondary); cursor: pointer; margin-bottom: -1px; white-space: nowrap; position: relative; }
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--link-color); border-bottom-color: var(--link-color); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Tooltip on tab ──────────────────────────────────────── */
+.tab-btn[data-tooltip]::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #24292f; color: #ffffff; font-size: 12px; font-weight: 400; padding: 6px 10px; border-radius: 4px; white-space: normal; width: max-content; max-width: 260px; text-align: center; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; }
+.tab-btn[data-tooltip]:hover::after { opacity: 1; }
+
+/* ── Fact content — prose column ─────────────────────────── */
+.fact-content { max-width: 860px; margin: 0 auto; line-height: 1.75; color: var(--text-primary); font-size: 14px; }
+.fact-content h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px 0; color: var(--text-primary); letter-spacing: -0.01em; }
+.fact-content h1 + p { margin-top: 6px; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; }
+.fact-content h2 { font-size: 17px; font-weight: 700; margin: 36px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); letter-spacing: -0.01em; }
+.fact-content h3 { font-size: 14px; font-weight: 700; margin: 24px 0 8px 0; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em; font-size: 12px; color: var(--text-secondary); }
+.fact-content p { margin: 10px 0; color: var(--text-primary); }
+.fact-content ul, .fact-content ol { margin: 10px 0 10px 22px; }
+.fact-content li { margin: 5px 0; }
+.fact-content a { color: var(--link-color); }
+.fact-content a:hover { text-decoration: underline; }
+
+/* ── Fact tables ─────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+.fact-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
+.fact-content thead { background: var(--bg-card); }
+.fact-content th { text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
+.fact-content td { padding: 9px 14px; border-bottom: 1px solid var(--border-light); vertical-align: top; color: var(--text-primary); }
+.fact-content tr:last-child td { border-bottom: none; }
+.fact-content tbody tr:hover { background: #f6f8fa; }
+
+/* ── Fact code ───────────────────────────────────────────── */
+.fact-content code { font-family: var(--font-mono); font-size: 12px; background: #f0f1f3; padding: 2px 6px; border-radius: 4px; color: #c7254e; }
+.fact-content pre { background: #f6f8fa; border: 1px solid var(--border-light); border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 14px 0; }
+.fact-content pre code { background: none; color: var(--text-primary); padding: 0; border-radius: 0; }
+.fact-content hr { border: none; border-top: 1px solid var(--border-light); margin: 28px 0; }
+.fact-content strong { font-weight: 600; }
+.fact-content em { font-style: italic; }
+.fact-content blockquote { border-left: 3px solid var(--border-color); margin: 12px 0; padding: 4px 16px; color: var(--text-secondary); }
+.fact-unavailable { padding: 32px 0; }
+.fact-unavailable h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); text-transform: none; letter-spacing: 0; margin: 0 0 12px 0; }
+.fact-unavailable p { margin: 0 0 8px 0; color: var(--text-secondary); }
+.fact-unavailable ol, .fact-unavailable ul { margin: 0 0 0 22px; color: var(--text-primary); }
+.fact-unavailable li { margin: 6px 0; }
+
+/* ── Mermaid diagram card ─────────────────────────────────── */
+.mermaid { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 24px 16px; margin: 20px 0; overflow-x: auto; text-align: center; cursor: pointer; position: relative; }
+.mermaid:hover { border-color: var(--border-color); }
+.mermaid svg { max-width: 100%; height: auto !important; display: inline-block; }
+.mermaid-zoom-hint { position: absolute; top: 8px; right: 10px; font-size: 11px; color: var(--text-muted); opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+.mermaid:hover .mermaid-zoom-hint { opacity: 1; }
+
+/* ── Diagram lightbox ────────────────────────────────────── */
+.diagram-lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); align-items: center; justify-content: center; cursor: zoom-out; padding: 48px 32px; }
+.diagram-lightbox.open { display: flex; }
+.diagram-lightbox-inner { background: #ffffff; border-radius: 10px; padding: 32px; width: 88vw; max-height: 88vh; overflow: hidden; cursor: default; box-shadow: 0 24px 64px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; }
+.diagram-lightbox-inner svg { width: 100% !important; height: auto !important; max-height: 76vh; display: block; }
+.diagram-lightbox-close { position: fixed; top: 20px; right: 24px; background: #ffffff; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1001; }
+.diagram-lightbox-close:hover { background: var(--bg-card); }
+.diagram-lightbox-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: #ffffff; font-size: 12px; padding: 6px 14px; border-radius: 20px; pointer-events: none; white-space: nowrap; z-index: 1001; }
+</style>
+<script>
+window.__mermaidPending = [];
+window.__mermaidReady = false;
+window.__renderMermaidIn = function(container) {
+  if (container) { window.__mermaidPending.push(container); }
+};
+</script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: false, theme: 'default', flowchart: { useMaxWidth: true }, sequence: { useMaxWidth: true } });
+
+window.__renderMermaidIn = function(container) {
+  var nodes = container ? container.querySelectorAll('.mermaid:not([data-processed])') : [];
+  if (nodes.length > 0) {
+    mermaid.run({ nodes: Array.from(nodes) }).then(function() {
+      nodes.forEach(function(node) {
+        if (!node.querySelector('.mermaid-zoom-hint')) {
+          var hint = document.createElement('span');
+          hint.className = 'mermaid-zoom-hint';
+          hint.textContent = 'Click to expand';
+          node.appendChild(hint);
+        }
+      });
+    });
+  }
+};
+
+var drained = new Set();
+(window.__mermaidPending || []).forEach(function(c) {
+  if (!drained.has(c)) { drained.add(c); window.__renderMermaidIn(c); }
+});
+window.__mermaidPending = [];
+window.__mermaidReady = true;
+
+function renderActivePanels() {
+  document.querySelectorAll('.tab-panel.active').forEach(function(p) {
+    if (!drained.has(p)) { drained.add(p); window.__renderMermaidIn(p); }
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderActivePanels);
+} else {
+  renderActivePanels();
+}
+</script>
+</head><body>
+<div id="diagram-lightbox" class="diagram-lightbox" role="dialog" aria-modal="true">
+  <button class="diagram-lightbox-close" id="diagram-lightbox-close" aria-label="Close">&#x2715;</button>
+  <div class="diagram-lightbox-hint">Scroll to zoom &nbsp;&middot;&nbsp; Drag to pan &nbsp;&middot;&nbsp; Double-click to reset</div>
+  <div class="diagram-lightbox-inner" id="diagram-lightbox-inner"></div>
+</div>
+<div class="main">
+<h1>WebApp-Storage-DotNet</h1>
+<div class="report-card">
+  <h2>Component Information</h2>
+  <div class="report-card-body">
+    <div class="app-info-container">
+      <div class="app-info-column">
+        <div class="app-info-row"><span class="app-info-label">Component Name</span><span class="app-info-value">WebApp-Storage-DotNet</span></div>
+        <div class="app-info-row"><span class="app-info-label">Effort</span><span class="app-info-value" id="effort-display">S (total story points: 17)</span></div>
+      </div>
+      <div class="app-info-column">
+        <div class="app-info-row"><span class="app-info-label">Build Tools</span><span class="app-info-value">MSBuild</span></div>
+        <div class="app-info-row"><span class="app-info-label">Frameworks</span><span class="app-info-value">.NETFramework,Version=v4.8</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="tab-issues" data-tooltip="Issues detected in the source code">Issues</button>
+  <button class="tab-btn" data-tab="tab-arch" data-tooltip="How the app&#x27;s layers connect — from UI to data.">Architecture</button>
+  <button class="tab-btn" data-tab="tab-api" data-tooltip="Endpoints exposed by this app and how services communicate.">API Contracts</button>
+  <button class="tab-btn" data-tab="tab-config" data-tooltip="Environment settings, runtime profiles, and deployment manifests.">Configuration</button>
+  <button class="tab-btn" data-tab="tab-workflows" data-tooltip="Domain entities and the core flows users move through.">Business Workflows</button>
+  <button class="tab-btn" data-tab="tab-deps" data-tooltip="Libraries and frameworks this app depends on, grouped by category.">Dependencies</button>
+  <button class="tab-btn" data-tab="tab-data" data-tooltip="Database schema, entity relationships, and persistence behavior.">Data Model</button>
+</nav>
+<div id="tab-issues" class="tab-panel active">
+<div class="target-select-container">
+  <label for="target-select">Target Compute Service:</label>
+  <select id="target-select" onchange="onTargetChange(this.value)">
+    <option value="AppService.Windows">Azure App Service</option>
+    <option value="AppService.Linux">Azure Kubernetes Service</option>
+    <option value="AKS.Linux">Azure Container Apps</option>
+    <option value="AKS.Windows">Azure App Service Container</option>
+    <option value="ACA">Azure App Service Managed Instance</option>
+  </select>
+</div>
+<div class="report-card">
+  <h2>Issue Summary</h2>
+  <div class="report-card-body">
+    <div class="domain-summary-container" id="donut-container">
+      <div class="domain-summary-item">
+<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-optional)" stroke-width="15" stroke-dasharray="219.91 219.91" stroke-dashoffset="-0.00"/>
+</svg>
+
+        <h3>Cloud Readiness</h3>
+        <div class="count">2 issues</div>
+      </div>
+      <div class="domain-summary-item">
+<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-mandatory)" stroke-width="15" stroke-dasharray="138.44 219.91" stroke-dashoffset="-0.00"/>
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-potential)" stroke-width="15" stroke-dasharray="38.48 219.91" stroke-dashoffset="-139.94"/>
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-optional)" stroke-width="15" stroke-dasharray="38.48 219.91" stroke-dashoffset="-179.93"/>
+</svg>
+
+        <h3>DotNET Upgrade</h3>
+        <div class="count">11 issues</div>
+      </div>
+    </div>
+    <div class="criticality-legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-mandatory)"></span>Mandatory</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-potential)"></span>Potential</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-optional)"></span>Optional</div>
+    </div>
+  </div>
+</div>
+<div class="filter-bar" id="filter-bar">
+  <div class="multi-select" id="domain-ms">
+    <button class="multi-select-btn" onclick="toggleMultiSelect('domain-ms')">Domain</button>
+    <div class="multi-select-dropdown">
+      <label class="multi-select-option"><input type="checkbox" value="cloud-readiness" onchange="onMultiSelectChange('domain-ms','Domain')"/> Cloud Readiness</label>
+      <label class="multi-select-option"><input type="checkbox" value="dotnet-upgrade" onchange="onMultiSelectChange('domain-ms','Domain')"/> DotNET Upgrade</label>
+    </div>
+  </div>
+  <div class="multi-select" id="criticality-ms">
+    <button class="multi-select-btn" onclick="toggleMultiSelect('criticality-ms')">Criticality</button>
+    <div class="multi-select-dropdown">
+      <label class="multi-select-option"><input type="checkbox" value="mandatory" onchange="onMultiSelectChange('criticality-ms','Criticality')"/> Mandatory</label>
+      <label class="multi-select-option"><input type="checkbox" value="potential" onchange="onMultiSelectChange('criticality-ms','Criticality')"/> Potential</label>
+      <label class="multi-select-option"><input type="checkbox" value="optional" onchange="onMultiSelectChange('criticality-ms','Criticality')"/> Optional</label>
+    </div>
+  </div>
+  <a class="clear-filters" href="javascript:void(0)" onclick="clearAllFilters()">Clear all</a>
+</div>
+<div class="issue-section" data-domain="cloud-readiness">
+  <h2>Cloud Readiness</h2>
+  <table class="issue-table">
+    <colgroup><col class="col-issue"/><col class="col-criticality"/><col class="col-storypoint"/></colgroup>
+    <thead><tr><th>Issue Category</th><th>Criticality</th><th>Story Point</th></tr></thead>
+    <tbody>
+    <tr class="issue-row" data-criticality="optional" data-targets='{&quot;AppService.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppService.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;ACA&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceManagedInstance.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;}}' data-default-effort="3" data-default-severity="optional" data-rule="Scale.0001" onclick="toggleRow('row-cloudreadiness-0', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-cloudreadiness-0">&#x276F;</button> Static content detected</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">3</td>
+    </tr>
+    <tr class="detail-row" id="row-cloudreadiness-0" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Static content detected.</p><p>Your current approach of serving static content directly might lead to increased costs, performance issues, maintenance challenges (requiring application redeployment for content changes), and security risks.</p><p>Consider moving static content to Azure Blob Storage and adding Azure CDN.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" data-targets='{&quot;AppService.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppService.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AKS.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;ACA&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Linux&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceContainer.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;},&quot;AppServiceManagedInstance.Windows&quot;:{&quot;effort&quot;:3,&quot;severity&quot;:&quot;optional&quot;}}' data-default-effort="3" data-default-severity="optional" data-rule="Security.0002" onclick="toggleRow('row-cloudreadiness-1', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-cloudreadiness-1">&#x276F;</button> Connection strings without configuration builders detected</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">3</td>
+    </tr>
+    <tr class="detail-row" id="row-cloudreadiness-1" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Web.config">WebApp-Storage-DotNet/Web.config</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Connection strings without configuration builders detected.  </p><p> Keeping connection strings directly in the app is not the best practice and might introduce security risks, increased maintenance, scalability challenges or compliance standards (such as PCI DSS, GDPR, etc.). </p><p> Instead, it is recommended to use configuration builders to get secrets from secure sources in Azure environment.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="issue-section" data-domain="dotnet-upgrade">
+  <h2>DotNET Upgrade <a href="scenarios/dotnet-version-upgrade/assessment.html" style="font-size:12px;font-weight:400;margin-left:12px;">View Details</a></h2>
+  <table class="issue-table">
+    <colgroup><col class="col-issue"/><col class="col-criticality"/><col class="col-storypoint"/></colgroup>
+    <thead><tr><th>Issue Category</th><th>Criticality</th><th>Story Point</th></tr></thead>
+    <tbody>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="NuGet.0003" onclick="toggleRow('row-dotnetupgrade-0', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-0">&#x276F;</button> NuGet package functionality is included with framework reference</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-0" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>NuGet package functionality is included with framework reference.</p><p>Package needs to be removed.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="Binding.0006" onclick="toggleRow('row-dotnetupgrade-1', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-1">&#x276F;</button> Manual redirect conflicts with auto-generated version</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-1" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Web.config">WebApp-Storage-DotNet/Web.config</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>An explicit binding redirect targets a different version than what auto-generation would produce. MSBuild will throw MSB3836 conflict error because it cannot determine which redirect wins.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="NuGet.0001" onclick="toggleRow('row-dotnetupgrade-2', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-2">&#x276F;</button> NuGet package is incompatible</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-2" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>NuGet package is incompatible with selected target framework.</p><p>Package needs to be upgraded to a version supporting selected project target framework. If there no new package versions supporting new target framework, different package needs to be used and all code needs to be upgraded to new API.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="Project.0001" onclick="toggleRow('row-dotnetupgrade-3', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-3">&#x276F;</button> Project file needs to be converted to SDK-style</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-3" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Project file needs to be converted to SDK-style. Modern .NET framework projects require a change in the project file format and use SDK corresponding to project flavor and functionality.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="Project.0002" onclick="toggleRow('row-dotnetupgrade-4', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-4">&#x276F;</button> Project&#x27;s target framework(s) needs to be changed</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-4" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Project&#x27;s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.</p><p>During upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="Feature.0001" onclick="toggleRow('row-dotnetupgrade-5', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-5">&#x276F;</button> System.Web.Optimization bundling and minification is not supported in .NET Core and should be replaced with actual html tags pointing to content files</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-5" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Views/Shared/_Layout.cshtml">WebApp-Storage-DotNet/Views/Shared/_Layout.cshtml</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>System.Web.Optimization bundling and minification is not supported in .NET Core and should be replaced with actual html tags pointing to content files.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" data-targets='{}' data-default-effort="1" data-default-severity="mandatory" data-rule="Feature.1000" onclick="toggleRow('row-dotnetupgrade-6', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-6">&#x276F;</button> Convert application initialization code from Global.asax.cs to .NET Core and clean up Global.asax.cs</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-6" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Global.asax.cs">WebApp-Storage-DotNet/Global.asax.cs</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>Convert application initialization code from Global.asax.cs to .NET Core and clean up Global.asax.cs.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="potential" data-targets='{}' data-default-effort="1" data-default-severity="potential" data-rule="NuGet.0002" onclick="toggleRow('row-dotnetupgrade-7', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-7">&#x276F;</button> NuGet package upgrade is recommended</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-potential"></span>Potential</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-7" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>NuGet package upgrade is recommended for selected target framework.</p><p>Standard .NET packages are recommended to have versions matching version of .NET that project targets.</p><p>Some other packages also are known to work better for selected target frameworks.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="potential" data-targets='{}' data-default-effort="1" data-default-severity="potential" data-rule="Binding.0007" onclick="toggleRow('row-dotnetupgrade-8', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-8">&#x276F;</button> Binding redirect forces version downgrade</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-potential"></span>Potential</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-8" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Web.config">WebApp-Storage-DotNet/Web.config</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>A binding redirect&#x27;s newVersion is lower than the version provided by the NuGet package. This forced downgrade usually causes a load failure at runtime because the expected assembly version is not available.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" data-targets='{}' data-default-effort="1" data-default-severity="optional" data-rule="NuGet.0004" onclick="toggleRow('row-dotnetupgrade-9', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-9">&#x276F;</button> NuGet package contains security vulnerability</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-9" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>NuGet package contains security vulnerabilities.</p><p>Package needs to be upgraded to a newer version that addresses known security vulnerabilities.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" data-targets='{}' data-default-effort="1" data-default-severity="optional" data-rule="NuGet.0005" onclick="toggleRow('row-dotnetupgrade-10', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-dotnetupgrade-10">&#x276F;</button> NuGet package is deprecated</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-dotnetupgrade-10" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><colgroup><col style="width:70%"/><col style="width:30%"/></colgroup>
+            <thead><tr><th>File</th><th>Position</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj">WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</span></td><td><span class="position"></span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>NuGet package is deprecated.</p><p>Go to its documentation and if there is a guidance for replacement of functionality provided by this package.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div><!-- #tab-issues -->
+<div id="tab-arch" class="tab-panel">
+  <div class="fact-content"><h1 id="architecture-diagram">Architecture Diagram</h1>
+<p>This document describes the architecture of the PhotoGallery web application — a legacy ASP.NET MVC 5 application (.NET Framework 4.8) that provides photo upload, browsing, and deletion capabilities backed by Azure Blob Storage.</p>
+<h2 id="application-architecture">Application Architecture</h2>
+<div class="mermaid">
+flowchart TD
+    subgraph Client["Client Layer"]
+        Browser["Web Browser"]
+    end
+    subgraph App["Application Layer - ASP.NET MVC 5 / .NET Framework 4.8"]
+        MVC["ASP.NET MVC Pipeline"]
+        HomeCtrl["HomeController"]
+        Razor["Razor Views (Index, Error)"]
+        Bundles["Bundle and Minification"]
+    end
+    subgraph Config["Configuration"]
+        WebConfig["Web.config (StorageConnectionString)"]
+    end
+    subgraph External["External Services"]
+        AzureBlob["Azure Blob Storage (Azure.Storage.Blobs 12.9.1)"]
+    end
+
+    Browser -->|"HTTP GET / POST"| MVC
+    MVC -->|"routes request"| HomeCtrl
+    HomeCtrl -->|"renders"| Razor
+    Razor -->|"HTML response"| Browser
+    HomeCtrl -->|"reads connection string"| WebConfig
+    HomeCtrl -->|"upload / list / delete blobs"| AzureBlob
+    Bundles -->|"serves JS and CSS"| Browser
+</div>
+<h3 id="technology-stack-summary">Technology Stack Summary</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>Presentation</td><td>ASP.NET MVC</td><td>5.2.3</td><td>Server-side MVC web framework</td></tr>
+<tr><td>Presentation</td><td>Razor Views</td><td>3.2.3</td><td>HTML templating engine</td></tr>
+<tr><td>Presentation</td><td>Bootstrap</td><td>3.x</td><td>Responsive UI styling</td></tr>
+<tr><td>Presentation</td><td>jQuery</td><td>1.10.2</td><td>Client-side scripting</td></tr>
+<tr><td>Application</td><td>.NET Framework</td><td>4.8</td><td>Runtime platform</td></tr>
+<tr><td>Application</td><td>System.Web.Optimization</td><td>1.1.3</td><td>JS and CSS bundling / minification</td></tr>
+<tr><td>Data / Storage</td><td>Azure.Storage.Blobs</td><td>12.9.1</td><td>Azure Blob Storage SDK</td></tr>
+<tr><td>Data / Storage</td><td>Azure.Core</td><td>1.18.0</td><td>Azure SDK core primitives</td></tr>
+<tr><td>Configuration</td><td>Web.config</td><td>—</td><td>Connection strings and app settings</td></tr>
+</tbody></table></div>
+<h3 id="data-storage-external-services">Data Storage & External Services</h3>
+<p>The application has no local database. All photo files are stored in and retrieved from <strong>Azure Blob Storage</strong> using the <code>Azure.Storage.Blobs</code> SDK. A single named container (<code>webappstoragedotnet-imagecontainer</code>) is created on first use with public blob-level read access. The storage account connection string is read at runtime from <code>Web.config</code> (<code>StorageConnectionString</code>); in development the value defaults to <code>UseDevelopmentStorage=true</code> (Azure Storage Emulator).</p>
+<h3 id="key-architectural-decisions">Key Architectural Decisions</h3>
+<ul>
+<li><strong>Thin controller, no service layer</strong>: All blob interaction logic lives directly inside <code>HomeController</code>, keeping the codebase compact but mixing business logic with presentation concerns.</li>
+<li><strong>Static <code>BlobContainerClient</code> field</strong>: The container client is stored as a <code>static</code> class field and re-initialised on every <code>Index</code> request, which avoids per-request client construction overhead but is not thread-safe under concurrent index calls.</li>
+<li><strong>Public blob access</strong>: The blob container is created with <code>PublicAccessType.Blob</code>, making uploaded images publicly readable without authentication tokens.</li>
+</ul>
+<h2 id="component-relationships">Component Relationships</h2>
+<div class="mermaid">
+flowchart LR
+    subgraph Presentation["Presentation"]
+        HomeCtrl["HomeController"]
+        IndexView["Index.cshtml"]
+        ErrorView["Error.cshtml"]
+        Layout["_Layout.cshtml"]
+    end
+    subgraph AppStart["App Startup / Infrastructure"]
+        Global["Global.asax (Application startup)"]
+        RouteConfig["RouteConfig"]
+        BundleConfig["BundleConfig"]
+        FilterConfig["FilterConfig"]
+    end
+    subgraph Storage["External Storage"]
+        BlobSvc["BlobServiceClient"]
+        BlobContainer["BlobContainerClient"]
+        BlobClient["BlobClient"]
+    end
+
+    Global -->|"registers routes"| RouteConfig
+    Global -->|"registers bundles"| BundleConfig
+    Global -->|"registers filters"| FilterConfig
+    FilterConfig -.->|"HandleErrorAttribute applied globally"| HomeCtrl
+    HomeCtrl -->|"renders on GET"| IndexView
+    HomeCtrl -->|"renders on error"| ErrorView
+    IndexView -->|"uses layout"| Layout
+    HomeCtrl -->|"creates"| BlobSvc
+    BlobSvc -->|"returns"| BlobContainer
+    BlobContainer -->|"returns"| BlobClient
+    BlobContainer -->|"list blobs"| HomeCtrl
+    BlobClient -->|"upload / delete"| HomeCtrl
+</div>
+<h3 id="component-inventory">Component Inventory</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Component</th><th>Layer</th><th>Type</th><th>Responsibility</th>
+</tr></thead><tbody>
+<tr><td>HomeController</td><td>Presentation</td><td>MVC Controller</td><td>Handles list, upload, and delete actions for gallery images</td></tr>
+<tr><td>Index.cshtml</td><td>Presentation</td><td>Razor View</td><td>Renders the photo gallery grid and upload / delete forms</td></tr>
+<tr><td>Error.cshtml</td><td>Presentation</td><td>Razor View</td><td>Displays error messages and stack traces</td></tr>
+<tr><td>_Layout.cshtml</td><td>Presentation</td><td>Razor Layout</td><td>Shared page shell (Bootstrap navbar, CSS, JS bundles)</td></tr>
+<tr><td>Global.asax</td><td>App Startup</td><td>HTTP Application</td><td>Bootstraps MVC infrastructure on application start</td></tr>
+<tr><td>RouteConfig</td><td>App Startup</td><td>Route Configuration</td><td>Defines conventional MVC route (<code>{controller}/{action}/{id}</code>)</td></tr>
+<tr><td>BundleConfig</td><td>App Startup</td><td>Bundle Configuration</td><td>Registers jQuery, Bootstrap, and Modernizr script and style bundles</td></tr>
+<tr><td>FilterConfig</td><td>App Startup</td><td>Filter Configuration</td><td>Registers <code>HandleErrorAttribute</code> as a global exception filter</td></tr>
+</tbody></table></div></div>
+</div>
+<div id="tab-api" class="tab-panel">
+  <div class="fact-content"><h1 id="api-service-communication-contracts">API & Service Communication Contracts</h1>
+<p>The application exposes four conventional ASP.NET MVC action endpoints (not a REST API) through a single <code>HomeController</code>, all interacting synchronously with Azure Blob Storage. There is no inter-service communication, API gateway, or message broker involved.</p>
+<h2 id="service-catalog">Service Catalog</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Port</th><th>Category</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>20050 (IIS Express dev)</td><td>Business</td><td>ASP.NET MVC 5 web application that provides a photo gallery backed by Azure Blob Storage</td></tr>
+<tr><td>Azure Blob Storage</td><td>443 (HTTPS external)</td><td>Infrastructure</td><td>Managed cloud object store holding uploaded image blobs in a single container</td></tr>
+</tbody></table></div>
+<h2 id="api-endpoints-inventory">API Endpoints Inventory</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Method</th><th>Path</th><th>Request Type</th><th>Response Type</th>
+</tr></thead><tbody>
+<tr><td>HomeController</td><td>GET</td><td>/ (or /Home/Index)</td><td>None</td><td>HTML page with <code>List<Uri></code> model (gallery view)</td></tr>
+<tr><td>HomeController</td><td>POST</td><td>/Home/UploadAsync</td><td>Multipart form data (<code>HttpFileCollectionBase</code>)</td><td>Redirect to <code>/Home/Index</code> (302) or Error view</td></tr>
+<tr><td>HomeController</td><td>POST</td><td>/Home/DeleteImage</td><td>Form field <code>Name</code> (blob URI string)</td><td>Redirect to <code>/Home/Index</code> (302) or Error view</td></tr>
+<tr><td>HomeController</td><td>POST</td><td>/Home/DeleteAll</td><td>None (empty POST body)</td><td>Redirect to <code>/Home/Index</code> (302) or Error view</td></tr>
+</tbody></table></div>
+<p>> Note: These are conventional MVC actions returning HTML views or redirects, not JSON REST endpoints. There is no API versioning scheme in place.</p>
+<h2 id="management-observability-endpoints">Management & Observability Endpoints</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Endpoint</th><th>Custom Metrics</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>None configured</td><td>None</td></tr>
+</tbody></table></div>
+<p>No health check endpoints, Swagger UI, or metrics export endpoints are present. The application does not include ASP.NET Health Checks middleware or any observability instrumentation.</p>
+<h2 id="dtos-contracts">DTOs & Contracts</h2>
+<p>The application does not define formal DTO classes. The MVC controller uses the following data contracts implicitly:</p>
+<ul>
+<li><strong><code>List<Uri></code></strong> — The <code>Index</code> action returns a <code>List<Uri></code> as its view model, representing the public URIs of all block blobs in the storage container. This is a framework primitive, not a dedicated DTO class.</li>
+<li><strong><code>HttpFileCollectionBase</code></strong> — The <code>UploadAsync</code> action reads uploaded files directly from <code>Request.Files</code> (the ASP.NET file collection). No request body DTO class is defined.</li>
+<li><strong><code>string name</code></strong> — The <code>DeleteImage</code> action accepts a single <code>string</code> parameter (the blob URI) bound from the form field <code>Name</code>. No wrapper DTO is used.</li>
+</ul>
+<p>There are no OpenAPI / Swagger specifications, protobuf schemas, or GraphQL schemas. Serialization is handled by the default ASP.NET MVC model binder (backed by <code>Newtonsoft.Json 6.0.8</code> for JSON binding and standard form binding for multipart requests).</p>
+<h2 id="communication-patterns">Communication Patterns</h2>
+<p><strong>Synchronous (HTTP → Azure Blob Storage SDK)</strong></p>
+<p>All external communication is synchronous from the user's perspective (HTTP POST → server → Azure Blob Storage), although the controller actions use <code>async/await</code> internally via the <code>Azure.Storage.Blobs</code> SDK. There is no inter-service HTTP communication — the application is a single deployable unit.</p>
+<p><strong>No resilience policies configured</strong>: The application does not implement any retry policies, circuit breakers (e.g., Polly), timeout overrides, or bulkhead patterns. Failures from the Azure Blob Storage SDK bubble up directly to a generic <code>catch (Exception ex)</code> block and are rendered as an error view with the raw exception message and stack trace exposed to the browser.</p>
+<p><strong>No service discovery</strong>: Azure Blob Storage is addressed directly via a connection string stored in <code>Web.config</code> (<code>StorageConnectionString</code>). No service registry or DNS-based discovery is used.</p>
+<p><strong>Security posture</strong>: No authentication, authorization, or TLS termination is configured at the application level. All four endpoints are publicly accessible with no authorization checks. The application relies entirely on network-level security (IIS configuration and/or Azure App Service access restrictions) to restrict access. Connection string credentials for Azure Storage are stored in plain text in <code>Web.config</code>, which presents a secrets management risk in source-controlled deployments.</p>
+<h2 id="service-technology-matrix">Service Technology Matrix</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Web Framework</th><th>Data Access</th><th>Discovery</th><th>Gateway</th><th>Health Checks</th><th>Cache</th><th>Metrics</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>ASP.NET MVC 5 (System.Web)</td><td>Azure.Storage.Blobs v12 SDK</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
+</tbody></table></div>
+<h2 id="service-communication-sequence">Service Communication Sequence</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant Browser as "Web Browser"
+    participant MVC as "ASP.NET MVC (HomeController)"
+    participant Blob as "Azure Blob Storage"
+
+    Note over Browser,Blob: Gallery Load (GET /)
+    Browser->>MVC: GET /Home/Index
+    MVC->>Blob: CreateIfNotExistsAsync(container)
+    Blob-->>MVC: Container ready
+    MVC->>Blob: GetBlobs() - list block blobs
+    Blob-->>MVC: List of BlobItem
+    MVC-->>Browser: 200 HTML (gallery with image URIs)
+
+    Note over Browser,Blob: Upload Image (POST)
+    Browser->>MVC: POST /Home/UploadAsync (multipart/form-data)
+    MVC->>Blob: GetBlobClient(randomName)
+    MVC->>Blob: UploadAsync(fileStream)
+    alt Upload succeeds
+        Blob-->>MVC: Upload complete
+        MVC-->>Browser: 302 Redirect to /Home/Index
+    else Upload fails
+        Blob-->>MVC: Exception
+        MVC-->>Browser: 200 Error view (exception message + stack trace)
+    end
+
+    Note over Browser,Blob: Delete Single Image (POST)
+    Browser->>MVC: POST /Home/DeleteImage (Name=blobUri)
+    MVC->>Blob: GetBlobClient(filename)
+    MVC->>Blob: DeleteIfExistsAsync()
+    Blob-->>MVC: Deleted (or not found)
+    MVC-->>Browser: 302 Redirect to /Home/Index
+
+    Note over Browser,Blob: Delete All Images (POST)
+    Browser->>MVC: POST /Home/DeleteAll
+    MVC->>Blob: GetBlobs() - list block blobs
+    loop For each block blob
+        MVC->>Blob: DeleteBlobIfExistsAsync(blobName)
+        Blob-->>MVC: Deleted
+    end
+    MVC-->>Browser: 302 Redirect to /Home/Index
+</div></div>
+</div>
+<div id="tab-config" class="tab-panel">
+  <div class="fact-content"><h1 id="configuration-externalized-settings-inventory">Configuration & Externalized Settings Inventory</h1>
+<p>The application uses a single <code>Web.config</code> XML configuration file as its only configuration source; there are no profiles, external config servers, or secrets management integrations beyond a plain-text connection string.</p>
+<h2 id="configuration-sources">Configuration Sources</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Source</th><th>Type</th><th>Path/Location</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Web.config</td><td>XML application config</td><td><code>WebApp-Storage-DotNet/Web.config</code></td><td>Primary and only config file; contains app settings, runtime bindings, and HTTP runtime settings</td></tr>
+<tr><td>Web.Debug.config</td><td>XML transform</td><td><code>WebApp-Storage-DotNet/Web.Debug.config</code></td><td>XDT transform applied during Debug builds (file not shown to contain custom transforms)</td></tr>
+<tr><td>Web.Release.config</td><td>XML transform</td><td><code>WebApp-Storage-DotNet/Web.Release.config</code></td><td>XDT transform applied during Release builds (file not shown to contain custom transforms)</td></tr>
+<tr><td>Views/Web.config</td><td>XML (Razor view config)</td><td><code>WebApp-Storage-DotNet/Views/Web.config</code></td><td>Razor view engine settings; restricts direct URL access to <code>.cshtml</code> files</td></tr>
+<tr><td>packages.config</td><td>NuGet package manifest</td><td><code>WebApp-Storage-DotNet/packages.config</code></td><td>Declares NuGet package versions; not a runtime config source</td></tr>
+</tbody></table></div>
+<p>No Spring Cloud Config server, Azure App Configuration, AWS AppConfig, Consul KV, or external configuration repositories are in use.</p>
+<h2 id="build-profiles">Build Profiles</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>Activation</th><th>Purpose</th><th>Key Dependencies / Plugins</th>
+</tr></thead><tbody>
+<tr><td>Debug</td><td>Default in Visual Studio / <code>dotnet build</code> without <code>-c</code></td><td>Development build with full debug symbols, no optimization</td><td><code><DebugSymbols>true</DebugSymbols></code>, <code><Optimize>false</Optimize></code>, XDT from <code>Web.Debug.config</code></td></tr>
+<tr><td>Release</td><td><code>-c Release</code> or publish pipeline</td><td>Production build with optimized output</td><td><code><Optimize>true</Optimize></code>, <code><DebugType>pdbonly</DebugType></code>, XDT from <code>Web.Release.config</code></td></tr>
+</tbody></table></div>
+<p>No MSBuild condition properties, custom build targets, or environment-specific NuGet feeds are defined beyond the two standard Debug / Release configurations.</p>
+<h2 id="runtime-profiles">Runtime Profiles</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>Activation Method</th><th>Config Files</th><th>Key Overrides</th>
+</tr></thead><tbody>
+<tr><td>Development</td><td>Default — uses <code>UseDevelopmentStorage=true</code></td><td><code>Web.config</code></td><td><code>StorageConnectionString</code> points to local Azure Storage Emulator</td></tr>
+<tr><td>Production</td><td>Connection string override via deployment pipeline or App Service app setting</td><td><code>Web.config</code> (or environment variable injection)</td><td><code>StorageConnectionString</code> must be replaced with a real Azure Storage account connection string</td></tr>
+</tbody></table></div>
+<p>The application does not use <code>ASPNETCORE_ENVIRONMENT</code>, <code>IHostEnvironment</code>, or <code>appsettings.{Environment}.json</code> files — it targets <code>System.Web</code> (IIS pipeline), which does not support the ASP.NET Core environment model. Environment switching relies entirely on manual connection string replacement or Web.config transforms.</p>
+<h2 id="properties-inventory">Properties Inventory</h2>
+<h3 id="webapp-storage-dotnet">WebApp-Storage-DotNet</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Property Key</th><th>Default Value</th><th>Profiles</th><th>Source</th>
+</tr></thead><tbody>
+<tr><td><code>StorageConnectionString</code></td><td><code>UseDevelopmentStorage=true</code></td><td>All (override in production)</td><td><code>Web.config</code> → <code><appSettings></code></td></tr>
+<tr><td><code>webpages:Version</code></td><td><code>3.0.0.0</code></td><td>All</td><td><code>Web.config</code> → <code><appSettings></code></td></tr>
+<tr><td><code>webpages:Enabled</code></td><td><code>false</code></td><td>All</td><td><code>Web.config</code> → <code><appSettings></code></td></tr>
+<tr><td><code>ClientValidationEnabled</code></td><td><code>true</code></td><td>All</td><td><code>Web.config</code> → <code><appSettings></code></td></tr>
+<tr><td><code>UnobtrusiveJavaScriptEnabled</code></td><td><code>true</code></td><td>All</td><td><code>Web.config</code> → <code><appSettings></code></td></tr>
+<tr><td><code>compilation debug</code></td><td><code>true</code></td><td>All</td><td><code>Web.config</code> → <code><system.web><compilation></code></td></tr>
+<tr><td><code>targetFramework</code> (compilation)</td><td><code>4.8</code></td><td>All</td><td><code>Web.config</code> → <code><system.web><compilation></code></td></tr>
+<tr><td><code>httpRuntime targetFramework</code></td><td><code>4.5.2</code></td><td>All</td><td><code>Web.config</code> → <code><system.web><httpRuntime></code></td></tr>
+<tr><td><code>maxRequestLength</code></td><td><code>2100000000</code></td><td>All</td><td><code>Web.config</code> → <code><system.web><httpRuntime></code></td></tr>
+<tr><td><code>executionTimeout</code></td><td><code>12000000</code></td><td>All</td><td><code>Web.config</code> → <code><system.web><httpRuntime></code></td></tr>
+</tbody></table></div>
+<p>> Note: <code>maxRequestLength</code> is set to ~2 GB and <code>executionTimeout</code> to ~138 days — both are extreme values that suggest the defaults were not reviewed for production use.</p>
+<h2 id="startup-parameters-resource-requirements">Startup Parameters & Resource Requirements</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Runtime Options</th><th>Memory / CPU</th><th>Instance Count</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Standard IIS worker process (w3wp.exe); no custom JVM or .NET CLR startup flags configured</td><td>Not specified in project files; relies on IIS / App Service plan defaults</td><td>1 (no scaling configuration present)</td></tr>
+</tbody></table></div>
+<p>No Docker Compose files, Kubernetes manifests, or cloud deployment descriptors are present in the repository. There are no <code>ASPNETCORE_ENVIRONMENT</code> environment variable overrides or cloud-specific startup scripts.</p>
+<h2 id="startup-dependency-chain">Startup Dependency Chain</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Order</th><th>Service / Component</th><th>Waits For</th><th>Mechanism</th>
+</tr></thead><tbody>
+<tr><td>1</td><td>IIS / IIS Express</td><td>—</td><td>Starts the ASP.NET application host</td></tr>
+<tr><td>2</td><td>WebApp-Storage-DotNet (<code>Application_Start</code>)</td><td>IIS worker process</td><td><code>Global.asax.cs</code> <code>Application_Start</code> — registers routes, filters, bundles</td></tr>
+<tr><td>3</td><td>Azure Blob Storage container</td><td>First HTTP request to <code>Index</code></td><td><code>CreateIfNotExistsAsync</code> called lazily on first page load; no readiness probe or health check configured</td></tr>
+</tbody></table></div>
+<p>There are no explicit startup dependency checks, <code>dockerize</code> wait-for-TCP guards, readiness probes, or retry policies. If Azure Blob Storage is unavailable at startup the application will surface a raw exception message to the browser on the first request.</p>
+<h2 id="secrets-sensitive-configuration">Secrets & Sensitive Configuration</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Secret Reference</th><th>Type</th><th>Storage</th>
+</tr></thead><tbody>
+<tr><td><code>StorageConnectionString</code></td><td>Azure Storage account connection string or SAS token</td><td>Plain text in <code>Web.config</code> <code><appSettings></code> — <strong>[MASKED]</strong> in production</td></tr>
+</tbody></table></div>
+<p>No encryption (Jasypt, DPAPI, sealed secrets) is applied to the connection string value. The file is tracked in source control, meaning any developer or CI runner with repository access can read production credentials if the file is not excluded or the value is not replaced during deployment.</p>
+<h3 id="secrets-provisioning-workflow">Secrets Provisioning Workflow</h3>
+<p><strong>Current state (development):</strong> The connection string defaults to <code>UseDevelopmentStorage=true</code>, which targets the local Azure Storage Emulator. No secrets provisioning workflow is defined in the repository.</p>
+<p><strong>Production gap:</strong> There is no documented mechanism for injecting production credentials. Recommended approaches for an Azure deployment include:</p>
+<ol>
+<li><strong>Azure App Service Application Settings</strong> — override <code>StorageConnectionString</code> as an environment variable in the App Service configuration panel; this value supersedes <code>Web.config</code> at runtime without modifying source code.</li>
+<li><strong>Azure Key Vault + Managed Identity</strong> — store the connection string in Key Vault, assign a system-managed identity to the App Service, and reference the secret via the Key Vault reference syntax (<code>@Microsoft.KeyVault(SecretUri=...)</code>).</li>
+<li><strong>CI/CD secret substitution</strong> — use a Web.config transform or deployment pipeline step (e.g., GitHub Actions <code>microsoft/variable-substitution</code>) to replace the placeholder value during release.</li>
+</ol>
+<p>No RBAC permissions, managed identity configuration, or Key Vault references are currently configured in the repository.</p>
+<h2 id="feature-flags">Feature Flags</h2>
+<p>No feature flags, conditional beans, <code>@ConditionalOnProperty</code> annotations, or feature management frameworks are in use. The application has no A/B testing or gradual rollout configuration.</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Flag Name</th><th>Default</th><th>Controlled By</th>
+</tr></thead><tbody>
+<tr><td>(none detected)</td><td>—</td><td>—</td></tr>
+</tbody></table></div>
+<h2 id="framework-runtime-versions">Framework & Runtime Versions</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Component</th><th>Version</th><th>Source</th>
+</tr></thead><tbody>
+<tr><td>.NET Framework (runtime)</td><td>4.8</td><td><code>WebApp-Storage-DotNet.csproj</code> <code><TargetFrameworkVersion>v4.8</TargetFrameworkVersion></code></td></tr>
+<tr><td>ASP.NET MVC</td><td>5.2.3</td><td><code>packages.config</code> <code>Microsoft.AspNet.Mvc</code></td></tr>
+<tr><td>ASP.NET Razor</td><td>3.2.3</td><td><code>packages.config</code> <code>Microsoft.AspNet.Razor</code></td></tr>
+<tr><td>ASP.NET WebPages</td><td>3.2.3</td><td><code>packages.config</code> <code>Microsoft.AspNet.WebPages</code></td></tr>
+<tr><td>System.Web.Optimization</td><td>1.1.3</td><td><code>packages.config</code> <code>Microsoft.AspNet.Web.Optimization</code></td></tr>
+<tr><td>Azure.Storage.Blobs SDK</td><td>12.9.1</td><td><code>packages.config</code></td></tr>
+<tr><td>Azure.Core</td><td>1.18.0</td><td><code>packages.config</code></td></tr>
+<tr><td>Newtonsoft.Json</td><td>6.0.8</td><td><code>packages.config</code></td></tr>
+<tr><td>Bootstrap</td><td>3.0.0</td><td><code>packages.config</code></td></tr>
+<tr><td>jQuery</td><td>1.10.2</td><td><code>packages.config</code></td></tr>
+<tr><td>Modernizr</td><td>2.6.2</td><td><code>packages.config</code></td></tr>
+<tr><td>C# Language Version</td><td>6 (set via <code>/langversion:6</code> in <code>Web.config</code> compiler options)</td><td><code>Web.config</code> <code><system.codedom></code></td></tr>
+<tr><td>MSBuild ToolsVersion</td><td>14.0</td><td><code>WebApp-Storage-DotNet.csproj</code></td></tr>
+<tr><td>NuGet package management</td><td><code>packages.config</code> format (legacy)</td><td><code>WebApp-Storage-DotNet.csproj</code></td></tr>
+</tbody></table></div></div>
+</div>
+<div id="tab-workflows" class="tab-panel">
+  <div class="fact-content"><h1 id="core-business-workflows">Core Business Workflows</h1>
+<p>The application is an Azure Blob Storage photo gallery that allows users to browse, upload, and delete images stored in a cloud object store — with no user authentication, ownership model, or metadata management.</p>
+<h2 id="domain-entities">Domain Entities</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Entity</th><th>Service / Bounded Context</th><th>Description</th><th>Key Relationships</th>
+</tr></thead><tbody>
+<tr><td>Image Blob</td><td>Photo Gallery</td><td>A user-uploaded image file stored as a block blob in Azure Blob Storage</td><td>Belongs to a single container; identified by a randomly generated filename</td></tr>
+<tr><td>Blob Container</td><td>Photo Gallery</td><td>The logical grouping (<code>webappstoragedotnet-imagecontainer</code>) that holds all gallery images</td><td>Contains zero or more image blobs; created automatically on first use</td></tr>
+</tbody></table></div>
+<p>The domain is minimal: there are no users, albums, tags, comments, or ownership records. All images exist in a flat, unscoped container accessible to anyone with the public URL.</p>
+<h2 id="service-to-domain-mapping">Service-to-Domain Mapping</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Domain Context</th><th>Owned Entities</th><th>External Dependencies</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Photo Gallery</td><td>Image Blob, Blob Container</td><td>Azure Blob Storage (Azure.Storage.Blobs SDK v12)</td></tr>
+</tbody></table></div>
+<p>This is a single-service application. There are no microservices, bounded context boundaries, or inter-service data flows.</p>
+<h2 id="primary-workflows">Primary Workflows</h2>
+<h3 id="workflow-1-browse-photo-gallery">Workflow 1: Browse Photo Gallery</h3>
+<p>A visitor opens the application homepage. The controller connects to Azure Blob Storage, ensures the container exists, lists all block blobs, and passes their public URIs to the Razor view. The view renders thumbnail images and provides upload and delete controls.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Browser sends <code>GET /Home/Index</code></li>
+<li>Controller creates <code>BlobServiceClient</code> from <code>StorageConnectionString</code></li>
+<li>Controller calls <code>CreateIfNotExistsAsync</code> to ensure container exists (no-op if already present)</li>
+<li>Controller calls <code>GetBlobs()</code> and filters for <code>BlobType == Block</code></li>
+<li>Blob URIs are collected into <code>List<Uri></code></li>
+<li>Razor view renders gallery grid with thumbnails and delete icons</li>
+</ol>
+<p><strong>Business rules involved:</strong></p>
+<ul>
+<li>Only block blobs are shown (page blobs and append blobs are excluded)</li>
+<li>All images are publicly visible — no per-image access control</li>
+</ul>
+<p>---</p>
+<h3 id="workflow-2-upload-image-s">Workflow 2: Upload Image(s)</h3>
+<p>A user selects one or more files using the file picker and submits the form. Each selected file is uploaded to the blob container under a randomly generated filename to avoid collisions.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>User selects files in the browser; JavaScript shows a preview list and enables the Upload button</li>
+<li>Browser sends <code>POST /Home/UploadAsync</code> with <code>multipart/form-data</code></li>
+<li>Controller reads <code>Request.Files</code> collection</li>
+<li>For each file, a random blob name is generated: <code>{ticks}_{guid}{ext}</code></li>
+<li><code>BlobClient.UploadAsync(fileStream)</code> is called for each file</li>
+<li>On success, the controller redirects to <code>GET /Home/Index</code></li>
+<li>On failure, an error view renders the raw exception message and stack trace</li>
+</ol>
+<p><strong>Business rules involved:</strong></p>
+<ul>
+<li>Any number of files may be selected in a single submission (no per-request file count limit is enforced in code)</li>
+<li><code>maxRequestLength</code> is set to ~2 GB in <code>Web.config</code>, permitting very large uploads</li>
+<li>No file type validation, MIME type checking, or virus scanning is performed</li>
+<li>Blob names are randomised to prevent overwrite collisions</li>
+</ul>
+<p>---</p>
+<h3 id="workflow-3-delete-single-image">Workflow 3: Delete Single Image</h3>
+<p>A user clicks the delete icon beneath a gallery thumbnail. JavaScript issues a POST to the delete endpoint passing the full blob URI; the controller extracts the filename from the URI and deletes the blob.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>User clicks delete icon; JavaScript calls <code>$.post('/Home/DeleteImage', { Name: blobUri })</code></li>
+<li>Browser sends <code>POST /Home/DeleteImage</code> with form field <code>Name</code></li>
+<li>Controller parses the blob URI to extract the filename with <code>Path.GetFileName(uri.LocalPath)</code></li>
+<li><code>BlobClient.DeleteIfExistsAsync()</code> is called</li>
+<li>Controller redirects to <code>GET /Home/Index</code></li>
+</ol>
+<p><strong>Business rules involved:</strong></p>
+<ul>
+<li>The blob name is derived by parsing the URI; a malformed URI causes an exception with no user-friendly fallback</li>
+<li><code>DeleteIfExistsAsync</code> is used — if the blob was already deleted, the call is a no-op rather than an error</li>
+<li>There is no ownership check or confirmation step before deletion</li>
+</ul>
+<p>---</p>
+<h3 id="workflow-4-delete-all-images">Workflow 4: Delete All Images</h3>
+<p>A user clicks the "Delete All Files" button. The controller retrieves the full blob list and deletes each block blob individually in a serial loop.</p>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>User clicks "Delete All Files" submit button</li>
+<li>Browser sends <code>POST /Home/DeleteAll</code></li>
+<li>Controller calls <code>GetBlobs()</code> and iterates over each block blob</li>
+<li>For each blob, <code>DeleteBlobIfExistsAsync(blob.Name)</code> is called sequentially (<code>await</code> in loop — serial, not parallel)</li>
+<li>Controller redirects to <code>GET /Home/Index</code></li>
+</ol>
+<p><strong>Business rules involved:</strong></p>
+<ul>
+<li>Deletion is irreversible — no confirmation dialog or recycle-bin pattern</li>
+<li>All images are deleted regardless of any attribute; there is no filtering or selection</li>
+<li>Partial failure is not handled: if one deletion throws, subsequent blobs remain and the error view is shown</li>
+</ul>
+<h2 id="cross-service-data-flows">Cross-Service Data Flows</h2>
+<p>There are no cross-service data flows. The application is a monolithic single-service deployment. All data access is from <code>HomeController</code> directly to Azure Blob Storage via the SDK. No aggregation, fan-out, or inter-service composition patterns are present.</p>
+<h2 id="business-workflow-sequence">Business Workflow Sequence</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant User as "User (Browser)"
+    participant MVC as "HomeController"
+    participant Blob as "Azure Blob Storage"
+
+    Note over User,Blob: Browse Gallery
+    User->>MVC: GET / (view gallery)
+    MVC->>Blob: CreateIfNotExistsAsync (container)
+    Blob-->>MVC: Container ready
+    MVC->>Blob: GetBlobs() - list block blobs
+    Blob-->>MVC: BlobItem list
+    MVC-->>User: Gallery HTML with image thumbnails
+
+    Note over User,Blob: Upload Images
+    User->>MVC: POST /UploadAsync (multipart files)
+    loop For each selected file
+        MVC->>Blob: UploadAsync(randomName, fileStream)
+        alt Upload succeeds
+            Blob-->>MVC: Blob created
+        else Upload fails
+            Blob-->>MVC: Exception thrown
+            MVC-->>User: Error view (raw exception)
+        end
+    end
+    MVC-->>User: 302 Redirect to gallery
+
+    Note over User,Blob: Delete Single Image
+    User->>MVC: POST /DeleteImage (blobUri)
+    MVC->>MVC: Extract filename from URI
+    MVC->>Blob: DeleteIfExistsAsync(filename)
+    Blob-->>MVC: Deleted (or not found)
+    MVC-->>User: 302 Redirect to gallery
+
+    Note over User,Blob: Delete All Images
+    User->>MVC: POST /DeleteAll
+    MVC->>Blob: GetBlobs() - list block blobs
+    loop For each block blob
+        MVC->>Blob: DeleteBlobIfExistsAsync(blobName)
+        Blob-->>MVC: Deleted
+    end
+    MVC-->>User: 302 Redirect to gallery
+</div>
+<h2 id="business-rules-decision-logic">Business Rules & Decision Logic</h2>
+<p><strong>Validation rules:</strong></p>
+<ul>
+<li>No server-side input validation is implemented. There are no file type checks, file size limits beyond the global <code>maxRequestLength</code> (~2 GB), or content inspection. The application trusts all user-supplied uploads unconditionally.</li>
+<li>The delete-by-name workflow parses the blob URI using <code>Path.GetFileName(uri.LocalPath)</code> — no validation that the URI belongs to the expected container or storage account.</li>
+</ul>
+<p><strong>Decision logic:</strong></p>
+<ul>
+<li>On <code>GetBlobs()</code>, only blobs of <code>BlobType.Block</code> are included in the gallery display and in the Delete All loop. Page blobs and append blobs are silently skipped.</li>
+<li>The gallery displays zero or more images depending on what is in the container. There is no pagination, search, or filtering logic.</li>
+</ul>
+<p><strong>State transitions:</strong></p>
+<ul>
+<li>Blob lifecycle: does not exist → uploaded → (optionally) deleted. There are no intermediate states, versioning, or soft-delete semantics enabled at the application level.</li>
+</ul>
+<p><strong>Business constraints:</strong></p>
+<ul>
+<li>Blob names are generated as <code>{ticks}_{guid}{extension}</code>. This makes names globally unique but loses the original filename, making it impossible to identify images by their original name after upload.</li>
+<li>All images in the container are treated as equally owned — there is no per-user ownership, album, or tagging concept.</li>
+</ul>
+<p><strong>Transactions:</strong></p>
+<ul>
+<li>No transactional semantics. Azure Blob Storage does not support multi-operation transactions. A partial failure during "Delete All" leaves the container in an inconsistent partially-deleted state with no compensating action.</li>
+</ul>
+<p><strong>Error handling:</strong></p>
+<ul>
+<li>All four controller actions wrap their logic in a single <code>catch (Exception ex)</code> block that renders <code>ViewData["message"]</code> and <code>ViewData["trace"]</code> — exposing the full exception message and stack trace to the end user. This is a security and usability risk in production.</li>
+</ul>
+<p><strong>Authorization:</strong></p>
+<ul>
+<li>No authentication or authorization is implemented. Any user with network access to the application can upload, view, and delete any image.</li>
+</ul>
+<p><strong>Audit / logging:</strong></p>
+<ul>
+<li>No application-level logging is implemented. Failed operations surface only through the error view; there is no structured log, event store, or audit trail.</li>
+</ul></div>
+</div>
+<div id="tab-deps" class="tab-panel">
+  <div class="fact-content"><h1 id="dependency-map">Dependency Map</h1>
+<p>This document maps all declared external dependencies for the PhotoGallery ASP.NET MVC 5 application. A total of <strong>36 packages</strong> are declared in <code>packages.config</code> (targeting .NET Framework 4.8 / 4.5.2), the majority being Azure SDK components and legacy ASP.NET ecosystem libraries.</p>
+<h2 id="dependencies">Dependencies</h2>
+<div class="mermaid">
+flowchart LR
+    App["PhotoGallery\n(ASP.NET MVC 5 / .NET 4.8)"]
+
+    subgraph Web["Web Frameworks"]
+        ASPNETMVC["Microsoft.AspNet.Mvc 5.2.3"]
+        Razor["Microsoft.AspNet.Razor 3.2.3"]
+        WebPages["Microsoft.AspNet.WebPages 3.2.3"]
+        WebOpt["Microsoft.AspNet.Web.Optimization 1.1.3"]
+        WebInfra["Microsoft.Web.Infrastructure 1.0.0"]
+    end
+
+    subgraph Azure["Azure Storage"]
+        AzureBlobs["Azure.Storage.Blobs 12.9.1"]
+        AzureCommon["Azure.Storage.Common 12.8.0"]
+        AzureCore["Azure.Core 1.18.0"]
+    end
+
+    subgraph Client["Client-Side UI"]
+        Bootstrap["bootstrap 3.0.0"]
+        jQuery["jQuery 1.10.2"]
+        jQueryVal["jQuery.Validation 1.11.1"]
+        jQueryUnobtrusive["Microsoft.jQuery.Unobtrusive.Validation 3.2.3"]
+        Modernizr["Modernizr 2.6.2"]
+        Respond["Respond 1.2.0"]
+    end
+
+    subgraph Util["Utilities / Serialization"]
+        Newtonsoft["Newtonsoft.Json 6.0.8"]
+        BclAsync["Microsoft.Bcl.AsyncInterfaces 1.0.0"]
+        SysTextJson["System.Text.Json 4.6.0"]
+        SysTextEnc["System.Text.Encodings.Web 4.7.2"]
+        SysMemory["System.Memory 4.5.4"]
+        SysMemoryData["System.Memory.Data 1.0.2"]
+        SysBuffers["System.Buffers 4.5.1"]
+        SysVecTuple["System.ValueTuple 4.5.0"]
+        SysNumerics["System.Numerics.Vectors 4.5.0"]
+        SysTasksExt["System.Threading.Tasks.Extensions 4.5.2"]
+        SysUnsafe["System.Runtime.CompilerServices.Unsafe 4.6.0"]
+        SysDiag["System.Diagnostics.DiagnosticSource 4.6.0"]
+        Antlr["Antlr 3.4.1.9004"]
+        WebGrease["WebGrease 1.5.2"]
+    end
+
+    subgraph Legacy["Legacy OData / WCF Clients"]
+        MsDataEdm["Microsoft.Data.Edm 5.6.4"]
+        MsDataOData["Microsoft.Data.OData 5.6.4"]
+        MsDataServices["Microsoft.Data.Services.Client 5.6.4"]
+        SysSpatial["System.Spatial 5.6.4"]
+    end
+
+    App -->|"web framework"| Web
+    App -->|"blob storage"| Azure
+    App -->|"client UI"| Client
+    App -->|"utilities"| Util
+    App -->|"legacy data clients"| Legacy
+    AzureBlobs -.->|"depends on"| AzureCommon
+    AzureCommon -.->|"depends on"| AzureCore
+    AzureCore -.->|"depends on"| SysMemory
+    AzureCore -.->|"depends on"| SysDiag
+</div>
+<h3 id="dependency-summary">Dependency Summary</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Category</th><th>Count</th><th>Key Libraries</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Web Frameworks</td><td>5</td><td>Microsoft.AspNet.Mvc 5.2.3, Razor 3.2.3, Web.Optimization 1.1.3</td><td>Legacy ASP.NET MVC stack targeting .NET Framework</td></tr>
+<tr><td>Azure Storage</td><td>3</td><td>Azure.Storage.Blobs 12.9.1, Azure.Core 1.18.0</td><td>Modern Azure SDK v12; supported on .NET Standard 2.0+</td></tr>
+<tr><td>Client-Side UI</td><td>6</td><td>Bootstrap 3.0.0, jQuery 1.10.2, Modernizr 2.6.2</td><td>Older client libraries bundled via NuGet</td></tr>
+<tr><td>Utilities / Serialization</td><td>14</td><td>Newtonsoft.Json 6.0.8, System.Text.Json 4.6.0, System.Memory 4.5.4</td><td>Mostly polyfills and primitives required by Azure SDK on .NET 4.8</td></tr>
+<tr><td>Legacy OData / WCF</td><td>4</td><td>Microsoft.Data.Edm 5.6.4, Microsoft.Data.OData 5.6.4</td><td>Transitive pull from older Azure Storage packages; not directly used</td></tr>
+</tbody></table></div>
+<h3 id="version-compatibility-risks">Version & Compatibility Risks</h3>
+<p>Several dependencies carry meaningful migration risk. <strong>Microsoft.AspNet.Mvc 5.2.3</strong> and the associated Razor/WebPages packages are tied to the legacy <code>System.Web</code> pipeline, which does not run on .NET Core / .NET 5+; migrating to modern .NET requires adopting <strong>ASP.NET Core MVC</strong>. <strong>Newtonsoft.Json 6.0.8</strong> is extremely old (released 2014) — current is 13.x — and exposes the application to known deserialization vulnerabilities if untrusted input is parsed. <strong>Bootstrap 3.0.0</strong> and <strong>jQuery 1.10.2</strong> are end-of-life client libraries. The four <strong>Microsoft.Data.Edm / OData / DataServices.Client 5.6.4</strong> packages appear as legacy leftovers from earlier Azure SDK versions and are no longer needed with the modern <code>Azure.Storage.Blobs</code> v12 SDK. The <strong>Microsoft.Bcl.AsyncInterfaces 1.0.0</strong> and <strong>System.*` polyfill packages</strong> are .NET 4.8 backports; they can be dropped entirely once the application targets .NET 6+.</p>
+<h3 id="notable-observations">Notable Observations</h3>
+<ul>
+<li><strong>Dual JSON serialization stacks</strong>: Both <code>Newtonsoft.Json 6.0.8</code> and <code>System.Text.Json 4.6.0</code> are declared. <code>Newtonsoft.Json</code> is used directly by legacy ASP.NET MVC for model binding; <code>System.Text.Json</code> is pulled in as a transitive dependency by the Azure SDK. Having both libraries at significantly different versions increases binary footprint and risks subtle serialization divergence.</li>
+<li><strong>Azure SDK is modern but runtime target is not</strong>: <code>Azure.Storage.Blobs 12.9.1</code> is a current, well-maintained SDK, yet it is running on .NET Framework 4.8. Upgrading the runtime to .NET 8+ would allow using newer SDK versions and removing all the <code>System.*</code> polyfill backports.</li>
+<li><strong>Legacy OData packages are orphaned</strong>: <code>Microsoft.Data.Edm</code>, <code>Microsoft.Data.OData</code>, <code>Microsoft.Data.Services.Client</code>, and <code>System.Spatial</code> (all v5.6.4) are transitive remnants of the old <code>WindowsAzure.Storage</code> SDK. The current <code>Azure.Storage.Blobs</code> v12 SDK does not depend on them; they can be safely removed.</li>
+<li><strong>Client-side libraries managed via NuGet</strong>: Bootstrap, jQuery, and Modernizr are delivered as NuGet packages rather than via a dedicated front-end toolchain (npm / yarn). This anti-pattern is common in older MVC projects but makes front-end updates harder and includes unnecessary server-side package metadata.</li>
+</ul>
+<h2 id="test-dependencies">Test Dependencies</h2>
+<p>No test-scoped dependencies were detected in <code>packages.config</code> or any project files.</p>
+<p>Total test-scope dependencies: <strong>0</strong></p>
+<p>No unit or integration test project was found in the solution. Adding a test project with a modern framework such as xUnit 2.x and Moq would significantly improve maintainability and support safe migration to .NET 8+.</p></div>
+</div>
+<div id="tab-data" class="tab-panel">
+  <div class="fact-content"><h1 id="data-architecture-persistence-layer">Data Architecture & Persistence Layer</h1>
+<p>The application has no relational database or ORM layer. All persistent data is stored as unstructured binary blobs in a single Azure Blob Storage container, accessed directly through the <code>Azure.Storage.Blobs</code> v12 SDK without any intermediate data access abstraction.</p>
+<h2 id="database-configuration">Database Configuration</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service/Module</th><th>DB Type</th><th>Profile/Environment</th><th>Driver / SDK</th><th>Connection</th><th>Migration Tool</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Azure Blob Storage</td><td>All (dev uses Storage Emulator)</td><td>Azure.Storage.Blobs 12.9.1</td><td><code>StorageConnectionString</code> in <code>Web.config</code> (default: <code>UseDevelopmentStorage=true</code>)</td><td>None — container created programmatically via <code>CreateIfNotExistsAsync</code></td></tr>
+</tbody></table></div>
+<p>No relational database, migration framework (Flyway, Liquibase, EF Migrations), or schema versioning tooling is used. The only persistent store is the Azure Blob Storage container <code>webappstoragedotnet-imagecontainer</code>, which is created at runtime on first request if it does not already exist.</p>
+<h2 id="data-ownership-per-service">Data Ownership per Service</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Entities / Data Owned</th><th>ORM Framework</th><th>Caching</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Image blobs in Azure Blob Storage container <code>webappstoragedotnet-imagecontainer</code></td><td>None (direct SDK calls)</td><td>None</td><td>Container created with <code>PublicAccessType.Blob</code>; no transactional semantics</td></tr>
+</tbody></table></div>
+<h2 id="entity-model">Entity Model</h2>
+<p>The application stores image files as opaque binary blobs. There are no application-defined entity classes or ORM mappings. The only conceptual entity is the <strong>blob object</strong> as represented by the Azure SDK types:</p>
+<div class="mermaid">
+erDiagram
+    BlobContainer ||--o{ Blob : "contains"
+    BlobContainer {
+        string Name PK "webappstoragedotnet-imagecontainer"
+        string PublicAccess "Blob-level public read"
+    }
+    Blob {
+        string Name PK "random GUID-based filename"
+        string Uri "public HTTPS URL"
+        string BlobType "Block"
+        datetime LastModified
+        long ContentLength "bytes"
+    }
+</div>
+<p>> Note: <code>BlobContainer</code> and <code>Blob</code> are Azure SDK domain objects, not application-defined entity classes. All metadata listed above is managed by Azure Blob Storage; the application stores no additional metadata.</p>
+<h2 id="key-repository-methods">Key Repository Methods</h2>
+<p>The application does not define repository interfaces or use an ORM. All data access is performed inline within <code>HomeController</code> using the Azure Blob Storage SDK client objects:</p>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Access Object</th><th>Operations Used</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>HomeController</td><td><code>BlobServiceClient</code></td><td>Constructor with connection string</td><td>Initialise service client from config</td></tr>
+<tr><td>HomeController</td><td><code>BlobContainerClient</code></td><td><code>CreateIfNotExistsAsync(PublicAccessType.Blob)</code></td><td>Ensure container exists on startup</td></tr>
+<tr><td>HomeController</td><td><code>BlobContainerClient</code></td><td><code>GetBlobs()</code> → filter <code>BlobType == Block</code></td><td>List all image blobs for gallery view</td></tr>
+<tr><td>HomeController</td><td><code>BlobContainerClient</code></td><td><code>GetBlobClient(randomName)</code></td><td>Obtain a client for a specific blob by name</td></tr>
+<tr><td>HomeController</td><td><code>BlobClient</code></td><td><code>UploadAsync(fileStream)</code></td><td>Upload a new image file</td></tr>
+<tr><td>HomeController</td><td><code>BlobClient</code></td><td><code>DeleteIfExistsAsync()</code></td><td>Delete a specific image by name</td></tr>
+<tr><td>HomeController</td><td><code>BlobContainerClient</code></td><td><code>DeleteBlobIfExistsAsync(blobName)</code></td><td>Delete a blob during bulk delete</td></tr>
+</tbody></table></div>
+<p>No custom query methods, bulk-fetch helpers, or stored procedures exist. All access is synchronous from the persistence perspective (wrapped in <code>async/await</code> at the controller level).</p>
+<h2 id="caching-strategy">Caching Strategy</h2>
+<p>No caching layer is implemented. Every page load issues a live <code>GetBlobs()</code> call to Azure Blob Storage to enumerate the current container contents. There is no in-process cache, distributed cache (Redis, MemoryCache), or HTTP-level response caching configured.</p>
+<p>The static <code>BlobContainerClient blobContainer</code> field on <code>HomeController</code> is re-assigned on every <code>Index</code> request and does not serve as a cache — it simply holds the most recently created client reference.</p>
+<h2 id="data-ownership-boundaries">Data Ownership Boundaries</h2>
+<p>The application is a single deployable unit with no inter-service data access. There is one data store (Azure Blob Storage) owned exclusively by this service. No shared database, cross-service queries, or CQRS patterns are present.</p>
+<p>All read and write operations are performed through a direct SDK client with no abstraction boundary between the controller and the storage layer.</p>
+<h3 id="data-classification-sensitivity">Data Classification & Sensitivity</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Data Element</th><th>Sensitive Fields</th><th>Classification</th><th>Controls in Place</th>
+</tr></thead><tbody>
+<tr><td>Uploaded image files</td><td>Binary content (photos)</td><td>Potentially sensitive — depends on content uploaded by users</td><td>None — blobs are publicly readable (<code>PublicAccessType.Blob</code>); no access control, encryption key management, or content scanning configured</td></tr>
+<tr><td>Azure Storage connection string</td><td><code>StorageConnectionString</code> (account key or SAS token)</td><td>Confidential (credential)</td><td>Stored in plain text in <code>Web.config</code>; no Azure Key Vault, environment variable injection, or secrets management in place</td></tr>
+</tbody></table></div>
+<p>No PII, PHI, or PCI fields are stored in application-managed entity classes (none exist). However, uploaded images may contain personally identifiable visual content. The connection string stored in <code>Web.config</code> is a sensitive credential and should be managed via a secrets store (Azure Key Vault, environment variables, or Azure App Configuration) in any production or cloud deployment.</p></div>
+</div>
+<p class="footer">Your feedback is invaluable &mdash; <a href="https://aka.ms/ghcp-appmod/feedback">Share feedback</a></p>
+<script>
+function toggleRow(rowId, triggerRow) {
+  var detail = document.getElementById(rowId);
+  var btn = document.getElementById('btn-' + rowId);
+  if (!detail) return;
+  var visible = detail.style.display !== 'none';
+  detail.style.display = visible ? 'none' : 'table-row';
+  if (btn) btn.classList.toggle('open', !visible);
+}
+(function() {
+  var nav = document.querySelector('.tab-nav');
+  if (!nav) return;
+  nav.addEventListener('click', function(e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    var targetId = btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    var panel = document.getElementById(targetId);
+    if (panel) {
+      panel.classList.add('active');
+      if (window.__mermaidReady) { window.__renderMermaidIn(panel); }
+    }
+  });
+})();
+
+// ── Diagram lightbox ────────────────────────────────────────
+(function() {
+  var lightbox = document.getElementById('diagram-lightbox');
+  var inner = document.getElementById('diagram-lightbox-inner');
+  var closeBtn = document.getElementById('diagram-lightbox-close');
+  if (!lightbox || !inner || !closeBtn) return;
+
+  var scale = 1;
+  var translateX = 0;
+  var translateY = 0;
+  var isDragging = false;
+  var dragStartX = 0;
+  var dragStartY = 0;
+
+  function applyTransform() {
+    var svg = inner.querySelector('svg');
+    if (svg) {
+      svg.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+      svg.style.transformOrigin = 'center center';
+      svg.style.transition = 'none';
+    }
+  }
+
+  function resetTransform() {
+    scale = 1; translateX = 0; translateY = 0;
+    applyTransform();
+  }
+
+  function openLightbox(svgEl) {
+    inner.innerHTML = svgEl.outerHTML;
+    var injected = inner.querySelector('svg');
+    if (injected) {
+      injected.removeAttribute('width');
+      injected.removeAttribute('height');
+      injected.style.cursor = 'grab';
+    }
+    resetTransform();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    inner.innerHTML = '';
+    document.body.style.overflow = '';
+    resetTransform();
+  }
+
+  inner.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    var delta = e.deltaY > 0 ? 0.9 : 1.1;
+    scale = Math.min(Math.max(scale * delta, 0.3), 8);
+    applyTransform();
+  }, { passive: false });
+
+  inner.addEventListener('mousedown', function(e) {
+    if (e.button !== 0) return;
+    isDragging = true;
+    dragStartX = e.clientX - translateX;
+    dragStartY = e.clientY - translateY;
+    var svg = inner.querySelector('svg');
+    if (svg) { svg.style.cursor = 'grabbing'; }
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    translateX = e.clientX - dragStartX;
+    translateY = e.clientY - dragStartY;
+    applyTransform();
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (!isDragging) return;
+    isDragging = false;
+    var svg = inner.querySelector('svg');
+    if (svg) { svg.style.cursor = 'grab'; }
+  });
+
+  inner.addEventListener('dblclick', function() { resetTransform(); });
+
+  document.addEventListener('click', function(e) {
+    var card = e.target.closest('.mermaid');
+    if (!card) return;
+    if (e.target.closest('.diagram-lightbox-close')) return;
+    var svg = card.querySelector('svg');
+    if (svg) { openLightbox(svg); }
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) { closeLightbox(); }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeLightbox(); }
+  });
+})();
+
+var _currentTarget = '';
+
+function toggleMultiSelect(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  document.querySelectorAll('.multi-select.open').forEach(function(ms) { if (ms.id !== id) ms.classList.remove('open'); });
+  el.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.multi-select')) {
+    document.querySelectorAll('.multi-select.open').forEach(function(ms) { ms.classList.remove('open'); });
+  }
+});
+
+function getMultiSelectValues(msId) {
+  var el = document.getElementById(msId);
+  if (!el) return [];
+  var checked = el.querySelectorAll('input[type=checkbox]:checked');
+  var vals = [];
+  for (var i = 0; i < checked.length; i++) vals.push(checked[i].value);
+  return vals;
+}
+
+function onMultiSelectChange(msId, label) {
+  var el = document.getElementById(msId);
+  if (!el) return;
+  var vals = getMultiSelectValues(msId);
+  var total = el.querySelectorAll('input[type=checkbox]').length;
+  var btn = el.querySelector('.multi-select-btn');
+  if (btn) {
+    btn.textContent = vals.length > 0 && vals.length < total ? label + ' (' + vals.length + ')' : label;
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  var selectedDomains = getMultiSelectValues('domain-ms');
+  var selectedCrits = getMultiSelectValues('criticality-ms');
+
+  var sections = document.querySelectorAll('.issue-section');
+  for (var i = 0; i < sections.length; i++) {
+    var domain = sections[i].getAttribute('data-domain');
+    sections[i].style.display = (selectedDomains.length === 0 || selectedDomains.indexOf(domain) >= 0) ? '' : 'none';
+  }
+
+  var rows = document.querySelectorAll('.issue-row');
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var section = row.closest('.issue-section');
+    if (section && section.style.display === 'none') {
+      row.style.display = 'none';
+      var next = row.nextElementSibling;
+      if (next && next.classList.contains('detail-row')) next.style.display = 'none';
+      continue;
+    }
+
+    var show = true;
+    if (_currentTarget && row.hasAttribute('data-targets')) {
+      var targetsStr = row.getAttribute('data-targets');
+      if (targetsStr && targetsStr !== '{}') {
+        try {
+          var targets = JSON.parse(targetsStr);
+          if (Object.keys(targets).length > 0 && !targets[_currentTarget]) {
+            show = false;
+          }
+        } catch(e) {}
+      }
+    }
+
+    if (show && selectedCrits.length > 0) {
+      var crit = row.getAttribute('data-criticality');
+      if (selectedCrits.indexOf(crit) < 0) show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+    var nextRow = row.nextElementSibling;
+    if (nextRow && nextRow.classList.contains('detail-row')) {
+      if (!show) nextRow.style.display = 'none';
+    }
+  }
+}
+
+function clearAllFilters() {
+  document.querySelectorAll('.multi-select input[type=checkbox]').forEach(function(cb) { cb.checked = false; });
+  var domainBtn = document.querySelector('#domain-ms .multi-select-btn');
+  if (domainBtn) domainBtn.textContent = 'Domain';
+  var critBtn = document.querySelector('#criticality-ms .multi-select-btn');
+  if (critBtn) critBtn.textContent = 'Criticality';
+  applyFilters();
+}
+
+function onTargetChange(targetId) {
+  _currentTarget = targetId;
+  var rows = document.querySelectorAll('.issue-row[data-targets]');
+  var totalEffort = 0;
+  var domainCrits = {};
+
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var targets = JSON.parse(row.getAttribute('data-targets'));
+    var section = row.closest('.issue-section');
+    var domain = section ? section.getAttribute('data-domain') : '';
+
+    if (!targets || Object.keys(targets).length === 0) {
+      var sp = parseFloat(row.querySelector('.sp-cell').textContent) || 0;
+      totalEffort += sp;
+      if (!domainCrits[domain]) domainCrits[domain] = {mandatory:0,potential:0,optional:0};
+      var crit = row.getAttribute('data-criticality') || 'optional';
+      domainCrits[domain][crit] = (domainCrits[domain][crit] || 0) + 1;
+      continue;
+    }
+
+    var override = targets[targetId];
+    if (!override) {
+      continue;
+    }
+
+    var newSeverity = (override.severity || row.getAttribute('data-default-severity') || '').toLowerCase();
+    row.setAttribute('data-criticality', newSeverity);
+    var critCell = row.querySelector('.crit-cell');
+    if (critCell) {
+      var critText = newSeverity === 'mandatory' ? 'Mandatory' : newSeverity === 'potential' ? 'Potential' : 'Optional';
+      var cssClass = newSeverity === 'mandatory' ? 'crit-square-mandatory' : newSeverity === 'potential' ? 'crit-square-potential' : 'crit-square-optional';
+      critCell.innerHTML = '<span class="crit-label"><span class="crit-square ' + cssClass + '"></span>' + critText + '</span>';
+    }
+
+    var newEffort = override.effort !== undefined ? override.effort : parseFloat(row.getAttribute('data-default-effort')) || 0;
+    var spCell = row.querySelector('.sp-cell');
+    if (spCell) spCell.textContent = newEffort;
+    totalEffort += newEffort;
+
+    if (!domainCrits[domain]) domainCrits[domain] = {mandatory:0,potential:0,optional:0};
+    domainCrits[domain][newSeverity] = (domainCrits[domain][newSeverity] || 0) + 1;
+  }
+
+  var secSection = document.querySelector('.issue-section[data-domain="security"]');
+  if (secSection) {
+    var secRows = secSection.querySelectorAll('.issue-row');
+    for (var j = 0; j < secRows.length; j++) {
+      if (!secRows[j].hasAttribute('data-targets') || secRows[j].getAttribute('data-targets') === '') {
+        var sp = parseFloat(secRows[j].querySelector('.sp-cell').textContent) || 0;
+        totalEffort += sp;
+        if (!domainCrits['security']) domainCrits['security'] = {mandatory:0,potential:0,optional:0};
+        var sc = secRows[j].getAttribute('data-criticality') || 'optional';
+        domainCrits['security'][sc] = (domainCrits['security'][sc] || 0) + 1;
+      }
+    }
+  }
+
+  var label = totalEffort < 20 ? 'S' : totalEffort < 50 ? 'M' : totalEffort < 100 ? 'L' : 'XL';
+  var effortEl = document.getElementById('effort-display');
+  if (effortEl) effortEl.textContent = label + ' (total story points: ' + totalEffort + ')';
+
+  updateDonuts(domainCrits);
+  applyFilters();
+}
+
+function updateDonuts(domainCrits) {
+  var container = document.getElementById('donut-container');
+  if (!container) return;
+  container.innerHTML = '';
+  var domainNames = {'cloud-readiness':'Cloud Readiness','java-upgrade':'Java Upgrade','dotnet-upgrade':'DotNET Upgrade','security':'Security'};
+  var domainOrder = ['cloud-readiness','java-upgrade','dotnet-upgrade','security'];
+  for (var d = 0; d < domainOrder.length; d++) {
+    var key = domainOrder[d];
+    var c = domainCrits[key];
+    if (!c || (c.mandatory + c.potential + c.optional) === 0) continue;
+    var total = c.mandatory + c.potential + c.optional;
+    var div = document.createElement('div');
+    div.className = 'domain-summary-item';
+    div.innerHTML = buildDonutSvg(c.mandatory, c.potential, c.optional) +
+      '<h3>' + domainNames[key] + '</h3>' +
+      '<div class="count">' + total + ' issue' + (total !== 1 ? 's' : '') + '</div>';
+    container.appendChild(div);
+  }
+}
+
+function buildDonutSvg(m, p, o) {
+  var total = m + p + o;
+  if (total === 0) return '<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;"><circle cx="50" cy="50" r="35" fill="none" stroke="#d0d7de" stroke-width="15" opacity="0.5"/></svg>';
+  var r = 35, circ = 2 * Math.PI * r, offset = 0;
+  var svg = '<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">';
+  var segs = [{c:m,color:'var(--color-mandatory)'},{c:p,color:'var(--color-potential)'},{c:o,color:'var(--color-optional)'}];
+  for (var i = 0; i < segs.length; i++) {
+    if (segs[i].c === 0) continue;
+    var segLen = (segs[i].c / total) * circ;
+    var gap = total > segs[i].c ? 1.5 : 0;
+    var drawLen = Math.max(segLen - gap, 0.5);
+    svg += '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + segs[i].color + '" stroke-width="15" stroke-dasharray="' + drawLen.toFixed(2) + ' ' + circ.toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '"/>';
+    offset += segLen;
+  }
+  svg += '</svg>';
+  return svg;
+}
+</script>
+<script>document.addEventListener('DOMContentLoaded', function() { onTargetChange('AppService.Windows'); });</script>
+</div></body></html>
