@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Tasks template for modernization plan. Generate this file alongside plan.md to track individual migration tasks.",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-dotnet-10",
+      "description": "Upgrade the project from .NET Framework 4.8 to .NET 10, converting to SDK-style project format and resolving all upgrade-related issues.",
+      "reason": "The project targets .NET Framework 4.8 which is Windows-only and cannot be containerized. Moving to .NET 10 enables cross-platform execution, containerization, and modern cloud deployment.",
+      "requirements": "Convert the project file from legacy non-SDK format to SDK-style. Change target framework from net4.8 to net10.0. Replace System.Web MVC pipeline with ASP.NET Core. Convert Global.asax.cs startup to Program.cs. Replace packages.config with PackageReference. Resolve all incompatible packages. Ensure the build passes on .NET 10.",
+      "status": "success",
+      "taskSummary": "Upgraded from .NET Framework 4.8 to .NET 10. Converted project to SDK-style format, replaced Global.asax.cs with Program.cs, migrated Web.config to appsettings.json, updated all packages to PackageReference, replaced System.Web.Mvc with ASP.NET Core MVC. Build succeeded with 0 errors and 0 warnings.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      },
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "002-transform-azure-storage-blob-managed-identity",
+      "description": "Migrate Azure Blob Storage authentication from connection string to Azure Managed Identity using DefaultAzureCredential.",
+      "reason": "Plain-text StorageConnectionString in Web.config/appsettings.json is a security risk. Managed Identity eliminates credentials from configuration.",
+      "requirements": "Remove StorageConnectionString from configuration. Add Storage:ServiceUri configuration pointing to the blob service endpoint. Register BlobServiceClient via DI using AddAzureClients with DefaultAzureCredential. Inject BlobServiceClient into HomeController. Ensure all blob operations work via the injected client. No connection strings in source or config.",
+      "skills": [
+        { "name": "migration-managed-identity", "location": "builtin" },
+        { "name": "migration-azure-storage-blob", "location": "builtin" }
+      ],
+      "status": "success",
+      "taskSummary": "Removed StorageConnectionString from appsettings.json. Added Storage:ServiceUri config. Registered BlobServiceClient as singleton via AddAzureClients with DefaultAzureCredential. Refactored HomeController to use constructor-injected BlobServiceClient. Build succeeded with 0 errors and 0 warnings.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      },
+      "dependencies": ["001-upgrade-dotnet-10"],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "003-transform-console-logging",
+      "description": "Configure structured JSON console logging suitable for Azure Container Apps log aggregation.",
+      "reason": "Container Apps captures stdout/stderr and forwards to Azure Log Analytics. Structured JSON output enables automatic field extraction and KQL queries.",
+      "requirements": "Clear default logging providers. Configure JSON console formatter with UTC timestamps in ISO 8601 format, single-line compact output, and scope inclusion. Update appsettings.json with Console formatter configuration. Retain existing log level defaults.",
+      "skills": [
+        { "name": "migration-console-logging", "location": "builtin" }
+      ],
+      "status": "success",
+      "taskSummary": "Configured structured JSON console logging in Program.cs using AddJsonConsole with UTC timestamps, ISO 8601 format, scope inclusion, and compact single-line output. Updated appsettings.json with Console formatter config. Build succeeded with 0 errors and 0 warnings.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      },
+      "dependencies": ["001-upgrade-dotnet-10"],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "security",
+      "id": "004-security-cve-remediation",
+      "description": "Scan all project dependencies for known CVEs and remediate identified vulnerabilities.",
+      "reason": "Azure.Storage.Blobs 12.9.1, bootstrap 3.x, jQuery 1.10.2, and jQuery.Validation have known CVEs that must be addressed before production deployment.",
+      "requirements": "Scan NuGet packages for CVEs using NuGet Vulnerability API. Scan frontend JS/CSS libraries (jQuery, Bootstrap, jQuery.Validation). Upgrade all packages with known CVEs to the latest secure versions. Update view templates to maintain compatibility with upgraded libraries. Remove deprecated packages.",
+      "status": "success",
+      "taskSummary": "NuGet packages are CVE-free. Upgraded jQuery 1.10.2→3.7.1, Bootstrap 3.x→5.3.3 (bundle), jQuery.Validation→1.21.0. Updated _Layout.cshtml script/CSS references and migrated Bootstrap 3 classes in Index.cshtml. Build succeeded.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      },
+      "dependencies": ["001-upgrade-dotnet-10"],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "infrastructure",
+      "id": "005-infrastructure-bicep",
+      "description": "Generate Bicep IaC files and provision Azure resources: Container Registry, Managed Identity, Container Apps Environment, and Container App.",
+      "reason": "The application needs Azure infrastructure provisioned before deployment: ACR for the container image, a Managed Identity for passwordless auth, and Container Apps hosting environment.",
+      "requirements": "Generate Bicep modules for: Log Analytics Workspace, User-Assigned Managed Identity, Azure Container Registry (Basic), AcrPull role assignment, Storage Blob Data Contributor role on existing storage account, Container Apps Environment, Container App with placeholder image. Region: eastus2. Deploy to resource group rg-photogallery. Write infra-config.md with actual resource names after provisioning.",
+      "iacType": "bicep",
+      "provision": true,
+      "skills": [
+        { "name": "infrastructure-bicep-generation", "location": "builtin" }
+      ],
+      "status": "success",
+      "taskSummary": "Generated Bicep IaC files (main.bicep + 6 modules) and provisioned all Azure resources in rg-photogallery (eastus2): Log Analytics Workspace, User-Assigned Managed Identity, ACR (azacr7yrfua2wocme4.azurecr.io), Container Apps Environment, and Container App running placeholder image. AcrPull and Storage Blob Data Contributor roles assigned. infra-config.md written with actual resource details.",
+      "dependencies": ["004-security-cve-remediation"]
+    },
+    {
+      "type": "deployment",
+      "id": "006-deployment-azure-container-apps",
+      "description": "Containerize the application, build and push the container image to ACR, and deploy to Azure Container Apps.",
+      "reason": "The final step is to package the modernized application as a container and deploy it to the provisioned Azure Container Apps environment.",
+      "requirements": "Generate a Dockerfile for the .NET 10 ASP.NET Core application. Build and push the container image to the provisioned ACR. Deploy to the Container Apps environment. Configure the Managed Identity as the pull identity. Set Storage__ServiceUri environment variable. Verify the deployed application is accessible.",
+      "targetAzureService": "Azure Container Apps",
+      "resourceStatus": "existing",
+      "deploymentTool": "bicep",
+      "skills": [
+        { "name": "azcli-containerapp-deploy", "location": "builtin" }
+      ],
+      "status": "success",
+      "taskSummary": "Generated Dockerfile (multi-stage .NET 10, non-root user, port 8080) and .dockerignore. Built and pushed image to azacr7yrfua2wocme4.azurecr.io/photogallery:latest via az acr build. Updated Container App with new image, Managed Identity as registry pull identity, and Storage__ServiceUri env var. App running at https://azca7yrfua2wocme4.wittycoast-d625364c.eastus2.azurecontainerapps.io",
+      "dependencies": ["005-infrastructure-bicep"]
+    }
+  ],
+  "metadata": {
+    "planName": "modernization-plan",
+    "projectName": "PhotoGallery",
+    "language": "dotnet",
+    "createdAt": "2026-07-16T14:42:08.000Z",
+    "version": "1.0"
+  }
+}
