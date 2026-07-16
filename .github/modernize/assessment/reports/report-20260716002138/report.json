@@ -1,0 +1,26 @@
+{
+  "metadata": {
+    "analysisStartTime": "2026-07-16T00:21:38Z",
+    "tool": "dotnet-appcat",
+    "toolVersion": "1.0.1127",
+    "status": "partial",
+    "notes": "AppCAT execution could not fully evaluate the legacy ASP.NET MVC project on Linux due missing Microsoft.WebApplication.targets."
+  },
+  "rules": {},
+  "projects": [
+    {
+      "name": "WebApp-Storage-DotNet",
+      "properties": {
+        "repo": "PhotoGallery",
+        "appName": "WebApp-Storage-DotNet",
+        "languages": ["C#"],
+        "frameworks": ["ASP.NET MVC 5", ".NET Framework 4.8"],
+        "tools": ["MSBuild", "NuGet"],
+        "applicationType": "Web Application"
+      },
+      "incidents": []
+    }
+  ],
+  "security": [],
+  "rearchitect": []
+}
