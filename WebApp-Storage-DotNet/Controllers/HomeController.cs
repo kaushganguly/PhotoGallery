@@ -14,34 +14,23 @@ namespace WebApp_Storage_DotNet.Controllers
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using Azure.Storage.Blobs;
     using Azure.Storage.Blobs.Models;
 
     public class HomeController : Controller
     {
         const string blobContainerName = "webappstoragedotnet-imagecontainer";
-        static BlobContainerClient? blobContainer;
 
-        private readonly IConfiguration _configuration;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(BlobServiceClient blobServiceClient)
         {
-            _configuration = configuration;
+            _blobServiceClient = blobServiceClient;
         }
 
         private BlobContainerClient GetBlobContainer()
         {
-            if (blobContainer == null)
-            {
-                string? connectionString = _configuration["StorageConnectionString"];
-                if (string.IsNullOrEmpty(connectionString))
-                    throw new InvalidOperationException("StorageConnectionString is not configured.");
-
-                BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-                blobContainer = blobServiceClient.GetBlobContainerClient(blobContainerName);
-            }
-            return blobContainer;
+            return _blobServiceClient.GetBlobContainerClient(blobContainerName);
         }
 
         public async Task<IActionResult> Index()

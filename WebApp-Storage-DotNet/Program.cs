@@ -1,9 +1,20 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using Azure.Identity;
+using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register BlobServiceClient using Managed Identity (DefaultAzureCredential).
+// Reads Storage:ServiceUri from configuration — no connection strings required.
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(
+        builder.Configuration.GetSection("Storage"));
+    clientBuilder.UseCredential(new DefaultAzureCredential());
+});
 
 var app = builder.Build();
 
