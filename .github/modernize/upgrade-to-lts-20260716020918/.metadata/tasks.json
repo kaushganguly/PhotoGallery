@@ -14,7 +14,13 @@
         "generateNewUnitTests": "false",
         "passUnitTests": "true"
       },
-      "status": "pending"
+      "status": "success",
+      "taskSummary": "Successfully upgraded WebApp-Storage-DotNet from .NET Framework 4.8 (ASP.NET MVC 5) to .NET 10.0 (ASP.NET Core MVC), including SDK-style conversion, configuration migration, and Azure package compatibility updates.",
+      "successCriteriaStatus": {
+        "passBuild": "true",
+        "generateNewUnitTests": "false",
+        "passUnitTests": "true"
+      }
     }
   ],
   "metadata": {
