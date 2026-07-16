@@ -1,8 +1,23 @@
 ﻿using Azure.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.FileProviders;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure structured JSON console logging for Azure Container Apps log aggregation.
+// Clears default providers (simple console, debug) to avoid duplicate output.
+builder.Logging.ClearProviders();
+builder.Logging.AddJsonConsole(options =>
+{
+    options.IncludeScopes = true;
+    options.UseUtcTimestamp = true;
+    options.TimestampFormat = "yyyy-MM-ddTHH:mm:ss.fffZ";
+    options.JsonWriterOptions = new JsonWriterOptions
+    {
+        Indented = false
+    };
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
