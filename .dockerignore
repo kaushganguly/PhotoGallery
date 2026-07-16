@@ -1,0 +1,21 @@
+# Root .dockerignore — applies to the entire build context (repo root)
+# Exclude .NET build outputs so Windows-cached restore/build assets are never sent
+WebApp-Storage-DotNet/bin/
+WebApp-Storage-DotNet/obj/
+
+# VS artefacts
+.vs/
+**/*.user
+
+# Local dev configs
+**/appsettings.Development.json
+
+# Git metadata
+.git/
+.gitignore
+
+# Docs / CI / infra files
+*.md
+.github/
+infra/
+images/

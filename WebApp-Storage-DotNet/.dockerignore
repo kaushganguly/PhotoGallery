@@ -1,0 +1,22 @@
+# .dockerignore for WebApp-Storage-DotNet
+# Exclude build outputs
+bin/
+obj/
+
+# Exclude VS artefacts
+.vs/
+*.user
+
+# Exclude local dev configs
+appsettings.Development.json
+
+# Exclude git metadata
+.git/
+.gitignore
+
+# Exclude docs and CI
+*.md
+.github/
+
+# Exclude test results
+TestResults/
