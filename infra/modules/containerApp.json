@@ -1,0 +1,158 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.40.2.10011",
+      "templateHash": "3353180930841436890"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region for the Container App"
+      }
+    },
+    "resourceToken": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique resource token derived from subscription/resource group/location"
+      }
+    },
+    "containerAppsEnvironmentId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the Container Apps Environment"
+      }
+    },
+    "managedIdentityId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the User-Assigned Managed Identity"
+      }
+    },
+    "managedIdentityClientId": {
+      "type": "string",
+      "metadata": {
+        "description": "Client ID of the User-Assigned Managed Identity"
+      }
+    },
+    "acrLoginServer": {
+      "type": "string",
+      "metadata": {
+        "description": "Login server of the Azure Container Registry"
+      }
+    },
+    "storageServiceUri": {
+      "type": "string",
+      "defaultValue": "[format('https://placeholder.blob.{0}', environment().suffixes.storage)]",
+      "metadata": {
+        "description": "Placeholder value for the Storage Service URI (updated in Task 006)"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to all resources"
+      }
+    }
+  },
+  "variables": {
+    "containerAppName": "[format('azca{0}', parameters('resourceToken'))]",
+    "placeholderImage": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.App/containerApps",
+      "apiVersion": "2024-03-01",
+      "name": "[variables('containerAppName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[format('{0}', parameters('managedIdentityId'))]": {}
+        }
+      },
+      "properties": {
+        "managedEnvironmentId": "[parameters('containerAppsEnvironmentId')]",
+        "configuration": {
+          "ingress": {
+            "external": true,
+            "targetPort": 80,
+            "transport": "auto",
+            "corsPolicy": {
+              "allowedOrigins": [
+                "*"
+              ],
+              "allowedMethods": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+              ],
+              "allowedHeaders": [
+                "*"
+              ],
+              "allowCredentials": false
+            }
+          },
+          "registries": [
+            {
+              "server": "[parameters('acrLoginServer')]",
+              "identity": "[parameters('managedIdentityId')]"
+            }
+          ]
+        },
+        "template": {
+          "containers": [
+            {
+              "name": "photogallery",
+              "image": "[variables('placeholderImage')]",
+              "resources": {
+                "cpu": "[json('0.25')]",
+                "memory": "0.5Gi"
+              },
+              "env": [
+                {
+                  "name": "Storage__ServiceUri",
+                  "value": "[parameters('storageServiceUri')]"
+                },
+                {
+                  "name": "AZURE_CLIENT_ID",
+                  "value": "[parameters('managedIdentityClientId')]"
+                }
+              ]
+            }
+          ],
+          "scale": {
+            "minReplicas": 1,
+            "maxReplicas": 3
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "containerAppId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.App/containerApps', variables('containerAppName'))]"
+    },
+    "containerAppName": {
+      "type": "string",
+      "value": "[variables('containerAppName')]"
+    },
+    "containerAppFqdn": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.App/containerApps', variables('containerAppName')), '2024-03-01').configuration.ingress.fqdn]"
+    },
+    "containerAppUrl": {
+      "type": "string",
+      "value": "[format('https://{0}', reference(resourceId('Microsoft.App/containerApps', variables('containerAppName')), '2024-03-01').configuration.ingress.fqdn)]"
+    }
+  }
+}

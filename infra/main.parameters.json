@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "eastus2"
+    },
+    "environmentName": {
+      "value": "prod"
+    },
+    "storageAccountName": {
+      "value": "<REPLACE_WITH_EXISTING_STORAGE_ACCOUNT_NAME>"
+    },
+    "storageAccountResourceGroup": {
+      "value": "<REPLACE_WITH_STORAGE_ACCOUNT_RESOURCE_GROUP_OR_LEAVE_AS_rg-photogallery>"
+    },
+    "tags": {
+      "value": {
+        "project": "photogallery",
+        "managedBy": "bicep",
+        "environment": "prod"
+      }
+    }
+  }
+}

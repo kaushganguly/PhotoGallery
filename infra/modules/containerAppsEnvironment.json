@@ -1,0 +1,76 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.40.2.10011",
+      "templateHash": "9171239275475584498"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure region for the Container Apps Environment"
+      }
+    },
+    "resourceToken": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique resource token derived from subscription/resource group/location"
+      }
+    },
+    "logAnalyticsCustomerId": {
+      "type": "string",
+      "metadata": {
+        "description": "Log Analytics Workspace customer ID (for log aggregation)"
+      }
+    },
+    "logAnalyticsPrimarySharedKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Log Analytics Workspace primary shared key"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Tags to apply to all resources"
+      }
+    }
+  },
+  "variables": {
+    "containerAppsEnvironmentName": "[format('azace{0}', parameters('resourceToken'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.App/managedEnvironments",
+      "apiVersion": "2024-03-01",
+      "name": "[variables('containerAppsEnvironmentName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "appLogsConfiguration": {
+          "destination": "log-analytics",
+          "logAnalyticsConfiguration": {
+            "customerId": "[parameters('logAnalyticsCustomerId')]",
+            "sharedKey": "[parameters('logAnalyticsPrimarySharedKey')]"
+          }
+        },
+        "zoneRedundant": false
+      }
+    }
+  ],
+  "outputs": {
+    "containerAppsEnvironmentId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.App/managedEnvironments', variables('containerAppsEnvironmentName'))]"
+    },
+    "containerAppsEnvironmentName": {
+      "type": "string",
+      "value": "[variables('containerAppsEnvironmentName')]"
+    }
+  }
+}
