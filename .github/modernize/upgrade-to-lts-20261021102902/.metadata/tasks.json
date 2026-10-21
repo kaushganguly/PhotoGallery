@@ -1,0 +1,27 @@
+{
+  "$schema": "tasks-schema.json",
+  "description": ".NET version upgrade plan from .NET Framework 4.8 to .NET 10.0 (latest LTS)",
+  "tasks": [
+    {
+      "type": "upgrade",
+      "id": "001-upgrade-dotnet-to-net10",
+      "description": "Upgrade WebApp-Storage-DotNet from .NET Framework 4.8 to .NET 10.0, including conversion from ASP.NET MVC 5 (System.Web) to ASP.NET Core MVC.",
+      "reason": "The project targets the legacy, non-SDK-style .NET Framework (v4.8), which is no longer in active feature development and lacks modern cross-platform runtime, performance, and tooling improvements. The user explicitly requested upgrading to the latest LTS version to ensure long-term support and continued compatibility with the Azure SDK packages already used by the project.",
+      "requirements": "Upgrade WebApp-Storage-DotNet from .NET Framework 4.8 to .NET 10.0 (latest LTS), including SDK-style project conversion, target framework update, migration from ASP.NET MVC 5 (System.Web, Global.asax, Web.config) to ASP.NET Core MVC, migration of NuGet dependencies from packages.config to PackageReference, replacement of incompatible packages, and resolution of any resulting API compatibility issues while preserving existing Azure Blob Storage functionality.",
+      "environmentConfiguration": null,
+      "skills": [],
+      "successCriteria": {
+        "passBuild": "true",
+        "passUnitTests": "true"
+      },
+      "status": "pending"
+    }
+  ],
+  "metadata": {
+    "planName": "upgrade-to-lts",
+    "projectName": "WebApp-Storage-DotNet",
+    "language": "dotnet",
+    "createdAt": "2026-10-21T21:29:21.996Z",
+    "version": "1.0"
+  }
+}
