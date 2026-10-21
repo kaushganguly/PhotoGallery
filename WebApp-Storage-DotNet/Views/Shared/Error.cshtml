@@ -1,10 +1,6 @@
-﻿
 @{
-    ViewBag.Title = "Error";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Error";
 }
 
-<h3>An error occurred while processing your request: @ViewData["message"]</h3><br />
-<strong>Stack Trace</strong> <br />
-@ViewData["trace"]
-
+<h1>Unable to process your request</h1>
+<p>Please verify your Azure Blob Storage configuration and try again.</p>
