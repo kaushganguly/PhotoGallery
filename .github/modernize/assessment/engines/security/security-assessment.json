@@ -1,0 +1,208 @@
+{
+  "GeneratedAt": "2026-10-21T13:13:50.123870Z",
+  "ProjectPath": ".",
+  "Summary": {
+    "TotalFindings": 15,
+    "CveCount": 3,
+    "CweCount": 12,
+    "BySeverity": {
+      "mandatory": 4,
+      "optional": 5,
+      "potential": 6
+    },
+    "ByCategory": {
+      "CVE": 3,
+      "Code Quality": 2,
+      "Concurrency & Synchronization": 2,
+      "Credentials & Secrets": 2,
+      "File & Path Security": 4,
+      "Injection Attacks": 2
+    },
+    "TotalRulesAssessed": 59,
+    "RulesPassed": 47
+  },
+  "CveFindings": [
+    {
+      "Id": "CVE-2024-21907",
+      "Name": "Improper Handling of Exceptional Conditions in Newtonsoft.Json",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Newtonsoft.Json:6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23)\n\nRecommended fixes:\n  - Upgrade Newtonsoft.Json to one of the patched versions: 13.0.1",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:23"
+      ],
+      "Explanation": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Newtonsoft.Json:6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23)\n\nRecommended fixes:\n  - Upgrade Newtonsoft.Json to one of the patched versions: 13.0.1"
+    },
+    {
+      "Id": "CVE-2021-21252",
+      "Name": "Regular Expression Denial of Service in jquery-validation",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected dependencies:\n  - jQuery.Validation:1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9)\n\nRecommended fixes:\n  - Upgrade jQuery.Validation to one of the patched versions: 1.19.3",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:9"
+      ],
+      "Explanation": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected dependencies:\n  - jQuery.Validation:1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9)\n\nRecommended fixes:\n  - Upgrade jQuery.Validation to one of the patched versions: 1.19.3"
+    },
+    {
+      "Id": "CVE-2018-8269",
+      "Name": "Denial of service in ASP.NET Core",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.OData:5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17)\n\nRecommended fixes:\n  - Upgrade Microsoft.Data.OData to one of the patched versions: 5.8.4",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:17"
+      ],
+      "Explanation": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.OData:5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17)\n\nRecommended fixes:\n  - Upgrade Microsoft.Data.OData to one of the patched versions: 5.8.4"
+    }
+  ],
+  "CweFindings": [
+    {
+      "Id": "CWE-606",
+      "Name": "Unchecked Input for Loop Condition",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product does not properly check inputs that are used for loop conditions, potentially leading to a denial of service or other consequences because of excessive looping.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.UploadAsync loops while i < fileCount, where fileCount comes directly from Request.Files.Count. There is no application-level upper bound on file count, allowing a request with an excessive number of files to drive unbounded per-file processing (lines 101-109)."
+    },
+    {
+      "Id": "CWE-665",
+      "Name": "Improper Initialization",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "The static blobContainer is only assigned inside HomeController.Index (line 60), while UploadAsync, DeleteImage, and DeleteAll dereference it without ensuring initialization. Directly invoking those actions before Index initializes the resource can result in use of a null container (e.g., lines 108-109 and 135)."
+    },
+    {
+      "Id": "CWE-567",
+      "Name": "Unsynchronized Access to Shared Data in a Multithreaded Context",
+      "Category": "Concurrency & Synchronization",
+      "Severity": "potential",
+      "StoryPoint": 5,
+      "Description": "The product does not properly synchronize shared data, such as static variables across threads, which can lead to undefined behavior and unpredictable data changes.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.blobContainer is a mutable static field assigned during Index and read by UploadAsync, DeleteImage, and DeleteAll without synchronization (lines 37, 60, 108, 135). Concurrent requests can access or replace this shared state without a synchronization mechanism."
+    },
+    {
+      "Id": "CWE-820",
+      "Name": "Missing Synchronization",
+      "Category": "Concurrency & Synchronization",
+      "Severity": "potential",
+      "StoryPoint": 8,
+      "Description": "The product utilizes a shared resource in a concurrent manner but does not attempt to synchronize access to the resource.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "The static blobContainer field is shared by concurrent MVC requests; Index assigns it while other actions read and use it, with no synchronization (lines 37, 60, 108, 135)."
+    },
+    {
+      "Id": "CWE-732",
+      "Name": "Incorrect Permission Assignment for Critical Resource",
+      "Category": "Credentials & Secrets",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.Index creates the blob container using PublicAccessType.Blob (line 60), which allows unauthenticated public reads of every blob in the container. The repository config uses development storage, but the code explicitly enables public blob access."
+    },
+    {
+      "Id": "CWE-778",
+      "Name": "Insufficient Logging",
+      "Category": "Credentials & Secrets",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "When a security-critical event occurs, the product either does not record the event or omits important details about the event when logging it.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "UploadAsync, DeleteImage, and DeleteAll perform file operations without recording security/audit events. Their exception handlers only place exception details in ViewData and return an error view (lines 114-118); no logging mechanism is present."
+    },
+    {
+      "Id": "CWE-22",
+      "Name": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "Category": "File & Path Security",
+      "Severity": "optional",
+      "StoryPoint": 8,
+      "Description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.UploadAsync passes the request-controlled HttpPostedFileBase.FileName directly to BlobClient.UploadAsync as a local filesystem path. The path is not constrained to an application upload directory, so traversal elements can make the process read a file outside any intended upload directory (line 109)."
+    },
+    {
+      "Id": "CWE-23",
+      "Name": "Relative Path Traversal",
+      "Category": "File & Path Security",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.UploadAsync passes the client-supplied files[i].FileName to BlobClient.UploadAsync as a local path without canonicalization or containment checks. A relative path containing parent-directory segments can refer outside an intended upload directory (line 109)."
+    },
+    {
+      "Id": "CWE-36",
+      "Name": "Absolute Path Traversal",
+      "Category": "File & Path Security",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.UploadAsync passes the client-supplied files[i].FileName directly to BlobClient.UploadAsync as a local filesystem path. An absolute client-supplied path is not restricted to an upload directory (line 109)."
+    },
+    {
+      "Id": "CWE-434",
+      "Name": "Unrestricted Upload of File with Dangerous Type",
+      "Category": "File & Path Security",
+      "Severity": "mandatory",
+      "StoryPoint": 8,
+      "Description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.UploadAsync accepts request files without checking extensions or content type and uploads them to the public blob container. The code therefore permits arbitrary dangerous file types to be stored and served publicly (lines 101-109)."
+    },
+    {
+      "Id": "CWE-79",
+      "Name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+      "Category": "Injection Attacks",
+      "Severity": "optional",
+      "StoryPoint": 8,
+      "Description": "The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.",
+      "Files": [
+        "WebApp-Storage-DotNet/Views/Home/Index.cshtml"
+      ],
+      "Explanation": "Views/Home/Index.cshtml:80 appends the user-controlled file.name directly to an HTML string, and line 85 assigns that string to innerHTML without encoding. A selected filename containing HTML markup can be interpreted as DOM content."
+    },
+    {
+      "Id": "CWE-99",
+      "Name": "Improper Control of Resource Identifiers ('Resource Injection')",
+      "Category": "Injection Attacks",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product receives input from an upstream component, but it does not restrict or incorrectly restricts the input before it is used as an identifier for a resource that may be outside the intended sphere of control.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+      ],
+      "Explanation": "HomeController.DeleteImage receives the user-controlled name, extracts only its basename, and uses that value in blobContainer.GetBlobClient(filename) before deletion (lines 128-136). No ownership or authorization check scopes the target to the caller, so an arbitrary blob identifier in the shared container can be selected."
+    }
+  ]
+}
