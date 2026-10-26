@@ -1,0 +1,351 @@
+{
+  "metadata": {
+    "id": "20261026051722",
+    "generated_at": "2026-10-26T05:17:22.030984Z",
+    "note": "Security-only report (AppCAT could not run: legacy Visual Studio WebApplication targets are unavailable on Linux)"
+  },
+  "security": [
+    {
+      "id": "CVE-2018-20676",
+      "title": "XSS vulnerability that affects bootstrap",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2018-20676](https://github.com/advisories/GHSA-3mgp-fx93-9xv5): XSS vulnerability that affects bootstrap\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:7"
+        ],
+        "explanation": "[CVE-2018-20676](https://github.com/advisories/GHSA-3mgp-fx93-9xv5): XSS vulnerability that affects bootstrap\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2018-14040",
+      "title": "Bootstrap vulnerable to Cross-Site Scripting (XSS)",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2018-14040](https://github.com/advisories/GHSA-3wqf-4x89-9g79): Bootstrap vulnerable to Cross-Site Scripting (XSS)\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:7"
+        ],
+        "explanation": "[CVE-2018-14040](https://github.com/advisories/GHSA-3wqf-4x89-9g79): Bootstrap vulnerable to Cross-Site Scripting (XSS)\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2016-10735",
+      "title": "Bootstrap Cross-site Scripting vulnerability",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2016-10735](https://github.com/advisories/GHSA-4p24-vmcr-4gqj): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:7"
+        ],
+        "explanation": "[CVE-2016-10735](https://github.com/advisories/GHSA-4p24-vmcr-4gqj): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2018-14042",
+      "title": "Bootstrap Cross-site Scripting vulnerability",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2018-14042](https://github.com/advisories/GHSA-7mvr-5x2g-wfc8): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:7"
+        ],
+        "explanation": "[CVE-2018-14042](https://github.com/advisories/GHSA-7mvr-5x2g-wfc8): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2019-8331",
+      "title": "Bootstrap Vulnerable to Cross-Site Scripting",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2019-8331](https://github.com/advisories/GHSA-9v3m-8fp8-mj99): Bootstrap Vulnerable to Cross-Site Scripting\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.1 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:7"
+        ],
+        "explanation": "[CVE-2019-8331](https://github.com/advisories/GHSA-9v3m-8fp8-mj99): Bootstrap Vulnerable to Cross-Site Scripting\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.1 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2018-20677",
+      "title": "bootstrap Cross-site Scripting vulnerability",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2018-20677](https://github.com/advisories/GHSA-ph58-4vrj-w6hr): bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:7"
+        ],
+        "explanation": "[CVE-2018-20677](https://github.com/advisories/GHSA-ph58-4vrj-w6hr): bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7)\n\nRecommended fix:\n  - Upgrade bootstrap to 3.4.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2019-11358",
+      "title": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2019-11358](https://github.com/advisories/GHSA-6c3j-c64m-qhgq): XSS in jQuery as used in Drupal, Backdrop CMS, and other products\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8)\n\nRecommended fix:\n  - Upgrade jQuery to 3.4.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:8"
+        ],
+        "explanation": "[CVE-2019-11358](https://github.com/advisories/GHSA-6c3j-c64m-qhgq): XSS in jQuery as used in Drupal, Backdrop CMS, and other products\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8)\n\nRecommended fix:\n  - Upgrade jQuery to 3.4.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2020-11023",
+      "title": "Potential XSS vulnerability in jQuery",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2020-11023](https://github.com/advisories/GHSA-jpcq-cgw6-v4j6): Potential XSS vulnerability in jQuery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8)\n\nRecommended fix:\n  - Upgrade jQuery to 3.5.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:8"
+        ],
+        "explanation": "[CVE-2020-11023](https://github.com/advisories/GHSA-jpcq-cgw6-v4j6): Potential XSS vulnerability in jQuery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8)\n\nRecommended fix:\n  - Upgrade jQuery to 3.5.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2015-9251",
+      "title": "Cross-Site Scripting (XSS) in jquery",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2015-9251](https://github.com/advisories/GHSA-rmxg-73gg-4p98): Cross-Site Scripting (XSS) in jquery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8)\n\nRecommended fix:\n  - Upgrade jQuery to 3.0.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:8"
+        ],
+        "explanation": "[CVE-2015-9251](https://github.com/advisories/GHSA-rmxg-73gg-4p98): Cross-Site Scripting (XSS) in jquery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8)\n\nRecommended fix:\n  - Upgrade jQuery to 3.0.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2021-21252",
+      "title": "Regular Expression Denial of Service in jquery-validation",
+      "category": "CVE",
+      "severity": "mandatory",
+      "description": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected dependencies:\n  - jQuery.Validation:1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9)\n\nRecommended fix:\n  - Upgrade jQuery.Validation to 1.19.3 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:9"
+        ],
+        "explanation": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected dependencies:\n  - jQuery.Validation:1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9)\n\nRecommended fix:\n  - Upgrade jQuery.Validation to 1.19.3 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2018-8269",
+      "title": "Denial of service in ASP.NET Core",
+      "category": "CVE",
+      "severity": "mandatory",
+      "description": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.OData:5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17)\n\nRecommended fix:\n  - Upgrade Microsoft.Data.OData to 5.8.4 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:17"
+        ],
+        "explanation": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.OData:5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17)\n\nRecommended fix:\n  - Upgrade Microsoft.Data.OData to 5.8.4 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2024-21907",
+      "title": "Improper Handling of Exceptional Conditions in Newtonsoft.Json",
+      "category": "CVE",
+      "severity": "mandatory",
+      "description": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Newtonsoft.Json:6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23)\n\nRecommended fix:\n  - Upgrade Newtonsoft.Json to 13.0.1 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:23"
+        ],
+        "explanation": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Newtonsoft.Json:6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23)\n\nRecommended fix:\n  - Upgrade Newtonsoft.Json to 13.0.1 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CVE-2022-30187",
+      "title": "CBC Padding Oracle in Azure Blob Storage Encryption Library",
+      "category": "CVE",
+      "severity": "optional",
+      "description": "[CVE-2022-30187](https://github.com/advisories/GHSA-64x4-9hc6-r2h6): CBC Padding Oracle in Azure Blob Storage Encryption Library\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - Azure.Storage.Blobs:12.9.1 (declared at WebApp-Storage-DotNet/packages.config:5)\n\nRecommended fix:\n  - Upgrade Azure.Storage.Blobs to 12.13.0 or later",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/packages.config:5"
+        ],
+        "explanation": "[CVE-2022-30187](https://github.com/advisories/GHSA-64x4-9hc6-r2h6): CBC Padding Oracle in Azure Blob Storage Encryption Library\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - Azure.Storage.Blobs:12.9.1 (declared at WebApp-Storage-DotNet/packages.config:5)\n\nRecommended fix:\n  - Upgrade Azure.Storage.Blobs to 12.13.0 or later"
+      },
+      "storyPoint": 1
+    },
+    {
+      "id": "CWE-665",
+      "title": "Improper Initialization",
+      "category": "Code Quality",
+      "severity": "potential",
+      "description": "The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController declares the static BlobContainerClient blobContainer without initialization (line 37), assigning it only when Index runs (line 56). UploadAsync, DeleteImage, and DeleteAll use it without ensuring Index has initialized it (lines 100, 133, and 157), so a direct request before Index can operate on an uninitialized storage resource and fail."
+      },
+      "storyPoint": 3
+    },
+    {
+      "id": "CWE-567",
+      "title": "Unsynchronized Access to Shared Data in a Multithreaded Context",
+      "category": "Concurrency & Synchronization",
+      "severity": "potential",
+      "description": "The product does not properly synchronize shared data, such as static variables across threads, which can lead to undefined behavior and unpredictable data changes.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.blobContainer is a mutable static field assigned in Index and concurrently read by UploadAsync, DeleteImage, and DeleteAll without synchronization (lines 37, 56, 100, 133, and 157). Concurrent requests can observe the field while it is being assigned or replaced."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-820",
+      "title": "Missing Synchronization",
+      "category": "Concurrency & Synchronization",
+      "severity": "potential",
+      "description": "The product utilizes a shared resource in a concurrent manner but does not attempt to synchronize access to the resource.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.blobContainer is a mutable static field assigned in Index and concurrently read by UploadAsync, DeleteImage, and DeleteAll without synchronization (lines 37, 56, 100, 133, and 157). Concurrent requests can observe the field while it is being assigned or replaced."
+      },
+      "storyPoint": 8
+    },
+    {
+      "id": "CWE-732",
+      "title": "Incorrect Permission Assignment for Critical Resource",
+      "category": "Credentials & Secrets",
+      "severity": "optional",
+      "description": "The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.Index creates the container with PublicAccessType.Blob (line 57), making every blob readable to unauthenticated callers who know its URI. The application does not apply a more restrictive access policy."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-778",
+      "title": "Insufficient Logging",
+      "category": "Credentials & Secrets",
+      "severity": "potential",
+      "description": "When a security-critical event occurs, the product either does not record the event or omits important details about the event when logging it.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "UploadAsync, DeleteImage, and DeleteAll perform storage-changing operations but do not record successful uploads or deletions in an audit or application log (lines 98-163). Consequently, these security-relevant changes cannot be attributed or reviewed from application logs."
+      },
+      "storyPoint": 3
+    },
+    {
+      "id": "CWE-22",
+      "title": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "category": "File & Path Security",
+      "severity": "optional",
+      "description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.UploadAsync passes the client-supplied HttpPostedFileBase.FileName to BlobClient.UploadAsync(string path) at line 115. That overload reads a local file from the web server; a crafted relative filename containing traversal segments can therefore resolve outside any intended upload directory and cause an unintended server file to be uploaded."
+      },
+      "storyPoint": 8
+    },
+    {
+      "id": "CWE-23",
+      "title": "Relative Path Traversal",
+      "category": "File & Path Security",
+      "severity": "optional",
+      "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.UploadAsync passes the client-supplied HttpPostedFileBase.FileName to BlobClient.UploadAsync(string path) at line 115. Relative traversal segments in the multipart filename can be interpreted as a server-side path and read a file outside the intended upload location."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-36",
+      "title": "Absolute Path Traversal",
+      "category": "File & Path Security",
+      "severity": "optional",
+      "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.UploadAsync passes the client-supplied HttpPostedFileBase.FileName to BlobClient.UploadAsync(string path) at line 115. An absolute path in the multipart filename is interpreted as a server-side file path, allowing an unintended local file to be read and uploaded if the application identity can access it."
+      },
+      "storyPoint": 5
+    },
+    {
+      "id": "CWE-434",
+      "title": "Unrestricted Upload of File with Dangerous Type",
+      "category": "File & Path Security",
+      "severity": "mandatory",
+      "description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Controllers/HomeController.cs"
+        ],
+        "explanation": "HomeController.UploadAsync accepts each posted file and uploads it to the Blob Storage container without checking its extension, MIME type, or content (lines 98-116). No allowlist or other type restriction is applied before the blob is made available; the application therefore permits arbitrary file types."
+      },
+      "storyPoint": 8
+    },
+    {
+      "id": "CWE-79",
+      "title": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+      "category": "Injection Attacks",
+      "severity": "optional",
+      "description": "The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.",
+      "evidence": {
+        "files": [
+          "WebApp-Storage-DotNet/Views/Home/Index.cshtml"
+        ],
+        "explanation": "Index.cshtml renders the uploaded blob URI into an inline JavaScript string in the onclick handler at line 53. The URI is only Razor HTML-encoded, not JavaScript-string encoded, so a crafted value can escape the JavaScript literal and execute script when the handler is invoked."
+      },
+      "storyPoint": 8
+    }
+  ],
+  "rules": {},
+  "projects": [
+    {
+      "properties": {
+        "repo": "PhotoGallery",
+        "languages": [
+          "C#"
+        ],
+        "frameworks": [
+          "ASP.NET MVC 5; .NET Framework 4.8"
+        ],
+        "tools": [
+          "MSBuild; NuGet"
+        ],
+        "description": "ASP.NET MVC photo gallery using Azure Blob Storage",
+        "applicationType": "Web Application"
+      },
+      "incidents": []
+    }
+  ]
+}
