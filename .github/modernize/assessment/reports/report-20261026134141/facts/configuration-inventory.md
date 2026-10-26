@@ -41,7 +41,6 @@ No `Web.Debug.config` or `Web.Release.config` transform files, external config s
 | `system.web/httpRuntime/@targetFramework` | `4.5.2` | Default | `Web.config` |
 | `system.web/httpRuntime/@maxRequestLength` | `2100000000` | Default | `Web.config` |
 | `system.web/httpRuntime/@executionTimeout` | `12000000` | Default | `Web.config` |
-| `system.web/compilation/@debug` | `false` | Release project configuration | Project file build properties do not define a Web.config transform |
 
 The application configuration also contains assembly binding redirects for Newtonsoft.Json, ASP.NET MVC, and System.* libraries.
 
