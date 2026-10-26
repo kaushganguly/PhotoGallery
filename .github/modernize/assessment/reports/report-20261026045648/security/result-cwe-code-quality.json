@@ -1,0 +1,116 @@
+{
+  "input_name": "CWE - Code Quality",
+  "analysis_method": "LLM",
+  "status": "success",
+  "result": {
+    "finding": "Assessed 16 CWE rules in Code Quality: 2 FOUND, 14 NOT_FOUND",
+    "confidence": "high",
+    "evidence": ["Full-repository application source/configuration review, tracing loop bounds, allocation, initialization and resource lifetimes. No manual file handle acquisition/release, explicit attacker-sized allocation, obsolete application API declaration, or documented central data-manager contract was found. Managed null defaults are not treated as uninitialized memory. Runtime DoS severity was not measured; IIS/proxy request limits are deployment-dependent. No tests/builds or live exploit requests were run. NOT_FOUND is not proof of absence."],
+    "values": [
+      {
+        "id": "CWE-130", "name": "Improper Handling of Length Parameter Inconsistency",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "The product parses a formatted message or structure, but it does not handle or incorrectly handles a length field that is inconsistent with the actual length of the associated data.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-456", "name": "Missing Initialization of a Variable",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 2,
+        "description": "The product does not initialize critical variables, which causes the execution environment to use unexpected values.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-457", "name": "Use of Uninitialized Variable",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 2,
+        "description": "The code uses a variable that has not been initialized, leading to unpredictable or unintended results.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-477", "name": "Use of Obsolete Function",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "optional", "storyPoint": 1,
+        "description": "The code uses deprecated or obsolete functions, which suggests that the code has not been actively reviewed or maintained.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-570", "name": "Expression is Always False",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "optional", "storyPoint": 1,
+        "description": "The product contains an expression that will always evaluate to false.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-571", "name": "Expression is Always True",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "optional", "storyPoint": 1,
+        "description": "The product contains an expression that will always evaluate to true.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-606", "name": "Unchecked Input for Loop Condition",
+        "status": "FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "The product does not properly check inputs that are used for loop conditions, potentially leading to a denial of service or other consequences because of excessive looping.",
+        "evidence": {
+          "files": ["WebApp-Storage-DotNet/Controllers/HomeController.cs:101", "WebApp-Storage-DotNet/Controllers/HomeController.cs:102", "WebApp-Storage-DotNet/Controllers/HomeController.cs:106", "WebApp-Storage-DotNet/Controllers/HomeController.cs:109", "WebApp-Storage-DotNet/Web.config:25"],
+          "explanation": "HomeController.UploadAsync uses attacker-selected Request.Files.Count as the loop bound without a per-request file-count/work cap. Each accepted multipart entry performs a sequential storage upload. With the initialized/configured container and an existing readable local source filename (the local-path bug), many small multipart entries can repeat the same source read and generate many unique blob writes, amplifying request CPU/I/O, storage transactions and occupied request lifetime. Web.config sets maxRequestLength=2100000000 and executionTimeout=12000000; these do not constrain file count. Upstream IIS/proxy limits may reduce input size; no bypass of those limits or quantified DoS is claimed."
+        }
+      },
+      {
+        "id": "CWE-665", "name": "Improper Initialization",
+        "status": "FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.",
+        "evidence": {
+          "files": ["WebApp-Storage-DotNet/Controllers/HomeController.cs:47", "WebApp-Storage-DotNet/Controllers/HomeController.cs:65", "WebApp-Storage-DotNet/Controllers/HomeController.cs:108", "WebApp-Storage-DotNet/Controllers/HomeController.cs:158", "WebApp-Storage-DotNet/App_Start/RouteConfig.cs:16"],
+          "explanation": "HomeController stores blobContainer in a static field but only initializes it inside the independently routed Index action. A direct POST to DeleteAll after application startup/recycle, before any Index request reaches line 65, dereferences null at GetBlobs; UploadAsync with a multipart file similarly dereferences it at line 108. RouteConfig permits these direct action routes and neither startup nor the actions initialize the resource. The exception is caught and returns Error, so the confirmed impact is request-level functionality failure due to initialization ordering, not a process crash, cross-account access, or sustained denial of service."
+        }
+      },
+      {
+        "id": "CWE-681", "name": "Incorrect Conversion between Numeric Types",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "When converting from one data type to another, such as long to integer, data can be omitted or translated in a way that produces unexpected values. If the resulting values are used in a sensitive context, then dangerous behaviors may occur.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-682", "name": "Incorrect Calculation",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 5,
+        "description": "The product performs a calculation that generates incorrect or unintended results that are later used in security-critical decisions or resource management.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-772", "name": "Missing Release of Resource after Effective Lifetime",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "The product does not release a resource after its effective lifetime has ended, i.e., after the resource is no longer needed.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-775", "name": "Missing Release of File Descriptor or Handle after Effective Lifetime",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "The product does not release a file descriptor or handle after its effective lifetime has ended, i.e., after the file descriptor/handle is no longer needed.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-783", "name": "Operator Precedence Logic Error",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "optional", "storyPoint": 1,
+        "description": "The product uses an expression in which operator precedence causes incorrect logic to be used.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-789", "name": "Memory Allocation with Excessive Size Value",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 5,
+        "description": "The product allocates memory based on an untrusted, large size value, but it does not ensure that the size is within expected limits, allowing arbitrary amounts of memory to be allocated.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-835", "name": "Loop with Unreachable Exit Condition ('Infinite Loop')",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 3,
+        "description": "The product contains an iteration or loop with an exit condition that cannot be reached, i.e., an infinite loop.",
+        "evidence": {"files": [], "explanation": ""}
+      },
+      {
+        "id": "CWE-1057", "name": "Data Access Operations Outside of Expected Data Manager Component",
+        "status": "NOT_FOUND", "category": "Code Quality", "severity": "potential", "storyPoint": 5,
+        "description": "The product uses a dedicated, central data manager component as required by design, but it contains code that performs data-access operations that do not use this data manager.",
+        "evidence": {"files": [], "explanation": ""}
+      }
+    ]
+  },
+  "execution_time_seconds": 0,
+  "timestamp": "2026-10-26T05:01:02Z"
+}

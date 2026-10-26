@@ -1,0 +1,28 @@
+{
+  "assessmentStatus": "partial",
+  "coreAssessment": {
+    "status": "failed",
+    "tool": "dotnet-appcat",
+    "version": "1.0.1127",
+    "exitCode": 0,
+    "reportGenerated": false,
+    "error": "Msbuild was not found. Microsoft.WebApplication.targets was not found.",
+    "log": "appcat-assessment.log"
+  },
+  "upgradeAssessment": {
+    "status": "failed",
+    "targetFramework": "net10.0",
+    "tool": "generate_dotnet_upgrade_assessment",
+    "error": "The imported project \"/usr/share/dotnet/sdk/10.0.401/Microsoft/VisualStudio/v18.0/WebApplications/Microsoft.WebApplication.targets\" was not found. Confirm that the expression in the Import declaration \"$(VSToolsPath)/WebApplications/Microsoft.WebApplication.targets\", which evaluated to \"/usr/share/dotnet/sdk/10.0.401/Microsoft/VisualStudio/v18.0/WebApplications/Microsoft.WebApplication.targets\", is correct, and that the file exists on disk.  /home/runner/work/PhotoGallery/PhotoGallery/WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj",
+    "outputPath": "scenarios/dotnet-version-upgrade",
+    "generatedFiles": [
+      "assessment.json",
+      "assessment.csv",
+      "assessment.md",
+      "scenario.json",
+      "dependencies-health.json"
+    ],
+    "projectsAnalyzed": 0,
+    "note": "The MCP tool emitted the listed artifacts despite returning a missing-targets error. Its assessment.json contains no projects or rules; zero issues is not evidence of upgrade readiness."
+  }
+}
