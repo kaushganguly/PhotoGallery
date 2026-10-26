@@ -1,0 +1,160 @@
+Initializing and loading extensions...
+Telemetry
+
+AppCAT collects usage data in order to help us improve your experience. The data
+is collected by Microsoft and shared with the community. You can opt-out of 
+telemetry by setting the DOTNET_APPCAT_TELEMETRY_OPTOUT environment variable to 
+'1' or 'true' using your favorite shell.
+
+Read more about AppCAT telemetry: https://aka.ms/upgrade-assistant-telemetry
+Read more about .NET CLI Tools telemetry: https://aka.ms/dotnet-cli-telemetry
+
+                                                                                
+ Selected options                                                               
+────────────────────────────────────────────────────────────────────────────────
+ Privacy mode        Restricted                                                 
+ Report format       AppModJson                                                 
+ Report name         /home/runner/work/PhotoGallery/PhotoGallery/.github/moder  
+                     nize/appcat/result/report.json                             
+ Selected projects   /home/runner/work/PhotoGallery/PhotoGallery/WebApp-Storag  
+                     e-DotNet/WebApp-Storage-DotNet.csproj                      
+ Source              Solution                                                   
+ Target              Any                                                        
+                                                                                
+           
+ Steps     
+───────────
+ Analysis  
+───────────
+           
+           
+Information: Building project '/home/runner/work/PhotoGallery/PhotoGallery/WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj'...
+Error: Msbuild was not found.
+Information: Running on Linux
+Initializing selected projects and their dependencies...
+Microsoft.Build.Exceptions.InvalidProjectFileException: The imported project 
+"/usr/share/dotnet/sdk/10.0.401/Microsoft/VisualStudio/v18.0/WebApplications/Mic
+rosoft.WebApplication.targets" was not found. Confirm that the expression in the
+Import declaration 
+"$(VSToolsPath)/WebApplications/Microsoft.WebApplication.targets", which 
+evaluated to 
+"/usr/share/dotnet/sdk/10.0.401/Microsoft/VisualStudio/v18.0/WebApplications/Mic
+rosoft.WebApplication.targets", is correct, and that the file exists on disk.  
+/home/runner/work/PhotoGallery/PhotoGallery/WebApp-Storage-DotNet/WebApp-Storage
+-DotNet.csproj
+   at Microsoft.Build.Shared.ProjectErrorUtilities.ThrowInvalidProject(String 
+errorSubCategoryResourceName, IElementLocation elementLocation, String 
+resourceName, Object[] args)
+   at 
+Microsoft.Build.Shared.ProjectErrorUtilities.ThrowInvalidProject[T1,T2,T3](IElem
+entLocation elementLocation, String resourceName, T1 arg0, T2 arg1, T3 arg2)
+   at 
+Microsoft.Build.Evaluation.Evaluator`4.ExpandAndLoadImportsFromUnescapedImportEx
+pression(String directoryOfImportingFile, ProjectImportElement importElement, 
+String unescapedExpression, Boolean throwOnFileNotExistsError, List`1& imports)
+   at 
+Microsoft.Build.Evaluation.Evaluator`4.ExpandAndLoadImportsFromUnescapedImportEx
+pressionConditioned(String directoryOfImportingFile, ProjectImportElement 
+importElement, List`1& projects, SdkResult& sdkResult)
+   at Microsoft.Build.Evaluation.Evaluator`4.ExpandAndLoadImports(String 
+directoryOfImportingFile, ProjectImportElement importElement, SdkResult& 
+sdkResult)
+   at Microsoft.Build.Evaluation.Evaluator`4.EvaluateImportElement(String 
+directoryOfImportingFile, ProjectImportElement importElement)
+   at 
+Microsoft.Build.Evaluation.Evaluator`4.PerformDepthFirstPass(ProjectRootElement 
+currentProjectOrImport)
+   at Microsoft.Build.Evaluation.Evaluator`4.Evaluate()
+   at Microsoft.Build.Evaluation.Evaluator`4.Evaluate(IEvaluatorData`4 data, 
+Project project, ProjectRootElement root, ProjectLoadSettings loadSettings, 
+Int32 maxNodeCount, PropertyDictionary`1 environmentProperties, ICollection`1 
+propertiesFromCommandLine, ILoggingService loggingService, IItemFactory`2 
+itemFactory, IToolsetProvider toolsetProvider, IDirectoryCacheFactory 
+directoryCacheFactory, ProjectRootElementCacheBase projectRootElementCache, 
+BuildEventContext buildEventContext, ISdkResolverService sdkResolverService, 
+Int32 submissionId, EvaluationContext evaluationContext, Boolean interactive)
+   at Microsoft.Build.Evaluation.Project.ProjectImpl.Reevaluate(ILoggingService 
+loggingServiceForEvaluation, ProjectLoadSettings loadSettings, EvaluationContext
+evaluationContext)
+   at 
+Microsoft.Build.Evaluation.Project.ProjectImpl.ReevaluateIfNecessary(ILoggingSer
+vice loggingServiceForEvaluation, ProjectLoadSettings loadSettings, 
+EvaluationContext evaluationContext)
+   at Microsoft.Build.Evaluation.Project.ProjectImpl.Initialize(IDictionary`2 
+globalProperties, String toolsVersion, String subToolsetVersion, 
+ProjectLoadSettings loadSettings, EvaluationContext evaluationContext, Boolean 
+interactive)
+   at Microsoft.Build.Evaluation.Project..ctor(String projectFile, IDictionary`2
+globalProperties, String toolsVersion, String subToolsetVersion, 
+ProjectCollection projectCollection, ProjectLoadSettings loadSettings, 
+EvaluationContext evaluationContext, IDirectoryCacheFactory 
+directoryCacheFactory, Boolean interactive)
+   at Microsoft.Build.Evaluation.ProjectCollection.LoadProject(String fileName, 
+IDictionary`2 globalProperties, String toolsVersion)
+   at 
+Microsoft.UpgradeAssistant.Services.DefaultMsBuildProjectAccessManager.GetOrCrea
+teDefaultMsBuildAccessor(String projectPath, ILogger logger, Boolean isReadOnly,
+JoinableTaskContext joinableTaskContext, CancellationToken cancellationToken) in
+/_/src/engine.impl/msbuild/Services/Msbuild/DefaultMsBuildProjectAccessManager.c
+s:line 40
+   at 
+Microsoft.UpgradeAssistant.Cli.Slices.Services.Msbuild.MsbuildService.GetProject
+AccessAsync(String projectPath, Boolean isReadOnly, CancellationToken 
+cancellationToken) in 
+/_/src/cli.impl/Slices/Services/Msbuild/MsbuildService.cs:line 34
+   at 
+Microsoft.UpgradeAssistant.Cli.Slices.Services.Project.ProjectService.CreateProj
+ectAsync(ISolution solution, String projectPath, CancellationToken 
+cancellationToken) in 
+/_/src/cli.impl/Slices/Services/Project/ProjectService.cs:line 641
+   at 
+Microsoft.UpgradeAssistant.Cli.Slices.Services.Project.ProjectService.GetProject
+Async(ISolution solution, String projectPath, CancellationToken 
+cancellationToken) in 
+/_/src/cli.impl/Slices/Services/Project/ProjectService.cs:line 624
+   at 
+Microsoft.UpgradeAssistant.Cli.Slices.Services.Project.ProjectService.GetProject
+ByPathAsync(ISolution solution, String projectPath, CancellationToken 
+cancellationToken) in 
+/_/src/cli.impl/Slices/Services/Project/ProjectService.cs:line 274
+   at 
+Microsoft.AppCAT.Analysis.ProjectAnalysis.GetProjectEntryAsync(ProjectSliceNode 
+node, CancellationToken cancellationToken) in 
+/_/src/appcat/appcat/Analysis/ProjectAnalysis.cs:line 115
+   at Microsoft.AppCAT.Analysis.ProjectAnalysis.LoadAsync(CancellationToken 
+cancellationToken) in /_/src/appcat/appcat/Analysis/ProjectAnalysis.cs:line 97
+   at 
+Microsoft.AppCAT.Cli.Flow.Steps.Analysis.RunAnalysisFlowStep.<>c__DisplayClass13
+_0.<<LoadAsync>b__0>d.MoveNext() in 
+/_/src/appcat/cli/Flow/Steps/Analysis/RunAnalysisFlowStep.cs:line 108
+--- End of stack trace from previous location ---
+   at 
+Spectre.Console.Status.<>c__DisplayClass16_0.<<StartAsync>b__0>d.MoveNext() in 
+/_/src/Spectre.Console/Live/Status/Status.cs:line 79
+--- End of stack trace from previous location ---
+   at 
+Spectre.Console.Status.<>c__DisplayClass17_0`1.<<StartAsync>b__0>d.MoveNext() in
+/_/src/Spectre.Console/Live/Status/Status.cs:line 120
+--- End of stack trace from previous location ---
+   at 
+Spectre.Console.Progress.<>c__DisplayClass28_0`1.<<StartAsync>b__0>d.MoveNext() 
+in /_/src/Spectre.Console/Live/Progress/Progress.cs:line 133
+--- End of stack trace from previous location ---
+   at Spectre.Console.Internal.DefaultExclusivityMode.RunAsync[T](Func`1 func) 
+in /_/src/Spectre.Console/Internal/DefaultExclusivityMode.cs:line 40
+   at Spectre.Console.Progress.StartAsync[T](Func`2 action) in 
+/_/src/Spectre.Console/Live/Progress/Progress.cs:line 116
+   at Spectre.Console.Status.StartAsync[T](String status, Func`2 func) in 
+/_/src/Spectre.Console/Live/Status/Status.cs:line 117
+   at Spectre.Console.Status.StartAsync(String status, Func`2 action) in 
+/_/src/Spectre.Console/Live/Status/Status.cs:line 77
+   at 
+Microsoft.AppCAT.Cli.Flow.Steps.Analysis.RunAnalysisFlowStep.LoadAsync(IAnalysis
+analysis, CancellationToken cancellationToken) in 
+/_/src/appcat/cli/Flow/Steps/Analysis/RunAnalysisFlowStep.cs:line 104
+   at 
+Microsoft.AppCAT.Cli.Flow.Steps.Analysis.RunAnalysisFlowStep.RunAsync(IFlowConte
+xt context, CancellationToken cancellationToken) in 
+/_/src/appcat/cli/Flow/Steps/Analysis/RunAnalysisFlowStep.cs:line 85
+   at Spectre.Console.Flow.FlowRunner.RunAsync(CancellationToken 
+cancellationToken) in /_/src/spectre.flow/Flow/FlowRunner.cs:line 98
