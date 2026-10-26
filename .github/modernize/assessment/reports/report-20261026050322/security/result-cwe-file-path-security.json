@@ -1,0 +1,76 @@
+[
+  {
+    "id": "CWE-22",
+    "name": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+    "status": "FOUND",
+    "category": "File & Path Security",
+    "severity": "optional",
+    "storyPoint": 8,
+    "description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.",
+    "evidence": {
+      "files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65-78"
+      ],
+      "explanation": "HomeController.UploadAsync passes attacker-controlled multipart files[i].FileName directly to BlobClient.UploadAsync(string path) at line 109, which reads a server-local file rather than the uploaded InputStream. No path containment or authorization is enforced. After Index initializes the client (65-66), a crafted relative or absolute server pathname can copy any process-readable local file into the blob container. Index creates that container with PublicAccessType.Blob and lists the new blob URI (66, 75-78), enabling remote retrieval when Azure storage is configured and public access is permitted. The source extension is retained (181-182), not a path restriction. API contract: https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.blobclient.uploadasync (string path denotes a local file). Pinned 12.9.1 SDK source verification: https://raw.githubusercontent.com/Azure/azure-sdk-for-net/Azure.Storage.Blobs_12.9.1/sdk/storage/Azure.Storage.Blobs/src/BlobClient.cs; UploadAsync(string path, ...) opens new FileStream(path, FileMode.Open, FileAccess.Read) (SDK source lines 1565-1575)."
+    }
+  },
+  {
+    "id": "CWE-23",
+    "name": "Relative Path Traversal",
+    "status": "FOUND",
+    "category": "File & Path Security",
+    "severity": "optional",
+    "storyPoint": 5,
+    "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.",
+    "evidence": {
+      "files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65-78"
+      ],
+      "explanation": "HomeController.UploadAsync passes attacker-controlled multipart files[i].FileName directly to BlobClient.UploadAsync(string path) at line 109, which reads a server-local file rather than the uploaded InputStream. No path containment or authorization is enforced. After Index initializes the client (65-66), a crafted relative traversal pathname containing .. can copy any process-readable local file into the blob container. Index creates that container with PublicAccessType.Blob and lists the new blob URI (66, 75-78), enabling remote retrieval when Azure storage is configured and public access is permitted. The source extension is retained (181-182), not a path restriction. API contract: https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.blobclient.uploadasync (string path denotes a local file). Pinned 12.9.1 SDK source verification: https://raw.githubusercontent.com/Azure/azure-sdk-for-net/Azure.Storage.Blobs_12.9.1/sdk/storage/Azure.Storage.Blobs/src/BlobClient.cs; UploadAsync(string path, ...) opens new FileStream(path, FileMode.Open, FileAccess.Read) (SDK source lines 1565-1575)."
+    }
+  },
+  {
+    "id": "CWE-36",
+    "name": "Absolute Path Traversal",
+    "status": "FOUND",
+    "category": "File & Path Security",
+    "severity": "optional",
+    "storyPoint": 5,
+    "description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.",
+    "evidence": {
+      "files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65-78"
+      ],
+      "explanation": "HomeController.UploadAsync passes attacker-controlled multipart files[i].FileName directly to BlobClient.UploadAsync(string path) at line 109, which reads a server-local file rather than the uploaded InputStream. No path containment or authorization is enforced. After Index initializes the client (65-66), a crafted absolute server pathname can copy any process-readable local file into the blob container. Index creates that container with PublicAccessType.Blob and lists the new blob URI (66, 75-78), enabling remote retrieval when Azure storage is configured and public access is permitted. The source extension is retained (181-182), not a path restriction. API contract: https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.blobclient.uploadasync (string path denotes a local file). Pinned 12.9.1 SDK source verification: https://raw.githubusercontent.com/Azure/azure-sdk-for-net/Azure.Storage.Blobs_12.9.1/sdk/storage/Azure.Storage.Blobs/src/BlobClient.cs; UploadAsync(string path, ...) opens new FileStream(path, FileMode.Open, FileAccess.Read) (SDK source lines 1565-1575)."
+    }
+  },
+  {
+    "id": "CWE-434",
+    "name": "Unrestricted Upload of File with Dangerous Type",
+    "status": "NOT_FOUND",
+    "category": "File & Path Security",
+    "severity": "mandatory",
+    "storyPoint": 8,
+    "description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+    "evidence": {
+      "files": [],
+      "explanation": ""
+    }
+  },
+  {
+    "id": "CWE-611",
+    "name": "Improper Restriction of XML External Entity Reference",
+    "status": "NOT_FOUND",
+    "category": "File & Path Security",
+    "severity": "optional",
+    "storyPoint": 5,
+    "description": "The product processes an XML document that can contain XML entities with URIs that resolve to documents outside of the intended sphere of control, causing the product to embed incorrect documents into its output.",
+    "evidence": {
+      "files": [],
+      "explanation": ""
+    }
+  }
+]

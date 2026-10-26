@@ -1,0 +1,346 @@
+{
+  "GeneratedAt": "2026-10-26T05:10:31.039200Z",
+  "ProjectPath": ".",
+  "MinimumCveSeverity": "medium",
+  "Summary": {
+    "TotalFindings": 24,
+    "CveCount": 16,
+    "CweCount": 8,
+    "BySeverity": {
+      "mandatory": 4,
+      "optional": 17,
+      "potential": 3
+    },
+    "ByCategory": {
+      "CVE": 16,
+      "Code Quality": 1,
+      "Credentials & Secrets": 2,
+      "File & Path Security": 3,
+      "Injection Attacks": 2
+    },
+    "TotalRulesAssessed": 59,
+    "RulesPassed": 51
+  },
+  "Limitations": [
+    "Dependency inventory covers the 34 pinned NuGet packages in packages.config and corresponding vendored JavaScript assets. dotnet list package --include-transitive --format json failed because Microsoft.WebApplication.targets is unavailable; dependencies beyond this pinned inventory were not verified.",
+    "CVE findings identify vulnerable versions, not proof that vulnerable features are exercised. Advisory links and branch-specific patched versions are retained with each finding.",
+    "CWE findings are source-based assessments; deployment exploitability was not dynamically tested. FOUND and NOT_FOUND describe the inspected patterns, not a security certification.",
+    "CWE-22, CWE-23, and CWE-36 describe related pathname handling in the same upload operation. Findings are counts of checklist matches, not counts of distinct root causes.",
+    "Assessment severities follow the supplied checklist; optional does not imply that a finding is safe to ignore.",
+    "Application source was not modified. Remediations are recommendations for follow-up work."
+  ],
+  "CveFindings": [
+    {
+      "Id": "CVE-2022-30187",
+      "Name": "Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2022-30187](https://github.com/advisories/GHSA-64x4-9hc6-r2h6): Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- Azure.Storage.Blobs:12.9.1 (nuget; WebApp-Storage-DotNet/packages.config:5)\n  Applicable vulnerable range: < 12.13.0; first patched version: 12.13.0.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised. The affected client-side CBC encryption feature is not configured by the inspected HomeController, so feature-specific exploitability is unconfirmed.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:5"
+      ],
+      "Explanation": "[CVE-2022-30187](https://github.com/advisories/GHSA-64x4-9hc6-r2h6): Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- Azure.Storage.Blobs:12.9.1 (nuget; WebApp-Storage-DotNet/packages.config:5)\n  Applicable vulnerable range: < 12.13.0; first patched version: 12.13.0.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised. The affected client-side CBC encryption feature is not configured by the inspected HomeController, so feature-specific exploitability is unconfirmed."
+    },
+    {
+      "Id": "CVE-2018-14040",
+      "Name": "Bootstrap vulnerable to Cross-Site Scripting (XSS)",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-14040](https://github.com/advisories/GHSA-3wqf-4x89-9g79): Bootstrap vulnerable to Cross-Site Scripting (XSS)\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2018-14040](https://github.com/advisories/GHSA-3wqf-4x89-9g79): Bootstrap vulnerable to Cross-Site Scripting (XSS)\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2019-8331",
+      "Name": "Bootstrap Vulnerable to Cross-Site Scripting",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2019-8331](https://github.com/advisories/GHSA-9v3m-8fp8-mj99): Bootstrap Vulnerable to Cross-Site Scripting\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 3.0.0, < 3.4.1; first patched version: 3.4.1.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 3.0.0, < 3.4.1; first patched version: 3.4.1.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2019-8331](https://github.com/advisories/GHSA-9v3m-8fp8-mj99): Bootstrap Vulnerable to Cross-Site Scripting\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 3.0.0, < 3.4.1; first patched version: 3.4.1.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 3.0.0, < 3.4.1; first patched version: 3.4.1.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2018-20677",
+      "Name": "bootstrap Cross-site Scripting vulnerability",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-20677](https://github.com/advisories/GHSA-ph58-4vrj-w6hr): bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2018-20677](https://github.com/advisories/GHSA-ph58-4vrj-w6hr): bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2018-20676",
+      "Name": "XSS vulnerability that affects bootstrap",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-20676](https://github.com/advisories/GHSA-3mgp-fx93-9xv5): XSS vulnerability that affects bootstrap\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2018-20676](https://github.com/advisories/GHSA-3mgp-fx93-9xv5): XSS vulnerability that affects bootstrap\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2016-10735",
+      "Name": "Bootstrap Cross-site Scripting vulnerability",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2016-10735](https://github.com/advisories/GHSA-4p24-vmcr-4gqj): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 2.0.4, < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 2.0.4, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2016-10735](https://github.com/advisories/GHSA-4p24-vmcr-4gqj): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 2.0.4, < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 2.0.4, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2018-14042",
+      "Name": "Bootstrap Cross-site Scripting vulnerability",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-14042](https://github.com/advisories/GHSA-7mvr-5x2g-wfc8): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2018-14042](https://github.com/advisories/GHSA-7mvr-5x2g-wfc8): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (nuget; WebApp-Storage-DotNet/packages.config:7)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 2.3.0, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2020-11023",
+      "Name": "Potential XSS vulnerability in jQuery",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2020-11023](https://github.com/advisories/GHSA-jpcq-cgw6-v4j6): Potential XSS vulnerability in jQuery\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jQuery:1.10.2 (nuget; WebApp-Storage-DotNet/packages.config:8)\n  Applicable vulnerable range: >= 1.0.3, < 3.5.0; first patched version: 3.5.0.\n- jquery:1.10.2 (npm; WebApp-Storage-DotNet/packages.config:8; vendored asset WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16)\n  Applicable vulnerable range: >= 1.0.3, < 3.5.0; first patched version: 3.5.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:8",
+        "WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16"
+      ],
+      "Explanation": "[CVE-2020-11023](https://github.com/advisories/GHSA-jpcq-cgw6-v4j6): Potential XSS vulnerability in jQuery\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jQuery:1.10.2 (nuget; WebApp-Storage-DotNet/packages.config:8)\n  Applicable vulnerable range: >= 1.0.3, < 3.5.0; first patched version: 3.5.0.\n- jquery:1.10.2 (npm; WebApp-Storage-DotNet/packages.config:8; vendored asset WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16)\n  Applicable vulnerable range: >= 1.0.3, < 3.5.0; first patched version: 3.5.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2019-11358",
+      "Name": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2019-11358](https://github.com/advisories/GHSA-6c3j-c64m-qhgq): XSS in jQuery as used in Drupal, Backdrop CMS, and other products\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jQuery:1.10.2 (nuget; WebApp-Storage-DotNet/packages.config:8)\n  Applicable vulnerable range: >= 1.1.4, < 3.4.0; first patched version: 3.4.0.\n- jquery:1.10.2 (npm; WebApp-Storage-DotNet/packages.config:8; vendored asset WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16)\n  Applicable vulnerable range: >= 1.1.4, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:8",
+        "WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16"
+      ],
+      "Explanation": "[CVE-2019-11358](https://github.com/advisories/GHSA-6c3j-c64m-qhgq): XSS in jQuery as used in Drupal, Backdrop CMS, and other products\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jQuery:1.10.2 (nuget; WebApp-Storage-DotNet/packages.config:8)\n  Applicable vulnerable range: >= 1.1.4, < 3.4.0; first patched version: 3.4.0.\n- jquery:1.10.2 (npm; WebApp-Storage-DotNet/packages.config:8; vendored asset WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16)\n  Applicable vulnerable range: >= 1.1.4, < 3.4.0; first patched version: 3.4.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2015-9251",
+      "Name": "Cross-Site Scripting (XSS) in jquery",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2015-9251](https://github.com/advisories/GHSA-rmxg-73gg-4p98): Cross-Site Scripting (XSS) in jquery\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jQuery:1.10.2 (nuget; WebApp-Storage-DotNet/packages.config:8)\n  Applicable vulnerable range: < 1.12.2; first patched version: 1.12.2.\n- jquery:1.10.2 (npm; WebApp-Storage-DotNet/packages.config:8; vendored asset WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16)\n  Applicable vulnerable range: < 1.12.2; first patched version: 1.12.2.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:8",
+        "WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16"
+      ],
+      "Explanation": "[CVE-2015-9251](https://github.com/advisories/GHSA-rmxg-73gg-4p98): Cross-Site Scripting (XSS) in jquery\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jQuery:1.10.2 (nuget; WebApp-Storage-DotNet/packages.config:8)\n  Applicable vulnerable range: < 1.12.2; first patched version: 1.12.2.\n- jquery:1.10.2 (npm; WebApp-Storage-DotNet/packages.config:8; vendored asset WebApp-Storage-DotNet/Scripts/jquery-1.10.2.js:16)\n  Applicable vulnerable range: < 1.12.2; first patched version: 1.12.2.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2021-21252",
+      "Name": "Regular Expression Denial of Service in jquery-validation",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- jQuery.Validation:1.11.1 (nuget; WebApp-Storage-DotNet/packages.config:9)\n  Applicable vulnerable range: < 1.19.3; first patched version: 1.19.3.\n- jquery-validation:1.11.1 (npm; WebApp-Storage-DotNet/packages.config:9; vendored asset WebApp-Storage-DotNet/Scripts/jquery.validate.js:16)\n  Applicable vulnerable range: < 1.19.3; first patched version: 1.19.3.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:9",
+        "WebApp-Storage-DotNet/Scripts/jquery.validate.js:16"
+      ],
+      "Explanation": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- jQuery.Validation:1.11.1 (nuget; WebApp-Storage-DotNet/packages.config:9)\n  Applicable vulnerable range: < 1.19.3; first patched version: 1.19.3.\n- jquery-validation:1.11.1 (npm; WebApp-Storage-DotNet/packages.config:9; vendored asset WebApp-Storage-DotNet/Scripts/jquery.validate.js:16)\n  Applicable vulnerable range: < 1.19.3; first patched version: 1.19.3.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2018-8269",
+      "Name": "Denial of service in ASP.NET Core",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- Microsoft.Data.OData:5.6.4 (nuget; WebApp-Storage-DotNet/packages.config:17)\n  Applicable vulnerable range: < 5.8.4; first patched version: 5.8.4.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:17"
+      ],
+      "Explanation": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- Microsoft.Data.OData:5.6.4 (nuget; WebApp-Storage-DotNet/packages.config:17)\n  Applicable vulnerable range: < 5.8.4; first patched version: 5.8.4.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2024-21907",
+      "Name": "Improper Handling of Exceptional Conditions in Newtonsoft.Json",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- Newtonsoft.Json:6.0.8 (nuget; WebApp-Storage-DotNet/packages.config:23)\n  Applicable vulnerable range: < 13.0.1; first patched version: 13.0.1.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:23"
+      ],
+      "Explanation": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- Newtonsoft.Json:6.0.8 (nuget; WebApp-Storage-DotNet/packages.config:23)\n  Applicable vulnerable range: < 13.0.1; first patched version: 13.0.1.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2024-6485",
+      "Name": "Bootstrap Cross-Site Scripting (XSS) vulnerability for data-* attributes",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2024-6485](https://github.com/advisories/GHSA-vxmc-5x29-h64v): Bootstrap Cross-Site Scripting (XSS) vulnerability for data-* attributes\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 1.4.0, <= 3.4.1; first patched version: none provided.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7",
+        "WebApp-Storage-DotNet/Scripts/bootstrap.js:17"
+      ],
+      "Explanation": "[CVE-2024-6485](https://github.com/advisories/GHSA-vxmc-5x29-h64v): Bootstrap Cross-Site Scripting (XSS) vulnerability for data-* attributes\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- bootstrap:3.0.0 (npm; WebApp-Storage-DotNet/packages.config:7; vendored asset WebApp-Storage-DotNet/Scripts/bootstrap.js:17)\n  Applicable vulnerable range: >= 1.4.0, <= 3.4.1; first patched version: none provided.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2025-3573",
+      "Name": "jquery-validation vulnerable to Cross-site Scripting",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2025-3573](https://github.com/advisories/GHSA-rrj2-ph5q-jxw2): jquery-validation vulnerable to Cross-site Scripting\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jquery-validation:1.11.1 (npm; WebApp-Storage-DotNet/packages.config:9; vendored asset WebApp-Storage-DotNet/Scripts/jquery.validate.js:16)\n  Applicable vulnerable range: < 1.20.0; first patched version: 1.20.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:9",
+        "WebApp-Storage-DotNet/Scripts/jquery.validate.js:16"
+      ],
+      "Explanation": "[CVE-2025-3573](https://github.com/advisories/GHSA-rrj2-ph5q-jxw2): jquery-validation vulnerable to Cross-site Scripting\n\nSeverity: MEDIUM\n\nAffected pinned packages/assets:\n- jquery-validation:1.11.1 (npm; WebApp-Storage-DotNet/packages.config:9; vendored asset WebApp-Storage-DotNet/Scripts/jquery.validate.js:16)\n  Applicable vulnerable range: < 1.20.0; first patched version: 1.20.0.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised."
+    },
+    {
+      "Id": "CVE-2022-31147",
+      "Name": "jquery-validation Regular Expression Denial of Service due to arbitrary input to url2 method",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2022-31147](https://github.com/advisories/GHSA-ffmh-x56j-9rc3): jquery-validation Regular Expression Denial of Service due to arbitrary input to url2 method\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- jquery-validation:1.11.1 (npm; WebApp-Storage-DotNet/packages.config:9; vendored asset WebApp-Storage-DotNet/Scripts/jquery.validate.js:16)\n  Applicable vulnerable range: < 1.19.5; first patched version: 1.19.5.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised. The advisory targets the url2 method in additional-methods.js; that additional file/method is not shipped in the inspected repository, so this upstream package-version match is not confirmed reachable in this deployment.",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:9",
+        "WebApp-Storage-DotNet/Scripts/jquery.validate.js:16"
+      ],
+      "Explanation": "[CVE-2022-31147](https://github.com/advisories/GHSA-ffmh-x56j-9rc3): jquery-validation Regular Expression Denial of Service due to arbitrary input to url2 method\n\nSeverity: HIGH\n\nAffected pinned packages/assets:\n- jquery-validation:1.11.1 (npm; WebApp-Storage-DotNet/packages.config:9; vendored asset WebApp-Storage-DotNet/Scripts/jquery.validate.js:16)\n  Applicable vulnerable range: < 1.19.5; first patched version: 1.19.5.\n  npm metadata identifies the same upstream JavaScript shipped via NuGet; not an installed npm dependency.\n\nRecommended fix: upgrade to a supported patched version for the applicable branch listed above and verify compatibility. Where no patched version is listed, the advisory provides no fixed version for that branch; do not assume a same-major upgrade fixes it. Update shipped JavaScript assets as well as package declarations.\n\nCoverage: packages.config inventory fallback after dotnet package enumeration failed on missing Microsoft.WebApplication.targets; unresolved dependencies beyond the pinned inventory are not verified. This is a known-vulnerable-version finding, not proof that the vulnerable feature is exercised. The advisory targets the url2 method in additional-methods.js; that additional file/method is not shipped in the inspected repository, so this upstream package-version match is not confirmed reachable in this deployment."
+    }
+  ],
+  "CweFindings": [
+    {
+      "Id": "CWE-665",
+      "Name": "Improper Initialization",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:47",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:63-66",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:108-118",
+        "WebApp-Storage-DotNet/Views/Shared/Error.cshtml:7-9"
+      ],
+      "Explanation": "HomeController.blobContainer is left null at application startup and is initialized only by visiting Index. UploadAsync dereferences this shared resource at line 108 without ensuring Index ran. A direct multipart POST after worker startup/recycle therefore reliably raises NullReferenceException; the catch block publishes the detailed exception and stack trace via Error.cshtml. This is a request-order-dependent initialization defect and information exposure, not a memory-corruption claim. Valid storage setup and a request to Index avoid this particular null state."
+    },
+    {
+      "Id": "CWE-732",
+      "Name": "Incorrect Permission Assignment for Critical Resource",
+      "Category": "Credentials & Secrets",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:44-47",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:127-162",
+        "WebApp-Storage-DotNet/App_Start/FilterConfig.cs:8-10",
+        "WebApp-Storage-DotNet/Web.config:23-26"
+      ],
+      "Explanation": "The gallery routes expose DeleteImage and DeleteAll with only HttpPost; there is no controller/action authorization, ownership check, global Authorize filter, or web.config authorization restriction. Any reachable anonymous caller can invoke DeleteAll to delete every block blob using the application storage identity (158-162), or DeleteImage to delete a known blob. This confers destructive storage modification permissions to arbitrary site visitors, not merely the intentionally public read access configured at line 66. Exploitation requires a configured storage account and initialized container; lack of anti-forgery checks also permits cross-site form submission."
+    },
+    {
+      "Id": "CWE-778",
+      "Name": "Insufficient Logging",
+      "Category": "Credentials & Secrets",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "When a security-critical event occurs, the product either does not record the event or omits important details about the event when logging it.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:128-172"
+      ],
+      "Explanation": "Security-critical blob deletion (DeleteImage at 136 and DeleteAll at 162) is followed only by a redirect. No application audit record contains actor, target, outcome, or deletion count. Failure handlers (140-144, 168-172) send the exception to a view instead of recording it. Repository-wide application C# inspection found no audit/logging provider or logging calls; no storage diagnostic configuration is committed. Anonymous bulk deletion can therefore occur without an application-level security event record. External platform/storage logging may exist but cannot be verified from this repository."
+    },
+    {
+      "Id": "CWE-22",
+      "Name": "Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+      "Category": "File & Path Security",
+      "Severity": "optional",
+      "StoryPoint": 8,
+      "Description": "The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65-78"
+      ],
+      "Explanation": "HomeController.UploadAsync passes attacker-controlled multipart files[i].FileName directly to BlobClient.UploadAsync(string path) at line 109, which reads a server-local file rather than the uploaded InputStream. No path containment or authorization is enforced. After Index initializes the client (65-66), a crafted relative or absolute server pathname can copy any process-readable local file into the blob container. Index creates that container with PublicAccessType.Blob and lists the new blob URI (66, 75-78), enabling remote retrieval when Azure storage is configured and public access is permitted. The source extension is retained (181-182), not a path restriction. API contract: https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.blobclient.uploadasync (string path denotes a local file). Pinned 12.9.1 SDK source verification: https://raw.githubusercontent.com/Azure/azure-sdk-for-net/Azure.Storage.Blobs_12.9.1/sdk/storage/Azure.Storage.Blobs/src/BlobClient.cs; UploadAsync(string path, ...) opens new FileStream(path, FileMode.Open, FileAccess.Read) (SDK source lines 1565-1575)."
+    },
+    {
+      "Id": "CWE-23",
+      "Name": "Relative Path Traversal",
+      "Category": "File & Path Security",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65-78"
+      ],
+      "Explanation": "HomeController.UploadAsync passes attacker-controlled multipart files[i].FileName directly to BlobClient.UploadAsync(string path) at line 109, which reads a server-local file rather than the uploaded InputStream. No path containment or authorization is enforced. After Index initializes the client (65-66), a crafted relative traversal pathname containing .. can copy any process-readable local file into the blob container. Index creates that container with PublicAccessType.Blob and lists the new blob URI (66, 75-78), enabling remote retrieval when Azure storage is configured and public access is permitted. The source extension is retained (181-182), not a path restriction. API contract: https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.blobclient.uploadasync (string path denotes a local file). Pinned 12.9.1 SDK source verification: https://raw.githubusercontent.com/Azure/azure-sdk-for-net/Azure.Storage.Blobs_12.9.1/sdk/storage/Azure.Storage.Blobs/src/BlobClient.cs; UploadAsync(string path, ...) opens new FileStream(path, FileMode.Open, FileAccess.Read) (SDK source lines 1565-1575)."
+    },
+    {
+      "Id": "CWE-36",
+      "Name": "Absolute Path Traversal",
+      "Category": "File & Path Security",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65-78"
+      ],
+      "Explanation": "HomeController.UploadAsync passes attacker-controlled multipart files[i].FileName directly to BlobClient.UploadAsync(string path) at line 109, which reads a server-local file rather than the uploaded InputStream. No path containment or authorization is enforced. After Index initializes the client (65-66), a crafted absolute server pathname can copy any process-readable local file into the blob container. Index creates that container with PublicAccessType.Blob and lists the new blob URI (66, 75-78), enabling remote retrieval when Azure storage is configured and public access is permitted. The source extension is retained (181-182), not a path restriction. API contract: https://learn.microsoft.com/en-us/dotnet/api/azure.storage.blobs.blobclient.uploadasync (string path denotes a local file). Pinned 12.9.1 SDK source verification: https://raw.githubusercontent.com/Azure/azure-sdk-for-net/Azure.Storage.Blobs_12.9.1/sdk/storage/Azure.Storage.Blobs/src/BlobClient.cs; UploadAsync(string path, ...) opens new FileStream(path, FileMode.Open, FileAccess.Read) (SDK source lines 1565-1575)."
+    },
+    {
+      "Id": "CWE-79",
+      "Name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+      "Category": "Injection Attacks",
+      "Severity": "optional",
+      "StoryPoint": 8,
+      "Description": "The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.",
+      "Files": [
+        "WebApp-Storage-DotNet/Views/Home/Index.cshtml:72-85"
+      ],
+      "Explanation": "DisplayFilesToUpload concatenates the selected File.name without HTML encoding (80) into html and assigns it to FilesToUpload.innerHTML (85). A filename containing an HTML element with an event handler is interpreted as active markup in the gallery origin. This is a user-assisted DOM XSS path: an attacker must deliver a specially named local file and persuade the victim to select it in the file picker; it is not a remotely triggerable stored upload finding. The sink executes before submission, independently of the server upload failure."
+    },
+    {
+      "Id": "CWE-99",
+      "Name": "Improper Control of Resource Identifiers ('Resource Injection')",
+      "Category": "Injection Attacks",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product receives input from an upstream component, but it does not restrict or incorrectly restricts the input before it is used as an identifier for a resource that may be outside the intended sphere of control.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109"
+      ],
+      "Explanation": "HomeController.UploadAsync uses a multipart filename supplied by the requester as the server-local resource identifier passed to BlobClient.UploadAsync(string path), without restriction to uploaded data or a permitted directory. Once Index initializes the container, this permits selection of any process-readable local file for transfer to Azure blobs. The filename is a local file path, not an upload stream; this is the same root cause as the path-traversal findings."
+    }
+  ]
+}

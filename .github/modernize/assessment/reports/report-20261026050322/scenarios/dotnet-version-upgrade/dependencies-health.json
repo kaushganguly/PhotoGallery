@@ -1,0 +1,13 @@
+{
+  "assessmentStatus": {
+    "status": "blocked",
+    "details": "Project loading failed because Microsoft.WebApplication.targets is unavailable. Dependency compatibility was not evaluated."
+  },
+  "packageGovernance": {
+    "totalDistinctPackages": 0,
+    "totalVersionDriftInstances": 0,
+    "targetFramework": "net10.0",
+    "packages": []
+  },
+  "projects": []
+}
