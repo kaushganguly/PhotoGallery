@@ -1,0 +1,37 @@
+{
+  "assessmentStatus": {
+    "status": "blocked",
+    "error": "The imported project Microsoft.WebApplication.targets was not found.",
+    "details": "No projects were analyzed. Zero issues must not be interpreted as compatibility with net10.0."
+  },
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-10-26T05:03:55.5716062Z",
+  "analysisEndTime": "2026-10-26T05:03:55.5716182Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 0,
+      "issues": 0,
+      "incidents": 0,
+      "effort": 0
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 0,
+        "Optional": 0,
+        "Potential": 0,
+        "Information": 0
+      },
+      "category": {}
+    }
+  },
+  "projects": [],
+  "rules": {}
+}

@@ -1,0 +1,49 @@
+{
+  "metadata": {
+    "analysisStartTime": "2026-10-26T05:03:22Z",
+    "repository": "kaushganguly/PhotoGallery",
+    "tool": "dotnet-appcat",
+    "toolVersion": "1.0.1127",
+    "source": "Solution",
+    "target": "Any",
+    "privacyMode": "Restricted",
+    "status": "incomplete",
+    "provenance": "Assessment orchestration record; AppCAT failed before producing report data."
+  },
+  "assessmentStatus": {
+    "cloudReadiness": {
+      "status": "blocked",
+      "error": "Microsoft.Build.Exceptions.InvalidProjectFileException: Microsoft.WebApplication.targets was not found.",
+      "details": "The Linux runner lacks the Visual Studio legacy ASP.NET WebApplication build targets required to load the project. AppCAT also reported: Msbuild was not found. No cloud-readiness findings were generated; an empty incidents array is not evidence of readiness.",
+      "remediation": "Rerun the core assessment on Windows with Visual Studio MSBuild, ASP.NET web build tools, .NET Framework 4.8 targeting pack, and restored NuGet packages."
+    },
+    "dotnetUpgrade": {
+      "targetFramework": "net10.0",
+      "status": "blocked",
+      "error": "The imported project Microsoft.WebApplication.targets was not found.",
+      "details": "The MCP assessment generated the five expected output files, but assessment.json contains zero analyzed projects. The generated zero counts do not establish package or API compatibility.",
+      "outputPath": "scenarios/dotnet-version-upgrade/",
+      "remediation": "Rerun the .NET 10 assessment on Windows with the legacy ASP.NET WebApplication build targets and .NET Framework 4.8 targeting pack installed."
+    },
+    "security": {
+      "minimumCveSeverity": "medium",
+      "status": "pending"
+    }
+  },
+  "projects": [
+    {
+      "path": "WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj",
+      "properties": {
+        "repo": "PhotoGallery",
+        "appName": "PhotoGallery",
+        "languages": ["C#"],
+        "frameworks": [".NET Framework 4.8", "ASP.NET MVC 5"],
+        "tools": ["MSBuild", "NuGet"],
+        "applicationType": "Web application",
+        "description": "PARTIAL ASSESSMENT: core cloud-readiness analysis was blocked because the Linux runner lacks Microsoft.WebApplication.targets. No cloud-readiness conclusion can be drawn. Security and .NET upgrade assessment statuses are recorded separately."
+      },
+      "incidents": []
+    }
+  ],
+  "rules": {}
+}
