@@ -27,8 +27,8 @@ This document provides a comprehensive overview of the projects and their depend
 
 | Metric | Count | Status |
 | :--- | :---: | :--- |
-| Total Projects | 1 | All require upgrade |
-| Total NuGet Packages | 0 | All compatible |
+| Total Projects | 1 discovered; 0 analyzed | Project loading failed |
+| Total NuGet Packages | Not assessed | Compatibility unknown |
 | Total Code Files | 0 |  |
 | Total Code Files with Incidents | 0 |  |
 | Total Lines of Code | 0 |  |
