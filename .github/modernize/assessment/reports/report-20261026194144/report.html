@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assessment - PhotoGallery</title>
+<style>
+:root {
+  --bg-primary: #ffffff;
+  --bg-card: #f8f9fa;
+  --bg-page: #f0f1f3;
+  --text-primary: #24292f;
+  --text-secondary: #57606a;
+  --text-muted: #6b7280;
+  --border-color: #d0d7de;
+  --border-light: #e1e4e8;
+  --link-color: #2563eb;
+  --color-mandatory: #E3008C;
+  --color-potential: #637CEF;
+  --color-optional: #A19F9D;
+  --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-family); font-size: 13px; color: var(--text-primary); background: var(--bg-primary); line-height: 1.5; margin: 0; padding: 0; }
+a { color: var(--link-color); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Page layout ───────────────────────────────────────────── */
+.main { margin: 0; padding: 24px 32px; background: var(--bg-primary); }
+.back-link { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; display: block; }
+h1 { font-weight: 600; font-size: 20px; color: var(--text-primary); margin-bottom: 20px; }
+
+/* ── Report cards (matches VS Code .vscode-report-card) ──── */
+.report-card { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 4px; padding: 12px; margin-bottom: 20px; }
+.report-card h2 { font-size: 14px; font-weight: 600; margin: 0; color: var(--text-primary); }
+.report-card-body { margin-top: 16px; }
+
+/* ── Component Information (two-column) ────────────────── */
+.app-info-container { display: flex; gap: 8px; flex-wrap: wrap; }
+.app-info-column { flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 8px; }
+.app-info-row { display: flex; align-items: baseline; }
+.app-info-label { width: 136px; flex-shrink: 0; font-weight: 600; color: var(--text-primary); }
+.app-info-value { flex: 1; color: var(--text-primary); }
+
+/* ── Issue Summary (pie charts + legend) ─────────────────── */
+.cards-container { display: flex; align-items: stretch; gap: 20px; flex-wrap: wrap; }
+.issue-summary-card { flex: 2; }
+.domain-summary-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; }
+.domain-summary-item { flex: 1; min-width: 120px; text-align: center; padding: 0 16px; border-right: 1px solid var(--border-light); }
+.domain-summary-item:last-child { border-right: none; }
+.domain-summary-item h3 { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-top: 8px; }
+.domain-summary-item .count { font-size: 12px; color: var(--text-secondary); }
+.criticality-legend { display: flex; flex-wrap: wrap; gap: 15px; padding-top: 12px; justify-content: center; }
+.criticality-legend .legend-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { display: inline-block; width: 1em; height: 1em; border-radius: 2px; }
+
+/* ── Issue list tables ───────────────────────────────────── */
+.issue-section { margin-top: 20px; }
+.issue-section h2 { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.issue-table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 600px; }
+.issue-table th { text-align: left; text-transform: uppercase; font-weight: 600; font-size: calc(13px * 0.875); padding: 6px 8px; background: var(--bg-card); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); position: sticky; top: 0; z-index: 1; }
+.issue-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-light); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.col-issue { width: 55%; }
+.col-criticality { width: 25%; }
+.col-storypoint { width: 20%; }
+
+/* ── Target dropdown ─────────────────────────────────────── */
+.target-select-container { margin: 4px 0 16px 0; display: flex; align-items: center; gap: 8px; }
+.target-select-container label { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+.target-select-container select { font-family: var(--font-family); font-size: 13px; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; }
+
+/* ── Filter bar ──────────────────────────────────────────── */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px 0; align-items: center; }
+.multi-select { position: relative; display: inline-block; min-width: 140px; }
+.multi-select-btn { font-family: var(--font-family); font-size: 13px; padding: 4px 24px 4px 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; width: 100%; text-align: left; position: relative; white-space: nowrap; }
+.multi-select-btn::after { content: '\25BE'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--text-secondary); }
+.multi-select-dropdown { display: none; position: absolute; top: 100%; left: 0; min-width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 100; margin-top: 2px; }
+.multi-select.open .multi-select-dropdown { display: block; }
+.multi-select-option { display: flex; align-items: center; gap: 6px; padding: 5px 10px; cursor: pointer; font-size: 13px; white-space: nowrap; }
+.multi-select-option:hover { background: var(--bg-secondary); }
+.multi-select-option input[type=checkbox] { margin: 0; cursor: pointer; }
+.clear-filters { font-size: 12px; color: var(--link-color); cursor: pointer; margin-left: 4px; }
+
+/* ── Criticality labels (colored square + text) ──────────── */
+.crit-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; white-space: nowrap; }
+.crit-square { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.crit-square-mandatory { background: var(--color-mandatory); }
+.crit-square-potential { background: var(--color-potential); }
+.crit-square-optional { background: var(--color-optional); }
+
+/* ── Expandable rows ─────────────────────────────────────── */
+.expand-btn { background: none; border: none; cursor: pointer; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; transition: transform 0.15s; padding: 0; vertical-align: middle; flex-shrink: 0; }
+.expand-btn.open { transform: rotate(90deg); }
+.issue-title-cell { display: flex; align-items: center; gap: 4px; }
+.detail-row td { padding: 0; border-bottom: 1px solid var(--border-light); white-space: normal; overflow: visible; text-overflow: clip; }
+.detail-content { display: flex; gap: 0; padding: 8px 8px 8px 32px; min-width: 0; }
+.file-list { flex: 0 0 50%; min-width: 0; overflow: hidden; }
+.file-list table { width: 100%; border-collapse: collapse; }
+.file-list th { font-size: calc(13px * 0.875); text-transform: uppercase; font-weight: 600; color: var(--text-secondary); padding: 6px 8px; border-bottom: 1px solid var(--border-color); text-align: left; height: 32px; }
+.file-list td { font-size: 13px; padding: 6px 8px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); }
+.file-list .file-path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px; display: block; }
+.file-list .position { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.explanation-panel { flex: 1; padding-left: 16px; min-width: 0; overflow-wrap: break-word; word-wrap: break-word; }
+.explanation-panel h4 { font-size: calc(13px * 0.875); text-transform: uppercase; font-weight: 600; color: var(--text-secondary); padding: 6px 0; border-bottom: 1px solid var(--border-color); height: 32px; margin: 0; }
+.explanation-panel p { font-size: 13px; padding: 8px 0; color: var(--text-primary); line-height: 1.6; white-space: normal; word-break: break-word; }
+
+/* ── Experimental badge ──────────────────────────────────── */
+.badge-experimental { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: #fef9c3; color: #854d0e; vertical-align: middle; margin-left: 8px; cursor: default; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.footer { text-align: center; margin-top: 24px; color: var(--text-muted); font-size: 13px; }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .main { padding: 16px; }
+  .app-info-container { flex-direction: column; }
+  .domain-summary-container { flex-direction: column; }
+  .domain-summary-item { border-right: none; border-bottom: 1px solid var(--border-light); padding-bottom: 12px; }
+  .detail-content { flex-direction: column; }
+  .file-list { flex: none; width: 100%; }
+  .explanation-panel { padding-left: 0; padding-top: 8px; }
+}
+/* ── Tab navigation ──────────────────────────────────────── */
+.tab-nav { display: flex; gap: 0; border-bottom: 1px solid var(--border-color); margin-bottom: 28px; flex-wrap: wrap; }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 18px; font-size: 13px; font-family: var(--font-family); color: var(--text-secondary); cursor: pointer; margin-bottom: -1px; white-space: nowrap; position: relative; }
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--link-color); border-bottom-color: var(--link-color); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Tooltip on tab ──────────────────────────────────────── */
+.tab-btn[data-tooltip]::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #24292f; color: #ffffff; font-size: 12px; font-weight: 400; padding: 6px 10px; border-radius: 4px; white-space: normal; width: max-content; max-width: 260px; text-align: center; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100; }
+.tab-btn[data-tooltip]:hover::after { opacity: 1; }
+
+/* ── Fact content — prose column ─────────────────────────── */
+.fact-content { max-width: 860px; margin: 0 auto; line-height: 1.75; color: var(--text-primary); font-size: 14px; }
+.fact-content h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px 0; color: var(--text-primary); letter-spacing: -0.01em; }
+.fact-content h1 + p { margin-top: 6px; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; }
+.fact-content h2 { font-size: 17px; font-weight: 700; margin: 36px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); letter-spacing: -0.01em; }
+.fact-content h3 { font-size: 14px; font-weight: 700; margin: 24px 0 8px 0; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em; font-size: 12px; color: var(--text-secondary); }
+.fact-content p { margin: 10px 0; color: var(--text-primary); }
+.fact-content ul, .fact-content ol { margin: 10px 0 10px 22px; }
+.fact-content li { margin: 5px 0; }
+.fact-content a { color: var(--link-color); }
+.fact-content a:hover { text-decoration: underline; }
+
+/* ── Fact tables ─────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; margin: 16px 0; }
+.fact-content table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-color); }
+.fact-content thead { background: var(--bg-card); }
+.fact-content th { text-align: left; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; padding: 8px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
+.fact-content td { padding: 9px 14px; border-bottom: 1px solid var(--border-light); vertical-align: top; color: var(--text-primary); }
+.fact-content tr:last-child td { border-bottom: none; }
+.fact-content tbody tr:hover { background: #f6f8fa; }
+
+/* ── Fact code ───────────────────────────────────────────── */
+.fact-content code { font-family: var(--font-mono); font-size: 12px; background: #f0f1f3; padding: 2px 6px; border-radius: 4px; color: #c7254e; }
+.fact-content pre { background: #f6f8fa; border: 1px solid var(--border-light); border-radius: 6px; padding: 14px 16px; overflow-x: auto; margin: 14px 0; }
+.fact-content pre code { background: none; color: var(--text-primary); padding: 0; border-radius: 0; }
+.fact-content hr { border: none; border-top: 1px solid var(--border-light); margin: 28px 0; }
+.fact-content strong { font-weight: 600; }
+.fact-content em { font-style: italic; }
+.fact-content blockquote { border-left: 3px solid var(--border-color); margin: 12px 0; padding: 4px 16px; color: var(--text-secondary); }
+.fact-unavailable { padding: 32px 0; }
+.fact-unavailable h3 { font-size: 16px; font-weight: 600; color: var(--text-primary); text-transform: none; letter-spacing: 0; margin: 0 0 12px 0; }
+.fact-unavailable p { margin: 0 0 8px 0; color: var(--text-secondary); }
+.fact-unavailable ol, .fact-unavailable ul { margin: 0 0 0 22px; color: var(--text-primary); }
+.fact-unavailable li { margin: 6px 0; }
+
+/* ── Mermaid diagram card ─────────────────────────────────── */
+.mermaid { background: var(--bg-card); border: 1px solid var(--border-light); border-radius: 8px; padding: 24px 16px; margin: 20px 0; overflow-x: auto; text-align: center; cursor: pointer; position: relative; }
+.mermaid:hover { border-color: var(--border-color); }
+.mermaid svg { max-width: 100%; height: auto !important; display: inline-block; }
+.mermaid-zoom-hint { position: absolute; top: 8px; right: 10px; font-size: 11px; color: var(--text-muted); opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+.mermaid:hover .mermaid-zoom-hint { opacity: 1; }
+
+/* ── Diagram lightbox ────────────────────────────────────── */
+.diagram-lightbox { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.7); backdrop-filter: blur(2px); align-items: center; justify-content: center; cursor: zoom-out; padding: 48px 32px; }
+.diagram-lightbox.open { display: flex; }
+.diagram-lightbox-inner { background: #ffffff; border-radius: 10px; padding: 32px; width: 88vw; max-height: 88vh; overflow: hidden; cursor: default; box-shadow: 0 24px 64px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; }
+.diagram-lightbox-inner svg { width: 100% !important; height: auto !important; max-height: 76vh; display: block; }
+.diagram-lightbox-close { position: fixed; top: 20px; right: 24px; background: #ffffff; border: none; border-radius: 50%; width: 36px; height: 36px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 1001; }
+.diagram-lightbox-close:hover { background: var(--bg-card); }
+.diagram-lightbox-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); color: #ffffff; font-size: 12px; padding: 6px 14px; border-radius: 20px; pointer-events: none; white-space: nowrap; z-index: 1001; }
+</style>
+<script>
+window.__mermaidPending = [];
+window.__mermaidReady = false;
+window.__renderMermaidIn = function(container) {
+  if (container) { window.__mermaidPending.push(container); }
+};
+</script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: false, theme: 'default', flowchart: { useMaxWidth: true }, sequence: { useMaxWidth: true } });
+
+window.__renderMermaidIn = function(container) {
+  var nodes = container ? container.querySelectorAll('.mermaid:not([data-processed])') : [];
+  if (nodes.length > 0) {
+    mermaid.run({ nodes: Array.from(nodes) }).then(function() {
+      nodes.forEach(function(node) {
+        if (!node.querySelector('.mermaid-zoom-hint')) {
+          var hint = document.createElement('span');
+          hint.className = 'mermaid-zoom-hint';
+          hint.textContent = 'Click to expand';
+          node.appendChild(hint);
+        }
+      });
+    });
+  }
+};
+
+var drained = new Set();
+(window.__mermaidPending || []).forEach(function(c) {
+  if (!drained.has(c)) { drained.add(c); window.__renderMermaidIn(c); }
+});
+window.__mermaidPending = [];
+window.__mermaidReady = true;
+
+function renderActivePanels() {
+  document.querySelectorAll('.tab-panel.active').forEach(function(p) {
+    if (!drained.has(p)) { drained.add(p); window.__renderMermaidIn(p); }
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderActivePanels);
+} else {
+  renderActivePanels();
+}
+</script>
+</head><body>
+<div id="diagram-lightbox" class="diagram-lightbox" role="dialog" aria-modal="true">
+  <button class="diagram-lightbox-close" id="diagram-lightbox-close" aria-label="Close">&#x2715;</button>
+  <div class="diagram-lightbox-hint">Scroll to zoom &nbsp;&middot;&nbsp; Drag to pan &nbsp;&middot;&nbsp; Double-click to reset</div>
+  <div class="diagram-lightbox-inner" id="diagram-lightbox-inner"></div>
+</div>
+<div class="main">
+<h1>PhotoGallery</h1>
+<div class="report-card">
+  <h2>Component Information</h2>
+  <div class="report-card-body">
+    <div class="app-info-container">
+      <div class="app-info-column">
+        <div class="app-info-row"><span class="app-info-label">Component Name</span><span class="app-info-value">PhotoGallery</span></div>
+        <div class="app-info-row"><span class="app-info-label">Effort</span><span class="app-info-value" id="effort-display">L (total story points: 71)</span></div>
+      </div>
+      <div class="app-info-column">
+        <div class="app-info-row"><span class="app-info-label">Build Tools</span><span class="app-info-value">MSBuild</span></div>
+        <div class="app-info-row"><span class="app-info-label">Frameworks</span><span class="app-info-value">ASP.NET MVC 5, .NET Framework 4.8</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="tab-issues" data-tooltip="Issues detected in the source code">Issues</button>
+  <button class="tab-btn" data-tab="tab-arch" data-tooltip="How the app&#x27;s layers connect — from UI to data.">Architecture</button>
+  <button class="tab-btn" data-tab="tab-api" data-tooltip="Endpoints exposed by this app and how services communicate.">API Contracts</button>
+  <button class="tab-btn" data-tab="tab-config" data-tooltip="Environment settings, runtime profiles, and deployment manifests.">Configuration</button>
+  <button class="tab-btn" data-tab="tab-workflows" data-tooltip="Domain entities and the core flows users move through.">Business Workflows</button>
+  <button class="tab-btn" data-tab="tab-deps" data-tooltip="Libraries and frameworks this app depends on, grouped by category.">Dependencies</button>
+  <button class="tab-btn" data-tab="tab-data" data-tooltip="Database schema, entity relationships, and persistence behavior.">Data Model</button>
+</nav>
+<div id="tab-issues" class="tab-panel active">
+<div class="report-card">
+  <h2>Issue Summary</h2>
+  <div class="report-card-body">
+    <div class="domain-summary-container" id="donut-container">
+      <div class="domain-summary-item">
+<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-mandatory)" stroke-width="15" stroke-dasharray="36.75 219.91" stroke-dashoffset="-0.00"/>
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-potential)" stroke-width="15" stroke-dasharray="36.75 219.91" stroke-dashoffset="-38.25"/>
+  <circle cx="50" cy="50" r="35" fill="none" stroke="var(--color-optional)" stroke-width="15" stroke-dasharray="141.92 219.91" stroke-dashoffset="-76.49"/>
+</svg>
+
+        <h3>Security</h3>
+        <div class="count">23 issues</div>
+      </div>
+    </div>
+    <div class="criticality-legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-mandatory)"></span>Mandatory</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-potential)"></span>Potential</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:var(--color-optional)"></span>Optional</div>
+    </div>
+  </div>
+</div>
+<div class="filter-bar" id="filter-bar">
+  <div class="multi-select" id="criticality-ms">
+    <button class="multi-select-btn" onclick="toggleMultiSelect('criticality-ms')">Criticality</button>
+    <div class="multi-select-dropdown">
+      <label class="multi-select-option"><input type="checkbox" value="mandatory" onchange="onMultiSelectChange('criticality-ms','Criticality')"/> Mandatory</label>
+      <label class="multi-select-option"><input type="checkbox" value="potential" onchange="onMultiSelectChange('criticality-ms','Criticality')"/> Potential</label>
+      <label class="multi-select-option"><input type="checkbox" value="optional" onchange="onMultiSelectChange('criticality-ms','Criticality')"/> Optional</label>
+    </div>
+  </div>
+  <a class="clear-filters" href="javascript:void(0)" onclick="clearAllFilters()">Clear all</a>
+</div>
+<div class="issue-section" data-domain="security">
+  <h2>Security <span class="badge-experimental" title="These issues were generated by AI and may contain inaccuracies or incomplete information. Please review carefully.">Experimental</span></h2>
+  <table class="issue-table">
+    <colgroup><col class="col-issue"/><col class="col-criticality"/><col class="col-storypoint"/></colgroup>
+    <thead><tr><th>Issue Category</th><th>Criticality</th><th>Story Point</th></tr></thead>
+    <tbody>
+    <tr class="issue-row" data-criticality="mandatory" onclick="toggleRow('row-security-0', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-0">&#x276F;</button> CWE-434: Unrestricted Upload of File with Dangerous Type</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">8</td>
+    </tr>
+    <tr class="detail-row" id="row-security-0" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:66">WebApp-Storage-DotNet/Controllers/HomeController.cs:66</span></td></tr>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109">WebApp-Storage-DotNet/Controllers/HomeController.cs:101-109</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" onclick="toggleRow('row-security-1', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-1">&#x276F;</button> CVE-2018-8269: Denial of service in ASP.NET Core</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-1" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:17">WebApp-Storage-DotNet/packages.config:17</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-mv2r-q4g5-j8q5" target="_blank" rel="noopener noreferrer">CVE-2018-8269</a>: Denial of service in ASP.NET Core</p><p>Severity: HIGH</p><p>Affected dependencies:<br/>  - Microsoft.Data.OData:5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17; vulnerable range: &lt; 5.8.4; first patched: 5.8.4)</p><p>Recommended fix: upgrade affected packages to 5.8.4 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" onclick="toggleRow('row-security-2', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-2">&#x276F;</button> CVE-2021-21252: Regular Expression Denial of Service in jquery-validation</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-2" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:9">WebApp-Storage-DotNet/packages.config:9</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-jxwx-85vp-gvwm" target="_blank" rel="noopener noreferrer">CVE-2021-21252</a>: Regular Expression Denial of Service in jquery-validation</p><p>Severity: HIGH</p><p>Affected dependencies:<br/>  - jQuery.Validation:1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9; vulnerable range: &lt; 1.19.3; first patched: 1.19.3)</p><p>Recommended fix: upgrade affected packages to 1.19.3 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="mandatory" onclick="toggleRow('row-security-3', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-3">&#x276F;</button> CVE-2024-21907: Improper Handling of Exceptional Conditions in Newtonsoft.Json</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-mandatory"></span>Mandatory</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-3" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:23">WebApp-Storage-DotNet/packages.config:23</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-5crp-9r3c-p9vr" target="_blank" rel="noopener noreferrer">CVE-2024-21907</a>: Improper Handling of Exceptional Conditions in Newtonsoft.Json</p><p>Severity: HIGH</p><p>Affected dependencies:<br/>  - Newtonsoft.Json:6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23; vulnerable range: &lt; 13.0.1; first patched: 13.0.1)</p><p>Recommended fix: upgrade affected packages to 13.0.1 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="potential" onclick="toggleRow('row-security-4', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-4">&#x276F;</button> CWE-820: Missing Synchronization</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-potential"></span>Potential</span></td>
+      <td class="sp-cell">8</td>
+    </tr>
+    <tr class="detail-row" id="row-security-4" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:47">WebApp-Storage-DotNet/Controllers/HomeController.cs:47</span></td></tr>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:65-66">WebApp-Storage-DotNet/Controllers/HomeController.cs:65-66</span></td></tr>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:108">WebApp-Storage-DotNet/Controllers/HomeController.cs:108</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product utilizes a shared resource in a concurrent manner but does not attempt to synchronize access to the resource.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="potential" onclick="toggleRow('row-security-5', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-5">&#x276F;</button> CWE-567: Unsynchronized Access to Shared Data in a Multithreaded Context</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-potential"></span>Potential</span></td>
+      <td class="sp-cell">5</td>
+    </tr>
+    <tr class="detail-row" id="row-security-5" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:47">WebApp-Storage-DotNet/Controllers/HomeController.cs:47</span></td></tr>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:65-66">WebApp-Storage-DotNet/Controllers/HomeController.cs:65-66</span></td></tr>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:108">WebApp-Storage-DotNet/Controllers/HomeController.cs:108</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product does not properly synchronize shared data, such as static variables across threads, which can lead to undefined behavior and unpredictable data changes.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="potential" onclick="toggleRow('row-security-6', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-6">&#x276F;</button> CWE-606: Unchecked Input for Loop Condition</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-potential"></span>Potential</span></td>
+      <td class="sp-cell">3</td>
+    </tr>
+    <tr class="detail-row" id="row-security-6" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:101-107">WebApp-Storage-DotNet/Controllers/HomeController.cs:101-107</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product does not properly check inputs that are used for loop conditions, potentially leading to a denial of service or other consequences because of excessive looping.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="potential" onclick="toggleRow('row-security-7', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-7">&#x276F;</button> CWE-778: Insufficient Logging</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-potential"></span>Potential</span></td>
+      <td class="sp-cell">3</td>
+    </tr>
+    <tr class="detail-row" id="row-security-7" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:97-118">WebApp-Storage-DotNet/Controllers/HomeController.cs:97-118</span></td></tr>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:128-173">WebApp-Storage-DotNet/Controllers/HomeController.cs:128-173</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>When a security-critical event occurs, the product either does not record the event or omits important details about the event when logging it.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-8', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-8">&#x276F;</button> CWE-22: Improper Limitation of a Pathname to a Restricted Directory (&#x27;Path Traversal&#x27;)</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">8</td>
+    </tr>
+    <tr class="detail-row" id="row-security-8" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:109">WebApp-Storage-DotNet/Controllers/HomeController.cs:109</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product uses external input to construct a pathname that is intended to identify a file or directory that is located underneath a restricted parent directory, but the product does not properly neutralize special elements within the pathname that can cause the pathname to resolve to a location that is outside of the restricted directory.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-9', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-9">&#x276F;</button> CWE-79: Improper Neutralization of Input During Web Page Generation (&#x27;Cross-site Scripting&#x27;)</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">8</td>
+    </tr>
+    <tr class="detail-row" id="row-security-9" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Views/Home/Index.cshtml:80-85">WebApp-Storage-DotNet/Views/Home/Index.cshtml:80-85</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-10', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-10">&#x276F;</button> CWE-732: Incorrect Permission Assignment for Critical Resource</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">5</td>
+    </tr>
+    <tr class="detail-row" id="row-security-10" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:66">WebApp-Storage-DotNet/Controllers/HomeController.cs:66</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-11', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-11">&#x276F;</button> CWE-23: Relative Path Traversal</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">5</td>
+    </tr>
+    <tr class="detail-row" id="row-security-11" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:109">WebApp-Storage-DotNet/Controllers/HomeController.cs:109</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize sequences such as .. that can resolve to a location that is outside of that directory.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-12', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-12">&#x276F;</button> CWE-36: Absolute Path Traversal</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">5</td>
+    </tr>
+    <tr class="detail-row" id="row-security-12" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/Controllers/HomeController.cs:109">WebApp-Storage-DotNet/Controllers/HomeController.cs:109</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p>The product uses external input to construct a pathname that should be within a restricted directory, but it does not properly neutralize absolute path sequences such as /abs/path that can resolve to a location that is outside of that directory.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-13', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-13">&#x276F;</button> CVE-2015-9251: Cross-Site Scripting (XSS) in jquery</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-13" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:8">WebApp-Storage-DotNet/packages.config:8</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-rmxg-73gg-4p98" target="_blank" rel="noopener noreferrer">CVE-2015-9251</a>: Cross-Site Scripting (XSS) in jquery</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &lt; 1.12.2; first patched: 1.12.2)<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &gt;= 1.12.3, &lt; 3.0.0; first patched: 3.0.0)<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &lt; 1.12.2; first patched: 1.12.2)<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &gt;= 1.12.3, &lt; 3.0.0; first patched: 3.0.0)</p><p>Recommended fix: upgrade affected packages to 1.12.2, 3.0.0 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-14', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-14">&#x276F;</button> CVE-2016-10735: Bootstrap Cross-site Scripting vulnerability</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-14" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:7">WebApp-Storage-DotNet/packages.config:7</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-4p24-vmcr-4gqj" target="_blank" rel="noopener noreferrer">CVE-2016-10735</a>: Bootstrap Cross-site Scripting vulnerability</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0-beta, &lt; 4.0.0-beta.2; first patched: 4.0.0-beta.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.0.4, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 4.0.0-beta.2; first patched: 4.0.0-beta.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.0.4, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0-beta, &lt; 4.0.0-beta.2; first patched: 4.0.0-beta.2)</p><p>Recommended fix: upgrade affected packages to 3.4.0, 4.0.0-beta.2 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-15', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-15">&#x276F;</button> CVE-2018-14040: Bootstrap vulnerable to Cross-Site Scripting (XSS)</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-15" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:7">WebApp-Storage-DotNet/packages.config:7</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-3wqf-4x89-9g79" target="_blank" rel="noopener noreferrer">CVE-2018-14040</a>: Bootstrap vulnerable to Cross-Site Scripting (XSS)</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.1.2; first patched: 4.1.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.1.2; first patched: 4.1.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.3.0, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.3.0, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.3.0, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.1.2; first patched: 4.1.2)</p><p>Recommended fix: upgrade affected packages to 3.4.0, 4.1.2 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-16', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-16">&#x276F;</button> CVE-2018-14042: Bootstrap Cross-site Scripting vulnerability</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-16" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:7">WebApp-Storage-DotNet/packages.config:7</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-7mvr-5x2g-wfc8" target="_blank" rel="noopener noreferrer">CVE-2018-14042</a>: Bootstrap Cross-site Scripting vulnerability</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.1.2; first patched: 4.1.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.3.0, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.1.2; first patched: 4.1.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.3.0, &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.1.2; first patched: 4.1.2)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 2.3.0, &lt; 3.4.0; first patched: 3.4.0)</p><p>Recommended fix: upgrade affected packages to 3.4.0, 4.1.2 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-17', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-17">&#x276F;</button> CVE-2018-20676: XSS vulnerability that affects bootstrap</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-17" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:7">WebApp-Storage-DotNet/packages.config:7</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-3mgp-fx93-9xv5" target="_blank" rel="noopener noreferrer">CVE-2018-20676</a>: XSS vulnerability that affects bootstrap</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 3.4.0; first patched: 3.4.0)</p><p>Recommended fix: upgrade affected packages to 3.4.0 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-18', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-18">&#x276F;</button> CVE-2018-20677: bootstrap Cross-site Scripting vulnerability</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-18" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:7">WebApp-Storage-DotNet/packages.config:7</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-ph58-4vrj-w6hr" target="_blank" rel="noopener noreferrer">CVE-2018-20677</a>: bootstrap Cross-site Scripting vulnerability</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 3.4.0; first patched: 3.4.0)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 3.4.0; first patched: 3.4.0)</p><p>Recommended fix: upgrade affected packages to 3.4.0 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-19', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-19">&#x276F;</button> CVE-2019-11358: XSS in jQuery as used in Drupal, Backdrop CMS, and other products</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-19" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:8">WebApp-Storage-DotNet/packages.config:8</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-6c3j-c64m-qhgq" target="_blank" rel="noopener noreferrer">CVE-2019-11358</a>: XSS in jQuery as used in Drupal, Backdrop CMS, and other products</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &gt;= 1.1.4, &lt; 3.4.0; first patched: 3.4.0)<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &gt;= 1.1.4, &lt; 3.4.0; first patched: 3.4.0)</p><p>Recommended fix: upgrade affected packages to 3.4.0 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-20', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-20">&#x276F;</button> CVE-2019-8331: Bootstrap Vulnerable to Cross-Site Scripting</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-20" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:7">WebApp-Storage-DotNet/packages.config:7</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-9v3m-8fp8-mj99" target="_blank" rel="noopener noreferrer">CVE-2019-8331</a>: Bootstrap Vulnerable to Cross-Site Scripting</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &lt; 4.3.1; first patched: 4.3.1)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.3.1; first patched: 4.3.1)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 3.0.0, &lt; 3.4.1; first patched: 3.4.1)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 4.0.0, &lt; 4.3.1; first patched: 4.3.1)<br/>  - bootstrap:3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7; vulnerable range: &gt;= 3.0.0, &lt; 3.4.1; first patched: 3.4.1)</p><p>Recommended fix: upgrade affected packages to 3.4.1, 4.3.1 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-21', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-21">&#x276F;</button> CVE-2020-11023: Potential XSS vulnerability in jQuery</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-21" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:8">WebApp-Storage-DotNet/packages.config:8</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-jpcq-cgw6-v4j6" target="_blank" rel="noopener noreferrer">CVE-2020-11023</a>: Potential XSS vulnerability in jQuery</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &gt;= 1.0.3, &lt; 3.5.0; first patched: 3.5.0)<br/>  - jQuery:1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8; vulnerable range: &gt;= 1.0.3, &lt; 3.5.0; first patched: 3.5.0)</p><p>Recommended fix: upgrade affected packages to 3.5.0 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr class="issue-row" data-criticality="optional" onclick="toggleRow('row-security-22', this)" style="cursor:pointer;">
+      <td style="white-space:normal;"><div class="issue-title-cell"><button class="expand-btn" id="btn-row-security-22">&#x276F;</button> CVE-2022-30187: Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library</div></td>
+      <td class="crit-cell"><span class="crit-label"><span class="crit-square crit-square-optional"></span>Optional</span></td>
+      <td class="sp-cell">1</td>
+    </tr>
+    <tr class="detail-row" id="row-security-22" style="display:none;">
+      <td colspan="3">
+        <div class="detail-content">
+          <div class="file-list">
+            <table><thead><tr><th>File</th></tr></thead><tbody>
+            <tr><td><span class="file-path" title="WebApp-Storage-DotNet/packages.config:5">WebApp-Storage-DotNet/packages.config:5</span></td></tr>
+            </tbody></table>
+          </div>
+          <div class="explanation-panel">
+            <h4>Explanation</h4>
+            <div><p><a href="https://github.com/advisories/GHSA-64x4-9hc6-r2h6" target="_blank" rel="noopener noreferrer">CVE-2022-30187</a>: Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library</p><p>Severity: MEDIUM</p><p>Affected dependencies:<br/>  - Azure.Storage.Blobs:12.9.1 (declared at WebApp-Storage-DotNet/packages.config:5; vulnerable range: &lt; 12.13.0; first patched: 12.13.0)</p><p>Recommended fix: upgrade affected packages to 12.13.0 or later.</p></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div><!-- #tab-issues -->
+<div id="tab-arch" class="tab-panel">
+  <div class="fact-content"><h1 id="architecture-diagram">Architecture Diagram</h1>
+<p>This single-project photo gallery serves a server-rendered web interface and uses Azure Blob Storage for image persistence. There is no relational database or separately deployed application service.</p>
+<h2 id="application-architecture">Application Architecture</h2>
+<div class="mermaid">
+flowchart TD
+    subgraph Client["Client Layer"]
+        Browser["Web Browser"]
+    end
+    subgraph App["Application Layer - ASP.NET MVC 5 on .NET Framework 4.8"]
+        Views["Razor Views and JavaScript"]
+        Controller["HomeController"]
+        Routing["MVC Routing and Global Filters"]
+    end
+    subgraph Storage["Storage Layer"]
+        BlobSdk["Azure Storage Blobs SDK 12.9.1"]
+        Container[("Azure Blob Storage container")]
+    end
+
+    Browser -->|"HTTP requests and multipart uploads"| Routing
+    Routing --> Controller
+    Controller -->|"renders gallery and action results"| Views
+    Views -->|"HTML response"| Browser
+    Controller -->|"blob listing, upload, and deletion over HTTPS"| BlobSdk
+    BlobSdk -->|"container operations"| Container
+    Container -->|"public blob URLs"| Browser
+</div>
+<h3 id="technology-stack-summary">Technology Stack Summary</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Layer</th><th>Technology</th><th>Version</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>Presentation</td><td>ASP.NET MVC</td><td>5.2.3</td><td>Routes browser requests to controller actions and renders Razor views</td></tr>
+<tr><td>Runtime</td><td>.NET Framework</td><td>4.8</td><td>Hosts the web application</td></tr>
+<tr><td>Storage integration</td><td>Azure.Storage.Blobs</td><td>12.9.1</td><td>Lists, uploads, and deletes blob objects</td></tr>
+<tr><td>Web UI</td><td>Razor, jQuery, Bootstrap</td><td>3.2.3, 1.10.2, 3.0.0</td><td>Server-rendered gallery and browser interactions</td></tr>
+<tr><td>Hosting</td><td>IIS Express / Azure Web Apps</td><td>Not pinned</td><td>Local and documented cloud hosting</td></tr>
+</tbody></table></div>
+<h3 id="data-storage-external-services">Data Storage & External Services</h3>
+<p>Azure Blob Storage is the only application persistence service. The application lists block blobs, uploads objects, and deletes them; there is no database, cache, or message broker. The container is created with public blob-read access, so browsers can load the resulting blob URLs directly.</p>
+<h3 id="key-architectural-decisions">Key Architectural Decisions</h3>
+<ul>
+<li>A single MVC controller combines request handling and direct Blob Storage operations; no separate service or repository layer is defined.</li>
+<li>Blob objects, rather than relational records, are the gallery's persistence model.</li>
+<li>The container is accessed through a mutable static <code>BlobContainerClient</code> shared by controller requests.</li>
+</ul>
+<h2 id="component-relationships">Component Relationships</h2>
+<div class="mermaid">
+flowchart LR
+    subgraph Presentation["Presentation"]
+        Home["HomeController"]
+        Index["Home Index Razor view"]
+        Error["Shared Error Razor view"]
+    end
+    subgraph Infrastructure["Application Infrastructure"]
+        Routes["RouteConfig"]
+        Filters["FilterConfig"]
+        Startup["MvcApplication startup"]
+    end
+    subgraph Storage["Storage Integration"]
+        Client["BlobServiceClient and BlobContainerClient"]
+        Azure["Azure Blob Storage"]
+    end
+
+    Startup -->|"registers"| Routes
+    Startup -->|"registers"| Filters
+    Routes -->|"dispatches requests"| Home
+    Home -->|"gallery model"| Index
+    Home -->|"exception details"| Error
+    Home -->|"creates and uses"| Client
+    Client -->|"blob operations"| Azure
+</div>
+<h3 id="component-inventory">Component Inventory</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Component</th><th>Layer</th><th>Type</th><th>Responsibility</th>
+</tr></thead><tbody>
+<tr><td>HomeController</td><td>Presentation</td><td>MVC Controller</td><td>Lists blobs and handles upload and deletion requests</td></tr>
+<tr><td>Home Index view</td><td>Presentation</td><td>Razor View</td><td>Displays gallery images and submits browser actions</td></tr>
+<tr><td>Shared Error view</td><td>Presentation</td><td>Razor View</td><td>Displays controller exception details</td></tr>
+<tr><td>MvcApplication</td><td>Application Infrastructure</td><td>ASP.NET application startup</td><td>Registers routes, global filters, and bundles</td></tr>
+<tr><td>RouteConfig</td><td>Application Infrastructure</td><td>MVC routing configuration</td><td>Maps the default route to <code>Home/Index</code></td></tr>
+<tr><td>FilterConfig</td><td>Application Infrastructure</td><td>MVC filter configuration</td><td>Registers the global error handler</td></tr>
+<tr><td>BlobServiceClient / BlobContainerClient</td><td>Storage Integration</td><td>Azure SDK clients</td><td>Communicate with the configured Blob Storage service</td></tr>
+</tbody></table></div></div>
+</div>
+<div id="tab-api" class="tab-panel">
+  <div class="fact-content"><h1 id="api-service-communication-contracts">API & Service Communication Contracts</h1>
+<p>The application exposes four MVC actions through conventional routes and uses synchronous browser-to-server HTTP requests with asynchronous Blob Storage SDK calls. No separately deployed application services or API specification are present.</p>
+<h2 id="service-catalog">Service Catalog</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Port</th><th>Category</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>20050 for configured IIS Express development; production port not specified</td><td>API Layer</td><td>Serves the gallery interface and manages images in Blob Storage</td></tr>
+<tr><td>Azure Blob Storage</td><td>Not specified</td><td>Infrastructure</td><td>Persists image objects and serves public blob URLs</td></tr>
+</tbody></table></div>
+<h2 id="api-endpoints-inventory">API Endpoints Inventory</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Method</th><th>Path</th><th>Request Type</th><th>Response Type</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>GET</td><td><code>/Home/Index</code> (default <code>/</code>)</td><td>None</td><td>HTML gallery view with <code>List<Uri></code> model</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td>POST</td><td><code>/Home/UploadAsync</code></td><td>Multipart form files</td><td>Redirect to <code>Home/Index</code>, or error view</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td>POST</td><td><code>/Home/DeleteImage</code></td><td>Form parameter <code>name</code> containing a blob URI</td><td>Redirect to <code>Home/Index</code>, or error view</td></tr>
+<tr><td>WebApp-Storage-DotNet</td><td>POST</td><td><code>/Home/DeleteAll</code></td><td>None</td><td>Redirect to <code>Home/Index</code>, or error view</td></tr>
+</tbody></table></div>
+<h2 id="management-observability-endpoints">Management & Observability Endpoints</h2>
+<p>No health-check, metrics, management, or API documentation endpoints were found. No custom metrics are registered.</p>
+<h2 id="dtos-contracts">DTOs & Contracts</h2>
+<p>No explicit request/response DTO classes, OpenAPI specification, protobuf schema, or GraphQL schema were found. The gallery action passes a <code>List<Uri></code> to its Razor view; uploads use the MVC <code>Request.Files</code> collection, and image deletion binds the <code>name</code> action parameter. The application has no custom JSON serialization configuration.</p>
+<h2 id="communication-patterns">Communication Patterns</h2>
+<p>The browser communicates with MVC using HTTP requests and multipart form submissions. Controller actions call the Azure Blob Storage SDK directly; the SDK operations use the configured storage endpoint, with <code>UseDevelopmentStorage=true</code> as the checked-in default. The controller uses asynchronous SDK calls for container creation, upload, and deletion, while blob enumeration is synchronous.</p>
+<p>No application-level retries, circuit breakers, bulkheads, service discovery, API gateway, or inter-service messaging are configured. The only route composition is conventional MVC routing. No authentication, authorization, or HTTPS-enforcement configuration was found; blob reads are explicitly public, and app-level actions do not check user identity or roles.</p>
+<h2 id="service-technology-matrix">Service Technology Matrix</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Web</th><th>Data Access</th><th>Discovery</th><th>Gateway</th><th>Actuator</th><th>Cache</th><th>Metrics</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>ASP.NET MVC 5</td><td>Azure Storage Blobs SDK</td><td>None</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
+<tr><td>Azure Blob Storage</td><td>Azure Storage endpoint</td><td>Blob API</td><td>Not applicable</td><td>None</td><td>Not applicable</td><td>Not identified</td><td>Not identified</td></tr>
+</tbody></table></div>
+<h2 id="service-communication-sequence">Service Communication Sequence</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant Browser
+    participant MVC as "Photo Gallery MVC"
+    participant Storage as "Azure Blob Storage"
+
+    Browser->>MVC: GET /Home/Index
+    MVC->>Storage: List block blobs
+    Storage-->>MVC: Blob names and URLs
+    MVC-->>Browser: Gallery HTML with image URLs
+    Browser->>Storage: Load public image URL
+    Storage-->>Browser: Image content
+
+    Browser->>MVC: POST /Home/UploadAsync with files
+    MVC->>Storage: Upload each selected file
+    alt Storage operation succeeds
+        Storage-->>MVC: Upload result
+        MVC-->>Browser: Redirect to gallery
+    else Storage operation fails
+        Storage-->>MVC: Exception
+        MVC-->>Browser: Error view
+    end
+</div></div>
+</div>
+<div id="tab-config" class="tab-panel">
+  <div class="fact-content"><h1 id="configuration-externalized-settings-inventory">Configuration & Externalized Settings Inventory</h1>
+<p>Configuration is held in the legacy project file and a single <code>Web.config</code>; no environment-specific configuration profiles or external secret-store integration were found. The checked-in storage setting points to the local development emulator.</p>
+<h2 id="configuration-sources">Configuration Sources</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Source</th><th>Type</th><th>Path/Location</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Web.config</td><td>Runtime configuration</td><td><code>WebApp-Storage-DotNet/Web.config</code></td><td>App settings, ASP.NET compilation/runtime settings, assembly redirects, and CodeDOM compiler setup</td></tr>
+<tr><td>Project file</td><td>Build and hosting configuration</td><td><code>WebApp-Storage-DotNet/WebApp-Storage-DotNet.csproj</code></td><td>Target framework, Debug/Release settings, IIS Express development host</td></tr>
+<tr><td>NuGet package manifest</td><td>Dependency configuration</td><td><code>WebApp-Storage-DotNet/packages.config</code></td><td>Declared package versions</td></tr>
+<tr><td>Solution file</td><td>Solution configuration</td><td><code>WebApp-Storage-DotNet.sln</code></td><td>Contains one web project</td></tr>
+<tr><td>README</td><td>Deployment guidance</td><td><code>README.md</code></td><td>Documents replacing the local storage connection with an Azure storage connection string</td></tr>
+</tbody></table></div>
+<h2 id="build-profiles">Build Profiles</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>Activation</th><th>Purpose</th><th>Key Dependencies/Plugins</th>
+</tr></thead><tbody>
+<tr><td>Debug</td><td>MSBuild <code>Debug</code> configuration</td><td>Debug symbols, no optimization, <code>DEBUG;TRACE</code> symbols</td><td>Legacy ASP.NET web application targets</td></tr>
+<tr><td>Release</td><td>MSBuild <code>Release</code> configuration</td><td>Optimized build, PDB-only symbols, <code>TRACE</code> symbol</td><td>Legacy ASP.NET web application targets</td></tr>
+</tbody></table></div>
+<h2 id="runtime-profiles">Runtime Profiles</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Profile</th><th>Activation Method</th><th>Config Files</th><th>Key Overrides</th>
+</tr></thead><tbody>
+<tr><td>Default</td><td>No application-specific environment activation found</td><td><code>WebApp-Storage-DotNet/Web.config</code></td><td>Local development storage emulator is the checked-in default</td></tr>
+<tr><td>IIS Express development</td><td>Project launch configuration</td><td><code>.csproj</code></td><td>Local development port 20050</td></tr>
+<tr><td>Production deployment</td><td>Manually configure Azure Web Apps</td><td><code>Web.config</code> and deployment settings described in README</td><td>Replace storage setting with a real storage account connection string; no profile-specific file is present</td></tr>
+</tbody></table></div>
+<h2 id="properties-inventory">Properties Inventory</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Property Key</th><th>Default</th><th>Profiles</th><th>Source</th>
+</tr></thead><tbody>
+<tr><td><code>StorageConnectionString</code></td><td><code>UseDevelopmentStorage=true</code></td><td>Default; replace for cloud deployment</td><td><code>Web.config</code> appSettings</td></tr>
+<tr><td><code>webpages:Version</code></td><td><code>3.0.0.0</code></td><td>Default</td><td><code>Web.config</code> appSettings</td></tr>
+<tr><td><code>webpages:Enabled</code></td><td><code>false</code></td><td>Default</td><td><code>Web.config</code> appSettings</td></tr>
+<tr><td><code>ClientValidationEnabled</code></td><td><code>true</code></td><td>Default</td><td><code>Web.config</code> appSettings</td></tr>
+<tr><td><code>UnobtrusiveJavaScriptEnabled</code></td><td><code>true</code></td><td>Default</td><td><code>Web.config</code> appSettings</td></tr>
+<tr><td><code>compilation debug</code></td><td><code>true</code></td><td>Default runtime configuration</td><td><code>Web.config</code> system.web</td></tr>
+<tr><td><code>compilation targetFramework</code></td><td><code>4.8</code></td><td>Default runtime configuration</td><td><code>Web.config</code> system.web</td></tr>
+<tr><td><code>httpRuntime targetFramework</code></td><td><code>4.5.2</code></td><td>Default runtime configuration</td><td><code>Web.config</code> system.web</td></tr>
+<tr><td><code>httpRuntime maxRequestLength</code></td><td><code>2100000000</code></td><td>Default runtime configuration</td><td><code>Web.config</code> system.web</td></tr>
+<tr><td><code>httpRuntime executionTimeout</code></td><td><code>12000000</code></td><td>Default runtime configuration</td><td><code>Web.config</code> system.web</td></tr>
+<tr><td><code>IISExpress DevelopmentServerPort</code></td><td><code>20050</code></td><td>Local development</td><td><code>.csproj</code> project extensions</td></tr>
+</tbody></table></div>
+<h2 id="startup-parameters-resource-requirements">Startup Parameters & Resource Requirements</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>JVM/Runtime Options</th><th>Memory</th><th>Instance Count</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>ASP.NET on .NET Framework 4.8; no JVM settings</td><td>Not specified</td><td>Not specified</td></tr>
+</tbody></table></div>
+<p>No CPU, memory, instance-count, container, or process startup resource limits were found.</p>
+<h2 id="startup-dependency-chain">Startup Dependency Chain</h2>
+<ol>
+<li>ASP.NET application startup registers MVC areas, global filters, routes, and bundles.</li>
+<li>There is no storage readiness probe or startup wait configuration. Blob Storage is accessed when a gallery or storage action runs; the request depends on the configured endpoint being available.</li>
+</ol>
+<h2 id="secrets-sensitive-configuration">Secrets & Sensitive Configuration</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Secret Reference</th><th>Type</th><th>Storage (masked)</th>
+</tr></thead><tbody>
+<tr><td>Storage account connection string</td><td>Storage credential in production deployment</td><td>No credential is committed; configuration defaults to local emulator. README instructs operators to supply an account connection string.</td></tr>
+</tbody></table></div>
+<h3 id="secrets-provisioning-workflow">Secrets Provisioning Workflow</h3>
+<p>The repository does not define an automated secret-provisioning workflow, managed identity, Key Vault reference, or CI secret binding. The README describes manually replacing the storage connection string for deployment. No actual storage account key or password is present in the checked-in configuration.</p>
+<h2 id="feature-flags">Feature Flags</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Flag Name</th><th>Default</th><th>Controlled By</th>
+</tr></thead><tbody>
+<tr><td>None detected</td><td>—</td><td>No feature-flag framework or conditional runtime toggle was found.</td></tr>
+</tbody></table></div>
+<h2 id="framework-runtime-versions">Framework & Runtime Versions</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Component</th><th>Version</th><th>Source</th>
+</tr></thead><tbody>
+<tr><td>.NET Framework target</td><td>4.8</td><td><code>.csproj</code></td></tr>
+<tr><td>ASP.NET MVC</td><td>5.2.3</td><td><code>packages.config</code></td></tr>
+<tr><td>Azure.Storage.Blobs</td><td>12.9.1</td><td><code>packages.config</code></td></tr>
+<tr><td>Azure.Core</td><td>1.18.0</td><td><code>packages.config</code></td></tr>
+<tr><td>Bootstrap</td><td>3.0.0</td><td><code>packages.config</code></td></tr>
+<tr><td>jQuery</td><td>1.10.2</td><td><code>packages.config</code></td></tr>
+<tr><td>MSBuild project format</td><td>Legacy non-SDK project</td><td><code>.csproj</code> and <code>.sln</code></td></tr>
+</tbody></table></div></div>
+</div>
+<div id="tab-workflows" class="tab-panel">
+  <div class="fact-content"><h1 id="core-business-workflows">Core Business Workflows</h1>
+<p>The application provides a simple image gallery: users can browse stored images, upload images, remove one image, or clear the gallery. Gallery items are represented by objects in a single storage container.</p>
+<h2 id="domain-entities">Domain Entities</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Entity</th><th>Service / Bounded Context</th><th>Description</th><th>Key Relationships</th>
+</tr></thead><tbody>
+<tr><td>Image blob</td><td>WebApp-Storage-DotNet / Gallery</td><td>User-provided image object displayed in the gallery</td><td>Stored in the gallery container; exposed to the browser through its blob URL</td></tr>
+<tr><td>Blob container</td><td>Azure Blob Storage / Image persistence</td><td>Collection of gallery objects</td><td>Contains image blobs</td></tr>
+</tbody></table></div>
+<p>No application-level domain entity classes or aggregates were found.</p>
+<h2 id="service-to-domain-mapping">Service-to-Domain Mapping</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Domain Context</th><th>Owned Entities</th><th>External Dependencies</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Photo Gallery</td><td>Gallery operations and image references</td><td>Azure Blob Storage</td></tr>
+<tr><td>Azure Blob Storage</td><td>Image persistence</td><td>Stored image blobs</td><td>None identified</td></tr>
+</tbody></table></div>
+<p>There are no additional services, bounded contexts, or cross-context data exchanges.</p>
+<h2 id="primary-workflows">Primary Workflows</h2>
+<h3 id="workflow-1-browse-the-gallery">Workflow 1: Browse the Gallery</h3>
+<ol>
+<li>A visitor opens the default gallery page.</li>
+<li><code>HomeController.Index</code> creates the configured container if needed and lists block blobs.</li>
+<li>The controller passes blob URIs to the gallery view.</li>
+<li>The browser loads each image directly from its public blob URL.</li>
+</ol>
+<p>The workflow has no application-level sign-in, authorization, or per-image access check.</p>
+<h3 id="workflow-2-upload-images">Workflow 2: Upload Images</h3>
+<ol>
+<li>A visitor selects one or more files and submits the multipart form.</li>
+<li><code>HomeController.UploadAsync</code> iterates over the submitted files and creates a generated blob name using the original extension.</li>
+<li>The controller sends the posted filename string to the Blob Storage SDK as the upload source path, then redirects to the gallery after successful processing.</li>
+<li>If a storage operation throws an exception, the controller returns the error view.</li>
+</ol>
+<p>No business validation for file type, content, or file count is present.</p>
+<h3 id="workflow-3-delete-images">Workflow 3: Delete Images</h3>
+<p>The single-image action accepts a URI string, extracts its final path segment as the blob name, and deletes that object if present. The delete-all action enumerates the container and deletes each block blob. Both actions redirect to the gallery on success and display an error view on failure.</p>
+<h2 id="cross-service-data-flows">Cross-Service Data Flows</h2>
+<p>The application communicates only with Azure Blob Storage. The controller lists blob names and URIs for display, performs uploads and deletions, and the browser reads image content from public blob URLs. No aggregation across application services or fallback data source is implemented; storage failures yield an error view.</p>
+<h2 id="business-workflow-sequence">Business Workflow Sequence</h2>
+<div class="mermaid">
+sequenceDiagram
+    participant Visitor
+    participant Gallery as "Gallery Web Application"
+    participant Storage as "Azure Blob Storage"
+
+    Visitor->>Gallery: Select images and submit
+    Gallery->>Gallery: Generate blob names from timestamps, identifiers, and extensions
+    Gallery->>Storage: Upload each submitted file
+    alt Storage accepts the uploads
+        Storage-->>Gallery: Upload operation completes
+        Gallery-->>Visitor: Redirect to gallery
+        Visitor->>Gallery: Browse gallery
+        Gallery->>Storage: List block blobs
+        Storage-->>Gallery: Blob URLs
+        Gallery-->>Visitor: Render gallery
+        Visitor->>Storage: Read public image URL
+        Storage-->>Visitor: Image content
+    else Storage operation fails
+        Storage-->>Gallery: Operation exception
+        Gallery-->>Visitor: Render error view
+    end
+</div>
+<h2 id="business-rules-decision-logic">Business Rules & Decision Logic</h2>
+<ul>
+<li>The gallery displays only block blobs returned from the configured container.</li>
+<li>Uploaded blob names are generated from the current timestamp, a GUID, and the original file extension.</li>
+<li>A single-image deletion derives the blob name from the supplied URI; delete-all targets block blobs in the container.</li>
+<li>No upload-type, content, or count validation is implemented.</li>
+<li>No transaction, application-level audit trail, or business authorization rule was identified.</li>
+<li>Controller exceptions are returned to the error view with message and stack trace values.</li>
+</ul></div>
+</div>
+<div id="tab-deps" class="tab-panel">
+  <div class="fact-content"><h1 id="dependency-map">Dependency Map</h1>
+<p>The WebApp-Storage-DotNet project declares 34 NuGet packages in <code>packages.config</code>. The package CLI could not load the legacy web project on Linux, so this inventory reflects declared package versions and does not include a resolved transitive tree.</p>
+<h2 id="dependencies">Dependencies</h2>
+<div class="mermaid">
+flowchart LR
+    App["WebApp-Storage-DotNet"]
+    subgraph Web["Web Framework"]
+        Mvc["Microsoft.AspNet.Mvc 5.2.3"]
+        Razor["Microsoft.AspNet.Razor 3.2.3"]
+        Optimization["Microsoft.AspNet.Web.Optimization 1.1.3"]
+        WebPages["Microsoft.AspNet.WebPages 3.2.3"]
+        Infrastructure["Microsoft.Web.Infrastructure 1.0.0.0"]
+        CodeDom["Microsoft.CodeDom.Providers.DotNetCompilerPlatform 1.0.0.0"]
+    end
+    subgraph Storage["Azure Storage and Data"]
+        AzureCore["Azure.Core 1.18.0"]
+        Blobs["Azure.Storage.Blobs 12.9.1"]
+        StorageCommon["Azure.Storage.Common 12.8.0"]
+        Edm["Microsoft.Data.Edm 5.6.4"]
+        OData["Microsoft.Data.OData 5.6.4"]
+        DataServices["Microsoft.Data.Services.Client 5.6.4"]
+        Spatial["System.Spatial 5.6.4"]
+    end
+    subgraph Browser["Browser UI"]
+        Bootstrap["bootstrap 3.0.0"]
+        JQuery["jQuery 1.10.2"]
+        JQueryValidation["jQuery.Validation 1.11.1"]
+        Unobtrusive["Microsoft.jQuery.Unobtrusive.Validation 3.2.3"]
+        Modernizr["Modernizr 2.6.2"]
+        Respond["Respond 1.2.0"]
+    end
+    subgraph Runtime["Runtime Support"]
+        Async["Microsoft.Bcl.AsyncInterfaces 1.0.0"]
+        Buffers["System.Buffers 4.5.1"]
+        Diagnostics["System.Diagnostics.DiagnosticSource 4.6.0"]
+        Memory["System.Memory 4.5.4"]
+        MemoryData["System.Memory.Data 1.0.2"]
+        Vectors["System.Numerics.Vectors 4.5.0"]
+        Unsafe["System.Runtime.CompilerServices.Unsafe 4.6.0"]
+        Encodings["System.Text.Encodings.Web 4.7.2"]
+        Json["System.Text.Json 4.6.0"]
+        Tasks["System.Threading.Tasks.Extensions 4.5.2"]
+        Tuples["System.ValueTuple 4.5.0"]
+    end
+    subgraph Utilities["Build and Utilities"]
+        Antlr["Antlr 3.4.1.9004"]
+        Compilers["Microsoft.Net.Compilers 1.0.0"]
+        Newtonsoft["Newtonsoft.Json 6.0.8"]
+        WebGrease["WebGrease 1.5.2"]
+    end
+
+    App -->|"web"| Web
+    App -->|"storage"| Storage
+    App -->|"browser assets"| Browser
+    App -->|"runtime support"| Runtime
+    App -->|"build and utilities"| Utilities
+</div>
+<h3 id="dependency-summary">Dependency Summary</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Category</th><th>Count</th><th>Key Libraries</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>Web Framework</td><td>6</td><td>ASP.NET MVC, Razor, WebPages, Web Optimization</td><td>Classic <code>System.Web</code> MVC stack</td></tr>
+<tr><td>Azure Storage and Data</td><td>7</td><td>Azure.Storage.Blobs, Azure.Core, Azure.Storage.Common</td><td>Blob storage SDK plus legacy OData-related packages</td></tr>
+<tr><td>Browser UI</td><td>6</td><td>Bootstrap, jQuery, jQuery Validation</td><td>Browser libraries are substantially dated</td></tr>
+<tr><td>Runtime Support</td><td>11</td><td>System.Memory, System.Text.Json, System.Buffers</td><td>Compatibility libraries declared for .NET Framework</td></tr>
+<tr><td>Build and Utilities</td><td>4</td><td>Newtonsoft.Json, Microsoft.Net.Compilers, Antlr, WebGrease</td><td>Includes an old compiler package and JSON library</td></tr>
+</tbody></table></div>
+<h3 id="version-compatibility-risks">Version & Compatibility Risks</h3>
+<p>The package set contains multiple known vulnerable versions: <code>Microsoft.Data.OData</code> 5.6.4, jQuery Validation 1.11.1, Newtonsoft.Json 6.0.8, Bootstrap 3.0.0, jQuery 1.10.2, and Azure.Storage.Blobs 12.9.1. The separate advisory report records the applicable GitHub Security Advisories and patched versions. The project targets .NET Framework 4.8 and uses legacy non-SDK project infrastructure, which limits modern cross-platform build and upgrade tooling.</p>
+<h3 id="notable-observations">Notable Observations</h3>
+<ul>
+<li>Dependency resolution could not run because <code>Microsoft.WebApplication.targets</code> is unavailable in the Linux environment; transitive dependency coverage is therefore incomplete.</li>
+<li>The app's storage behavior is built around Azure Blob Storage rather than a relational database or ORM.</li>
+<li>No test-scoped package dependencies are declared.</li>
+<li>The project references both Newtonsoft.Json and System.Text.Json packages.</li>
+</ul>
+<h2 id="test-dependencies">Test Dependencies</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Framework</th><th>Version</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>None detected</td><td>—</td><td>No test-scoped packages are declared in <code>packages.config</code>.</td></tr>
+</tbody></table></div>
+<p>Total test-scope dependencies: 0</p>
+<p>No test dependencies or test project were detected in the solution.</p></div>
+</div>
+<div id="tab-data" class="tab-panel">
+  <div class="fact-content"><h1 id="data-architecture-persistence-layer">Data Architecture & Persistence Layer</h1>
+<p>The application has no relational entities or ORM model; its gallery data consists of image blobs in one Azure Blob Storage container. Blob names and URLs are used by the controller and view as the application's only persisted references.</p>
+<h2 id="database-configuration">Database Configuration</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service/Module</th><th>DB Type</th><th>Profile</th><th>Driver</th><th>Connection</th><th>Migration Tool</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>Azure Blob Storage object store</td><td>Default local development setting points to storage emulator</td><td>Azure Storage Blobs SDK 12.9.1</td><td>Configured in Web.config; no connection pool or migration tooling identified</td><td>None</td></tr>
+</tbody></table></div>
+<p>No SQL database, schema scripts, ORM, or migration framework was found.</p>
+<h2 id="data-ownership-per-service">Data Ownership per Service</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Tables Owned</th><th>ORM Framework</th><th>Caching</th><th>Notes</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>No tables; owns image objects in the gallery blob container</td><td>None</td><td>None</td><td>Direct Azure Storage SDK calls from <code>HomeController</code></td></tr>
+<tr><td>Azure Blob Storage</td><td>Blob objects</td><td>Not applicable</td><td>Not identified</td><td>The storage service is the persistence boundary</td></tr>
+</tbody></table></div>
+<h2 id="entity-model">Entity Model</h2>
+<p>The source defines no application entity classes. The following diagram represents the external object-storage concepts only; container and blob are not relational entities or ORM models.</p>
+<div class="mermaid">
+erDiagram
+    BlobContainer ||--o{ Blob : "contains"
+    BlobContainer {
+        string ContainerName
+    }
+    Blob {
+        string BlobName
+        bytes Content
+        string Uri
+    }
+</div>
+<h2 id="key-repository-methods">Key Repository Methods</h2>
+<div class="table-wrap"><table><thead><tr>
+<th>Service</th><th>Repository</th><th>Notable Methods</th><th>Purpose</th>
+</tr></thead><tbody>
+<tr><td>WebApp-Storage-DotNet</td><td>None</td><td>None</td><td>No repository interface or data-access abstraction is present; controller actions use <code>BlobContainerClient</code> and <code>BlobClient</code> directly.</td></tr>
+</tbody></table></div>
+<h2 id="caching-strategy">Caching Strategy</h2>
+<p>No application cache, cache provider, cache-aside pattern, or query-result cache was identified. The mutable static container client is a shared SDK reference, not a data cache.</p>
+<h2 id="data-ownership-boundaries">Data Ownership Boundaries</h2>
+<p>There is one application and one external blob container, with no cross-service data access, shared relational database, or CQRS pattern. <code>HomeController</code> directly lists, uploads, and deletes blobs; the browser receives blob URLs and reads publicly accessible objects directly from storage. No separate source-of-truth boundary exists across application services.</p>
+<h3 id="data-classification-sensitivity">Data Classification & Sensitivity</h3>
+<div class="table-wrap"><table><thead><tr>
+<th>Entity</th><th>Sensitive Fields</th><th>Classification (PII/PHI/PCI/None)</th><th>Controls in Place</th>
+</tr></thead><tbody>
+<tr><td>Uploaded image blob</td><td>Image content and associated metadata may contain identifiable information; exact content is user-supplied and not classified in code</td><td>Potential PII; no PHI or PCI model identified</td><td>No application-level masking or field-level access control found; container blobs are created with public read access. Encryption settings are not configured in the repository.</td></tr>
+</tbody></table></div></div>
+</div>
+<p class="footer">Your feedback is invaluable &mdash; <a href="https://aka.ms/ghcp-appmod/feedback">Share feedback</a></p>
+<script>
+function toggleRow(rowId, triggerRow) {
+  var detail = document.getElementById(rowId);
+  var btn = document.getElementById('btn-' + rowId);
+  if (!detail) return;
+  var visible = detail.style.display !== 'none';
+  detail.style.display = visible ? 'none' : 'table-row';
+  if (btn) btn.classList.toggle('open', !visible);
+}
+(function() {
+  var nav = document.querySelector('.tab-nav');
+  if (!nav) return;
+  nav.addEventListener('click', function(e) {
+    var btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    var targetId = btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    btn.classList.add('active');
+    var panel = document.getElementById(targetId);
+    if (panel) {
+      panel.classList.add('active');
+      if (window.__mermaidReady) { window.__renderMermaidIn(panel); }
+    }
+  });
+})();
+
+// ── Diagram lightbox ────────────────────────────────────────
+(function() {
+  var lightbox = document.getElementById('diagram-lightbox');
+  var inner = document.getElementById('diagram-lightbox-inner');
+  var closeBtn = document.getElementById('diagram-lightbox-close');
+  if (!lightbox || !inner || !closeBtn) return;
+
+  var scale = 1;
+  var translateX = 0;
+  var translateY = 0;
+  var isDragging = false;
+  var dragStartX = 0;
+  var dragStartY = 0;
+
+  function applyTransform() {
+    var svg = inner.querySelector('svg');
+    if (svg) {
+      svg.style.transform = 'translate(' + translateX + 'px, ' + translateY + 'px) scale(' + scale + ')';
+      svg.style.transformOrigin = 'center center';
+      svg.style.transition = 'none';
+    }
+  }
+
+  function resetTransform() {
+    scale = 1; translateX = 0; translateY = 0;
+    applyTransform();
+  }
+
+  function openLightbox(svgEl) {
+    inner.innerHTML = svgEl.outerHTML;
+    var injected = inner.querySelector('svg');
+    if (injected) {
+      injected.removeAttribute('width');
+      injected.removeAttribute('height');
+      injected.style.cursor = 'grab';
+    }
+    resetTransform();
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    inner.innerHTML = '';
+    document.body.style.overflow = '';
+    resetTransform();
+  }
+
+  inner.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    var delta = e.deltaY > 0 ? 0.9 : 1.1;
+    scale = Math.min(Math.max(scale * delta, 0.3), 8);
+    applyTransform();
+  }, { passive: false });
+
+  inner.addEventListener('mousedown', function(e) {
+    if (e.button !== 0) return;
+    isDragging = true;
+    dragStartX = e.clientX - translateX;
+    dragStartY = e.clientY - translateY;
+    var svg = inner.querySelector('svg');
+    if (svg) { svg.style.cursor = 'grabbing'; }
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    translateX = e.clientX - dragStartX;
+    translateY = e.clientY - dragStartY;
+    applyTransform();
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (!isDragging) return;
+    isDragging = false;
+    var svg = inner.querySelector('svg');
+    if (svg) { svg.style.cursor = 'grab'; }
+  });
+
+  inner.addEventListener('dblclick', function() { resetTransform(); });
+
+  document.addEventListener('click', function(e) {
+    var card = e.target.closest('.mermaid');
+    if (!card) return;
+    if (e.target.closest('.diagram-lightbox-close')) return;
+    var svg = card.querySelector('svg');
+    if (svg) { openLightbox(svg); }
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) { closeLightbox(); }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { closeLightbox(); }
+  });
+})();
+
+var _currentTarget = '';
+
+function toggleMultiSelect(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  document.querySelectorAll('.multi-select.open').forEach(function(ms) { if (ms.id !== id) ms.classList.remove('open'); });
+  el.classList.toggle('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.multi-select')) {
+    document.querySelectorAll('.multi-select.open').forEach(function(ms) { ms.classList.remove('open'); });
+  }
+});
+
+function getMultiSelectValues(msId) {
+  var el = document.getElementById(msId);
+  if (!el) return [];
+  var checked = el.querySelectorAll('input[type=checkbox]:checked');
+  var vals = [];
+  for (var i = 0; i < checked.length; i++) vals.push(checked[i].value);
+  return vals;
+}
+
+function onMultiSelectChange(msId, label) {
+  var el = document.getElementById(msId);
+  if (!el) return;
+  var vals = getMultiSelectValues(msId);
+  var total = el.querySelectorAll('input[type=checkbox]').length;
+  var btn = el.querySelector('.multi-select-btn');
+  if (btn) {
+    btn.textContent = vals.length > 0 && vals.length < total ? label + ' (' + vals.length + ')' : label;
+  }
+  applyFilters();
+}
+
+function applyFilters() {
+  var selectedDomains = getMultiSelectValues('domain-ms');
+  var selectedCrits = getMultiSelectValues('criticality-ms');
+
+  var sections = document.querySelectorAll('.issue-section');
+  for (var i = 0; i < sections.length; i++) {
+    var domain = sections[i].getAttribute('data-domain');
+    sections[i].style.display = (selectedDomains.length === 0 || selectedDomains.indexOf(domain) >= 0) ? '' : 'none';
+  }
+
+  var rows = document.querySelectorAll('.issue-row');
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var section = row.closest('.issue-section');
+    if (section && section.style.display === 'none') {
+      row.style.display = 'none';
+      var next = row.nextElementSibling;
+      if (next && next.classList.contains('detail-row')) next.style.display = 'none';
+      continue;
+    }
+
+    var show = true;
+    if (_currentTarget && row.hasAttribute('data-targets')) {
+      var targetsStr = row.getAttribute('data-targets');
+      if (targetsStr && targetsStr !== '{}') {
+        try {
+          var targets = JSON.parse(targetsStr);
+          if (Object.keys(targets).length > 0 && !targets[_currentTarget]) {
+            show = false;
+          }
+        } catch(e) {}
+      }
+    }
+
+    if (show && selectedCrits.length > 0) {
+      var crit = row.getAttribute('data-criticality');
+      if (selectedCrits.indexOf(crit) < 0) show = false;
+    }
+
+    row.style.display = show ? '' : 'none';
+    var nextRow = row.nextElementSibling;
+    if (nextRow && nextRow.classList.contains('detail-row')) {
+      if (!show) nextRow.style.display = 'none';
+    }
+  }
+}
+
+function clearAllFilters() {
+  document.querySelectorAll('.multi-select input[type=checkbox]').forEach(function(cb) { cb.checked = false; });
+  var domainBtn = document.querySelector('#domain-ms .multi-select-btn');
+  if (domainBtn) domainBtn.textContent = 'Domain';
+  var critBtn = document.querySelector('#criticality-ms .multi-select-btn');
+  if (critBtn) critBtn.textContent = 'Criticality';
+  applyFilters();
+}
+
+function onTargetChange(targetId) {
+  _currentTarget = targetId;
+  var rows = document.querySelectorAll('.issue-row[data-targets]');
+  var totalEffort = 0;
+  var domainCrits = {};
+
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var targets = JSON.parse(row.getAttribute('data-targets'));
+    var section = row.closest('.issue-section');
+    var domain = section ? section.getAttribute('data-domain') : '';
+
+    if (!targets || Object.keys(targets).length === 0) {
+      var sp = parseFloat(row.querySelector('.sp-cell').textContent) || 0;
+      totalEffort += sp;
+      if (!domainCrits[domain]) domainCrits[domain] = {mandatory:0,potential:0,optional:0};
+      var crit = row.getAttribute('data-criticality') || 'optional';
+      domainCrits[domain][crit] = (domainCrits[domain][crit] || 0) + 1;
+      continue;
+    }
+
+    var override = targets[targetId];
+    if (!override) {
+      continue;
+    }
+
+    var newSeverity = (override.severity || row.getAttribute('data-default-severity') || '').toLowerCase();
+    row.setAttribute('data-criticality', newSeverity);
+    var critCell = row.querySelector('.crit-cell');
+    if (critCell) {
+      var critText = newSeverity === 'mandatory' ? 'Mandatory' : newSeverity === 'potential' ? 'Potential' : 'Optional';
+      var cssClass = newSeverity === 'mandatory' ? 'crit-square-mandatory' : newSeverity === 'potential' ? 'crit-square-potential' : 'crit-square-optional';
+      critCell.innerHTML = '<span class="crit-label"><span class="crit-square ' + cssClass + '"></span>' + critText + '</span>';
+    }
+
+    var newEffort = override.effort !== undefined ? override.effort : parseFloat(row.getAttribute('data-default-effort')) || 0;
+    var spCell = row.querySelector('.sp-cell');
+    if (spCell) spCell.textContent = newEffort;
+    totalEffort += newEffort;
+
+    if (!domainCrits[domain]) domainCrits[domain] = {mandatory:0,potential:0,optional:0};
+    domainCrits[domain][newSeverity] = (domainCrits[domain][newSeverity] || 0) + 1;
+  }
+
+  var secSection = document.querySelector('.issue-section[data-domain="security"]');
+  if (secSection) {
+    var secRows = secSection.querySelectorAll('.issue-row');
+    for (var j = 0; j < secRows.length; j++) {
+      if (!secRows[j].hasAttribute('data-targets') || secRows[j].getAttribute('data-targets') === '') {
+        var sp = parseFloat(secRows[j].querySelector('.sp-cell').textContent) || 0;
+        totalEffort += sp;
+        if (!domainCrits['security']) domainCrits['security'] = {mandatory:0,potential:0,optional:0};
+        var sc = secRows[j].getAttribute('data-criticality') || 'optional';
+        domainCrits['security'][sc] = (domainCrits['security'][sc] || 0) + 1;
+      }
+    }
+  }
+
+  var label = totalEffort < 20 ? 'S' : totalEffort < 50 ? 'M' : totalEffort < 100 ? 'L' : 'XL';
+  var effortEl = document.getElementById('effort-display');
+  if (effortEl) effortEl.textContent = label + ' (total story points: ' + totalEffort + ')';
+
+  updateDonuts(domainCrits);
+  applyFilters();
+}
+
+function updateDonuts(domainCrits) {
+  var container = document.getElementById('donut-container');
+  if (!container) return;
+  container.innerHTML = '';
+  var domainNames = {'cloud-readiness':'Cloud Readiness','java-upgrade':'Java Upgrade','dotnet-upgrade':'DotNET Upgrade','security':'Security'};
+  var domainOrder = ['cloud-readiness','java-upgrade','dotnet-upgrade','security'];
+  for (var d = 0; d < domainOrder.length; d++) {
+    var key = domainOrder[d];
+    var c = domainCrits[key];
+    if (!c || (c.mandatory + c.potential + c.optional) === 0) continue;
+    var total = c.mandatory + c.potential + c.optional;
+    var div = document.createElement('div');
+    div.className = 'domain-summary-item';
+    div.innerHTML = buildDonutSvg(c.mandatory, c.potential, c.optional) +
+      '<h3>' + domainNames[key] + '</h3>' +
+      '<div class="count">' + total + ' issue' + (total !== 1 ? 's' : '') + '</div>';
+    container.appendChild(div);
+  }
+}
+
+function buildDonutSvg(m, p, o) {
+  var total = m + p + o;
+  if (total === 0) return '<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;"><circle cx="50" cy="50" r="35" fill="none" stroke="#d0d7de" stroke-width="15" opacity="0.5"/></svg>';
+  var r = 35, circ = 2 * Math.PI * r, offset = 0;
+  var svg = '<svg viewBox="0 0 100 100" width="100" height="100" style="display:block;margin:0 auto;transform:rotate(-90deg);">';
+  var segs = [{c:m,color:'var(--color-mandatory)'},{c:p,color:'var(--color-potential)'},{c:o,color:'var(--color-optional)'}];
+  for (var i = 0; i < segs.length; i++) {
+    if (segs[i].c === 0) continue;
+    var segLen = (segs[i].c / total) * circ;
+    var gap = total > segs[i].c ? 1.5 : 0;
+    var drawLen = Math.max(segLen - gap, 0.5);
+    svg += '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + segs[i].color + '" stroke-width="15" stroke-dasharray="' + drawLen.toFixed(2) + ' ' + circ.toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '"/>';
+    offset += segLen;
+  }
+  svg += '</svg>';
+  return svg;
+}
+</script>
+</div></body></html>
