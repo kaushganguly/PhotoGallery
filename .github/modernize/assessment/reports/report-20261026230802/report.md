@@ -24,35 +24,35 @@
 
 | Issue Name | Criticality | Story Points | Files |
 |------------|-------------|--------------|-------|
-| CWE-434: Unrestricted Upload of File with Dangerous Type | Mandatory | 8 | [1](#CWE-434_Unrestricted_Upload_of_File_with_Dangerous_Type) |
-| CVE-2024-21907: Improper Handling of Exceptional Conditions in Newtonsoft.Json | Mandatory | 1 | [1](#CVE-2024-21907_Improper_Handling_of_Exceptional_Conditions_in_Newtonsoft_Json) |
-| CVE-2021-21252: Regular Expression Denial of Service in jquery-validation | Mandatory | 1 | [1](#CVE-2021-21252_Regular_Expression_Denial_of_Service_in_jquery-validation) |
-| CVE-2018-8269: Denial of service in ASP.NET Core | Mandatory | 1 | [1](#CVE-2018-8269_Denial_of_service_in_ASP_NET_Core) |
-| CWE-567: Unsynchronized Access to Shared Data in a Multithreaded Context | Potential | 5 | [1](#CWE-567_Unsynchronized_Access_to_Shared_Data_in_a_Multithreaded_Context) |
-| CWE-606: Unchecked Input for Loop Condition | Potential | 3 | [1](#CWE-606_Unchecked_Input_for_Loop_Condition) |
-| CWE-665: Improper Initialization | Potential | 3 | [1](#CWE-665_Improper_Initialization) |
-| CWE-778: Insufficient Logging | Potential | 3 | [1](#CWE-778_Insufficient_Logging) |
-| CWE-456: Missing Initialization of a Variable | Potential | 2 | [1](#CWE-456_Missing_Initialization_of_a_Variable) |
-| CWE-457: Use of Uninitialized Variable | Potential | 2 | [1](#CWE-457_Use_of_Uninitialized_Variable) |
-| CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal') | Optional | 8 | [1](#CWE-22_Improper_Limitation_of_a_Pathname_to_a_Restricted_Directory_Path_Traversal) |
-| CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') | Optional | 8 | [1](#CWE-79_Improper_Neutralization_of_Input_During_Web_Page_Generation_Cross-site_Scripting) |
-| CWE-732: Incorrect Permission Assignment for Critical Resource | Optional | 5 | [1](#CWE-732_Incorrect_Permission_Assignment_for_Critical_Resource) |
-| CWE-23: Relative Path Traversal | Optional | 5 | [1](#CWE-23_Relative_Path_Traversal) |
-| CWE-36: Absolute Path Traversal | Optional | 5 | [1](#CWE-36_Absolute_Path_Traversal) |
-| CVE-2022-30187: Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library | Optional | 1 | [1](#CVE-2022-30187_Microsoft_CBC_Padding_Oracle_in_Azure_Blob_Storage_Encryption_Library) |
-| CVE-2018-14040: Bootstrap vulnerable to Cross-Site Scripting (XSS) | Optional | 1 | [1](#CVE-2018-14040_Bootstrap_vulnerable_to_Cross-Site_Scripting_XSS) |
-| CVE-2020-11023: Potential XSS vulnerability in jQuery | Optional | 1 | [1](#CVE-2020-11023_Potential_XSS_vulnerability_in_jQuery) |
-| CVE-2019-11358: XSS in jQuery as used in Drupal, Backdrop CMS, and other products | Optional | 1 | [1](#CVE-2019-11358_XSS_in_jQuery_as_used_in_Drupal_Backdrop_CMS_and_other_products) |
-| CVE-2019-8331: Bootstrap Vulnerable to Cross-Site Scripting | Optional | 1 | [1](#CVE-2019-8331_Bootstrap_Vulnerable_to_Cross-Site_Scripting) |
-| CVE-2018-20677: bootstrap Cross-site Scripting vulnerability | Optional | 1 | [1](#CVE-2018-20677_bootstrap_Cross-site_Scripting_vulnerability) |
-| CVE-2018-20676: XSS vulnerability that affects bootstrap | Optional | 1 | [1](#CVE-2018-20676_XSS_vulnerability_that_affects_bootstrap) |
-| CVE-2016-10735: Bootstrap Cross-site Scripting vulnerability | Optional | 1 | [1](#CVE-2016-10735_Bootstrap_Cross-site_Scripting_vulnerability) |
-| CVE-2018-14042: Bootstrap Cross-site Scripting vulnerability | Optional | 1 | [1](#CVE-2018-14042_Bootstrap_Cross-site_Scripting_vulnerability) |
-| CVE-2015-9251: Cross-Site Scripting (XSS) in jquery | Optional | 1 | [1](#CVE-2015-9251_Cross-Site_Scripting_XSS_in_jquery) |
+| CWE-434: Unrestricted Upload of File with Dangerous Type | Mandatory | 8 | [1](#Unrestricted_Upload_of_File_with_Dangerous_Type) |
+| CVE-2024-21907: Improper Handling of Exceptional Conditions in Newtonsoft.Json | Mandatory | 1 | [1](#Improper_Handling_of_Exceptional_Conditions_in_Newtonsoft_Json) |
+| CVE-2021-21252: Regular Expression Denial of Service in jquery-validation | Mandatory | 1 | [1](#Regular_Expression_Denial_of_Service_in_jquery-validation) |
+| CVE-2018-8269: Denial of service in ASP.NET Core | Mandatory | 1 | [1](#Denial_of_service_in_ASP_NET_Core) |
+| CWE-567: Unsynchronized Access to Shared Data in a Multithreaded Context | Potential | 5 | [1](#Unsynchronized_Access_to_Shared_Data_in_a_Multithreaded_Context) |
+| CWE-606: Unchecked Input for Loop Condition | Potential | 3 | [1](#Unchecked_Input_for_Loop_Condition) |
+| CWE-665: Improper Initialization | Potential | 3 | [1](#Improper_Initialization) |
+| CWE-778: Insufficient Logging | Potential | 3 | [1](#Insufficient_Logging) |
+| CWE-456: Missing Initialization of a Variable | Potential | 2 | [1](#Missing_Initialization_of_a_Variable) |
+| CWE-457: Use of Uninitialized Variable | Potential | 2 | [1](#Use_of_Uninitialized_Variable) |
+| CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal') | Optional | 8 | [1](#Improper_Limitation_of_a_Pathname_to_a_Restricted_Directory_Path_Traversal) |
+| CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') | Optional | 8 | [1](#Improper_Neutralization_of_Input_During_Web_Page_Generation_Cross-site_Scripting) |
+| CWE-732: Incorrect Permission Assignment for Critical Resource | Optional | 5 | [1](#Incorrect_Permission_Assignment_for_Critical_Resource) |
+| CWE-23: Relative Path Traversal | Optional | 5 | [1](#Relative_Path_Traversal) |
+| CWE-36: Absolute Path Traversal | Optional | 5 | [1](#Absolute_Path_Traversal) |
+| CVE-2022-30187: Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library | Optional | 1 | [1](#Microsoft_CBC_Padding_Oracle_in_Azure_Blob_Storage_Encryption_Library) |
+| CVE-2018-14040: Bootstrap vulnerable to Cross-Site Scripting (XSS) | Optional | 1 | [1](#Bootstrap_vulnerable_to_Cross-Site_Scripting_XSS) |
+| CVE-2020-11023: Potential XSS vulnerability in jQuery | Optional | 1 | [1](#Potential_XSS_vulnerability_in_jQuery) |
+| CVE-2019-11358: XSS in jQuery as used in Drupal, Backdrop CMS, and other products | Optional | 1 | [1](#XSS_in_jQuery_as_used_in_Drupal_Backdrop_CMS_and_other_products) |
+| CVE-2019-8331: Bootstrap Vulnerable to Cross-Site Scripting | Optional | 1 | [1](#Bootstrap_Vulnerable_to_Cross-Site_Scripting) |
+| CVE-2018-20677: bootstrap Cross-site Scripting vulnerability | Optional | 1 | [1](#bootstrap_Cross-site_Scripting_vulnerability) |
+| CVE-2018-20676: XSS vulnerability that affects bootstrap | Optional | 1 | [1](#XSS_vulnerability_that_affects_bootstrap) |
+| CVE-2016-10735: Bootstrap Cross-site Scripting vulnerability | Optional | 1 | [1](#Bootstrap_Cross-site_Scripting_vulnerability) |
+| CVE-2018-14042: Bootstrap Cross-site Scripting vulnerability | Optional | 1 | [1](#Bootstrap_Cross-site_Scripting_vulnerability) |
+| CVE-2015-9251: Cross-Site Scripting (XSS) in jquery | Optional | 1 | [1](#Cross-Site_Scripting_XSS_in_jquery) |
 
 ### Security Issue Details
 
-<details id="CWE-434_Unrestricted_Upload_of_File_with_Dangerous_Type">
+<details id="Unrestricted_Upload_of_File_with_Dangerous_Type">
 <summary><b>CWE-434: Unrestricted Upload of File with Dangerous Type</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -63,7 +63,7 @@
 
 </details>
 
-<details id="CVE-2024-21907_Improper_Handling_of_Exceptional_Conditions_in_Newtonsoft_Json">
+<details id="Improper_Handling_of_Exceptional_Conditions_in_Newtonsoft_Json">
 <summary><b>CVE-2024-21907: Improper Handling of Exceptional Conditions in Newtonsoft.Json</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:23`
@@ -88,7 +88,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2021-21252_Regular_Expression_Denial_of_Service_in_jquery-validation">
+<details id="Regular_Expression_Denial_of_Service_in_jquery-validation">
 <summary><b>CVE-2021-21252: Regular Expression Denial of Service in jquery-validation</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:9`
@@ -113,7 +113,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2018-8269_Denial_of_service_in_ASP_NET_Core">
+<details id="Denial_of_service_in_ASP_NET_Core">
 <summary><b>CVE-2018-8269: Denial of service in ASP.NET Core</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:17`
@@ -138,7 +138,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-567_Unsynchronized_Access_to_Shared_Data_in_a_Multithreaded_Context">
+<details id="Unsynchronized_Access_to_Shared_Data_in_a_Multithreaded_Context">
 <summary><b>CWE-567: Unsynchronized Access to Shared Data in a Multithreaded Context</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -149,7 +149,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-606_Unchecked_Input_for_Loop_Condition">
+<details id="Unchecked_Input_for_Loop_Condition">
 <summary><b>CWE-606: Unchecked Input for Loop Condition</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -160,7 +160,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-665_Improper_Initialization">
+<details id="Improper_Initialization">
 <summary><b>CWE-665: Improper Initialization</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -171,7 +171,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-778_Insufficient_Logging">
+<details id="Insufficient_Logging">
 <summary><b>CWE-778: Insufficient Logging</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -182,7 +182,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-456_Missing_Initialization_of_a_Variable">
+<details id="Missing_Initialization_of_a_Variable">
 <summary><b>CWE-456: Missing Initialization of a Variable</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -193,7 +193,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-457_Use_of_Uninitialized_Variable">
+<details id="Use_of_Uninitialized_Variable">
 <summary><b>CWE-457: Use of Uninitialized Variable</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -204,7 +204,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-22_Improper_Limitation_of_a_Pathname_to_a_Restricted_Directory_Path_Traversal">
+<details id="Improper_Limitation_of_a_Pathname_to_a_Restricted_Directory_Path_Traversal">
 <summary><b>CWE-22: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -215,7 +215,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-79_Improper_Neutralization_of_Input_During_Web_Page_Generation_Cross-site_Scripting">
+<details id="Improper_Neutralization_of_Input_During_Web_Page_Generation_Cross-site_Scripting">
 <summary><b>CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Views/Home/Index.cshtml`
@@ -226,7 +226,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-732_Incorrect_Permission_Assignment_for_Critical_Resource">
+<details id="Incorrect_Permission_Assignment_for_Critical_Resource">
 <summary><b>CWE-732: Incorrect Permission Assignment for Critical Resource</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -237,7 +237,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-23_Relative_Path_Traversal">
+<details id="Relative_Path_Traversal">
 <summary><b>CWE-23: Relative Path Traversal</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -248,7 +248,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CWE-36_Absolute_Path_Traversal">
+<details id="Absolute_Path_Traversal">
 <summary><b>CWE-36: Absolute Path Traversal</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/Controllers/HomeController.cs`
@@ -259,7 +259,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2022-30187_Microsoft_CBC_Padding_Oracle_in_Azure_Blob_Storage_Encryption_Library">
+<details id="Microsoft_CBC_Padding_Oracle_in_Azure_Blob_Storage_Encryption_Library">
 <summary><b>CVE-2022-30187: Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:5`
@@ -284,7 +284,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2018-14040_Bootstrap_vulnerable_to_Cross-Site_Scripting_XSS">
+<details id="Bootstrap_vulnerable_to_Cross-Site_Scripting_XSS">
 <summary><b>CVE-2018-14040: Bootstrap vulnerable to Cross-Site Scripting (XSS)</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:7`
@@ -311,7 +311,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2020-11023_Potential_XSS_vulnerability_in_jQuery">
+<details id="Potential_XSS_vulnerability_in_jQuery">
 <summary><b>CVE-2020-11023: Potential XSS vulnerability in jQuery</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:8`
@@ -336,7 +336,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2019-11358_XSS_in_jQuery_as_used_in_Drupal_Backdrop_CMS_and_other_products">
+<details id="XSS_in_jQuery_as_used_in_Drupal_Backdrop_CMS_and_other_products">
 <summary><b>CVE-2019-11358: XSS in jQuery as used in Drupal, Backdrop CMS, and other products</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:8`
@@ -361,7 +361,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2019-8331_Bootstrap_Vulnerable_to_Cross-Site_Scripting">
+<details id="Bootstrap_Vulnerable_to_Cross-Site_Scripting">
 <summary><b>CVE-2019-8331: Bootstrap Vulnerable to Cross-Site Scripting</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:7`
@@ -388,7 +388,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2018-20677_bootstrap_Cross-site_Scripting_vulnerability">
+<details id="bootstrap_Cross-site_Scripting_vulnerability">
 <summary><b>CVE-2018-20677: bootstrap Cross-site Scripting vulnerability</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:7`
@@ -413,7 +413,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2018-20676_XSS_vulnerability_that_affects_bootstrap">
+<details id="XSS_vulnerability_that_affects_bootstrap">
 <summary><b>CVE-2018-20676: XSS vulnerability that affects bootstrap</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:7`
@@ -438,7 +438,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2016-10735_Bootstrap_Cross-site_Scripting_vulnerability">
+<details id="Bootstrap_Cross-site_Scripting_vulnerability">
 <summary><b>CVE-2016-10735: Bootstrap Cross-site Scripting vulnerability</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:7`
@@ -465,7 +465,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2018-14042_Bootstrap_Cross-site_Scripting_vulnerability">
+<details id="Bootstrap_Cross-site_Scripting_vulnerability">
 <summary><b>CVE-2018-14042: Bootstrap Cross-site Scripting vulnerability</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:7`
@@ -492,7 +492,7 @@ Recommended fix: upgrade to a patched version listed above when available.
 
 </details>
 
-<details id="CVE-2015-9251_Cross-Site_Scripting_XSS_in_jquery">
+<details id="Cross-Site_Scripting_XSS_in_jquery">
 <summary><b>CVE-2015-9251: Cross-Site Scripting (XSS) in jquery</b> — affected files</summary>
 
 - `WebApp-Storage-DotNet/packages.config:8`
