@@ -1,0 +1,274 @@
+{
+  "GeneratedAt": "2026-10-27T01:26:20.280286Z",
+  "ProjectPath": ".",
+  "Summary": {
+    "TotalFindings": 20,
+    "CveCount": 13,
+    "CweCount": 7,
+    "BySeverity": {
+      "optional": 12,
+      "mandatory": 4,
+      "potential": 4
+    },
+    "ByCategory": {
+      "CVE": 13,
+      "Code Quality": 2,
+      "Concurrency & Synchronization": 1,
+      "Credentials & Secrets": 2,
+      "File & Path Security": 1,
+      "Injection Attacks": 1
+    },
+    "TotalRulesAssessed": 59,
+    "RulesPassed": 52
+  },
+  "CveFindings": [
+    {
+      "Id": "CVE-2022-30187",
+      "Name": "Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2022-30187](https://github.com/advisories/GHSA-64x4-9hc6-r2h6): Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - Azure.Storage.Blobs 12.9.1 (declared at WebApp-Storage-DotNet/packages.config:5); affected range < 12.13.0; patched version 12.13.0\n\nRecommended fix:\n  - Upgrade to 12.13.0",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:5"
+      ],
+      "Explanation": "[CVE-2022-30187](https://github.com/advisories/GHSA-64x4-9hc6-r2h6): Microsoft: CBC Padding Oracle in Azure Blob Storage Encryption Library\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - Azure.Storage.Blobs 12.9.1 (declared at WebApp-Storage-DotNet/packages.config:5); affected range < 12.13.0; patched version 12.13.0\n\nRecommended fix:\n  - Upgrade to 12.13.0"
+    },
+    {
+      "Id": "CVE-2024-21907",
+      "Name": "Improper Handling of Exceptional Conditions in Newtonsoft.Json",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Newtonsoft.Json 6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23); affected range < 13.0.1; patched version 13.0.1\n\nRecommended fix:\n  - Upgrade to 13.0.1",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:23"
+      ],
+      "Explanation": "[CVE-2024-21907](https://github.com/advisories/GHSA-5crp-9r3c-p9vr): Improper Handling of Exceptional Conditions in Newtonsoft.Json\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Newtonsoft.Json 6.0.8 (declared at WebApp-Storage-DotNet/packages.config:23); affected range < 13.0.1; patched version 13.0.1\n\nRecommended fix:\n  - Upgrade to 13.0.1"
+    },
+    {
+      "Id": "CVE-2018-14040",
+      "Name": "Bootstrap vulnerable to Cross-Site Scripting (XSS)",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-14040](https://github.com/advisories/GHSA-3wqf-4x89-9g79): Bootstrap vulnerable to Cross-Site Scripting (XSS)\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n\nRecommended fix:\n  - Upgrade to 3.4.0, 4.1.2",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7"
+      ],
+      "Explanation": "[CVE-2018-14040](https://github.com/advisories/GHSA-3wqf-4x89-9g79): Bootstrap vulnerable to Cross-Site Scripting (XSS)\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n\nRecommended fix:\n  - Upgrade to 3.4.0, 4.1.2"
+    },
+    {
+      "Id": "CVE-2021-21252",
+      "Name": "Regular Expression Denial of Service in jquery-validation",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected dependencies:\n  - jQuery.Validation 1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9); affected range < 1.19.3; patched version 1.19.3\n\nRecommended fix:\n  - Upgrade to 1.19.3",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:9"
+      ],
+      "Explanation": "[CVE-2021-21252](https://github.com/advisories/GHSA-jxwx-85vp-gvwm): Regular Expression Denial of Service in jquery-validation\n\nSeverity: HIGH\n\nAffected dependencies:\n  - jQuery.Validation 1.11.1 (declared at WebApp-Storage-DotNet/packages.config:9); affected range < 1.19.3; patched version 1.19.3\n\nRecommended fix:\n  - Upgrade to 1.19.3"
+    },
+    {
+      "Id": "CVE-2020-11023",
+      "Name": "Potential XSS vulnerability in jQuery",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2020-11023](https://github.com/advisories/GHSA-jpcq-cgw6-v4j6): Potential XSS vulnerability in jQuery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.0.3, < 3.5.0; patched version 3.5.0\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.0.3, < 3.5.0; patched version 3.5.0\n\nRecommended fix:\n  - Upgrade to 3.5.0",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:8"
+      ],
+      "Explanation": "[CVE-2020-11023](https://github.com/advisories/GHSA-jpcq-cgw6-v4j6): Potential XSS vulnerability in jQuery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.0.3, < 3.5.0; patched version 3.5.0\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.0.3, < 3.5.0; patched version 3.5.0\n\nRecommended fix:\n  - Upgrade to 3.5.0"
+    },
+    {
+      "Id": "CVE-2019-11358",
+      "Name": "XSS in jQuery as used in Drupal, Backdrop CMS, and other products",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2019-11358](https://github.com/advisories/GHSA-6c3j-c64m-qhgq): XSS in jQuery as used in Drupal, Backdrop CMS, and other products\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.1.4, < 3.4.0; patched version 3.4.0\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.1.4, < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:8"
+      ],
+      "Explanation": "[CVE-2019-11358](https://github.com/advisories/GHSA-6c3j-c64m-qhgq): XSS in jQuery as used in Drupal, Backdrop CMS, and other products\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.1.4, < 3.4.0; patched version 3.4.0\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.1.4, < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0"
+    },
+    {
+      "Id": "CVE-2019-8331",
+      "Name": "Bootstrap Vulnerable to Cross-Site Scripting",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2019-8331](https://github.com/advisories/GHSA-9v3m-8fp8-mj99): Bootstrap Vulnerable to Cross-Site Scripting\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 4.3.1; patched version 4.3.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.3.1; patched version 4.3.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 3.0.0, < 3.4.1; patched version 3.4.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.3.1; patched version 4.3.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 3.0.0, < 3.4.1; patched version 3.4.1\n\nRecommended fix:\n  - Upgrade to 3.4.1, 4.3.1",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7"
+      ],
+      "Explanation": "[CVE-2019-8331](https://github.com/advisories/GHSA-9v3m-8fp8-mj99): Bootstrap Vulnerable to Cross-Site Scripting\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 4.3.1; patched version 4.3.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.3.1; patched version 4.3.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 3.0.0, < 3.4.1; patched version 3.4.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.3.1; patched version 4.3.1\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 3.0.0, < 3.4.1; patched version 3.4.1\n\nRecommended fix:\n  - Upgrade to 3.4.1, 4.3.1"
+    },
+    {
+      "Id": "CVE-2018-20677",
+      "Name": "bootstrap Cross-site Scripting vulnerability",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-20677](https://github.com/advisories/GHSA-ph58-4vrj-w6hr): bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7"
+      ],
+      "Explanation": "[CVE-2018-20677](https://github.com/advisories/GHSA-ph58-4vrj-w6hr): bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0"
+    },
+    {
+      "Id": "CVE-2018-20676",
+      "Name": "XSS vulnerability that affects bootstrap",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-20676](https://github.com/advisories/GHSA-3mgp-fx93-9xv5): XSS vulnerability that affects bootstrap\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7"
+      ],
+      "Explanation": "[CVE-2018-20676](https://github.com/advisories/GHSA-3mgp-fx93-9xv5): XSS vulnerability that affects bootstrap\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0"
+    },
+    {
+      "Id": "CVE-2016-10735",
+      "Name": "Bootstrap Cross-site Scripting vulnerability",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2016-10735](https://github.com/advisories/GHSA-4p24-vmcr-4gqj): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0-beta, < 4.0.0-beta.2; patched version 4.0.0-beta.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.0.4, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 4.0.0-beta.2; patched version 4.0.0-beta.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.0.4, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0-beta, < 4.0.0-beta.2; patched version 4.0.0-beta.2\n\nRecommended fix:\n  - Upgrade to 3.4.0, 4.0.0-beta.2",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7"
+      ],
+      "Explanation": "[CVE-2016-10735](https://github.com/advisories/GHSA-4p24-vmcr-4gqj): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0-beta, < 4.0.0-beta.2; patched version 4.0.0-beta.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.0.4, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range < 4.0.0-beta.2; patched version 4.0.0-beta.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.0.4, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0-beta, < 4.0.0-beta.2; patched version 4.0.0-beta.2\n\nRecommended fix:\n  - Upgrade to 3.4.0, 4.0.0-beta.2"
+    },
+    {
+      "Id": "CVE-2018-8269",
+      "Name": "Denial of service in ASP.NET Core",
+      "Category": "CVE",
+      "Severity": "mandatory",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.OData 5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17); affected range < 5.8.4; patched version 5.8.4\n\nRecommended fix:\n  - Upgrade to 5.8.4",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:17"
+      ],
+      "Explanation": "[CVE-2018-8269](https://github.com/advisories/GHSA-mv2r-q4g5-j8q5): Denial of service in ASP.NET Core\n\nSeverity: HIGH\n\nAffected dependencies:\n  - Microsoft.Data.OData 5.6.4 (declared at WebApp-Storage-DotNet/packages.config:17); affected range < 5.8.4; patched version 5.8.4\n\nRecommended fix:\n  - Upgrade to 5.8.4"
+    },
+    {
+      "Id": "CVE-2018-14042",
+      "Name": "Bootstrap Cross-site Scripting vulnerability",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2018-14042](https://github.com/advisories/GHSA-7mvr-5x2g-wfc8): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0, 4.1.2",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:7"
+      ],
+      "Explanation": "[CVE-2018-14042](https://github.com/advisories/GHSA-7mvr-5x2g-wfc8): Bootstrap Cross-site Scripting vulnerability\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 4.0.0, < 4.1.2; patched version 4.1.2\n  - bootstrap 3.0.0 (declared at WebApp-Storage-DotNet/packages.config:7); affected range >= 2.3.0, < 3.4.0; patched version 3.4.0\n\nRecommended fix:\n  - Upgrade to 3.4.0, 4.1.2"
+    },
+    {
+      "Id": "CVE-2015-9251",
+      "Name": "Cross-Site Scripting (XSS) in jquery",
+      "Category": "CVE",
+      "Severity": "optional",
+      "StoryPoint": 1,
+      "Description": "[CVE-2015-9251](https://github.com/advisories/GHSA-rmxg-73gg-4p98): Cross-Site Scripting (XSS) in jquery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range < 1.12.2; patched version 1.12.2\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.12.3, < 3.0.0; patched version 3.0.0\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range < 1.12.2; patched version 1.12.2\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.12.3, < 3.0.0; patched version 3.0.0\n\nRecommended fix:\n  - Upgrade to 1.12.2, 3.0.0",
+      "Files": [
+        "WebApp-Storage-DotNet/packages.config:8"
+      ],
+      "Explanation": "[CVE-2015-9251](https://github.com/advisories/GHSA-rmxg-73gg-4p98): Cross-Site Scripting (XSS) in jquery\n\nSeverity: MEDIUM\n\nAffected dependencies:\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range < 1.12.2; patched version 1.12.2\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.12.3, < 3.0.0; patched version 3.0.0\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range < 1.12.2; patched version 1.12.2\n  - jQuery 1.10.2 (declared at WebApp-Storage-DotNet/packages.config:8); affected range >= 1.12.3, < 3.0.0; patched version 3.0.0\n\nRecommended fix:\n  - Upgrade to 1.12.2, 3.0.0"
+    }
+  ],
+  "CweFindings": [
+    {
+      "Id": "CWE-606",
+      "Name": "Unchecked Input for Loop Condition",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product does not properly check inputs that are used for loop conditions, potentially leading to a denial of service or other consequences because of excessive looping.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:102"
+      ],
+      "Explanation": "UploadAsync assigns Request.Files.Count directly to fileCount and loops until that client-controlled count is exhausted. No application-level cap limits the per-request iteration or resulting blob uploads."
+    },
+    {
+      "Id": "CWE-665",
+      "Name": "Improper Initialization",
+      "Category": "Code Quality",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "The product does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:47"
+      ],
+      "Explanation": "The static blobContainer is initialized only inside Index (lines 65-66), but UploadAsync, DeleteImage, and DeleteAll use it without ensuring Index has run. Direct requests to those actions before Index leave the resource null and cause operation failures."
+    },
+    {
+      "Id": "CWE-567",
+      "Name": "Unsynchronized Access to Shared Data in a Multithreaded Context",
+      "Category": "Concurrency & Synchronization",
+      "Severity": "potential",
+      "StoryPoint": 5,
+      "Description": "The product does not properly synchronize shared data, such as static variables across threads, which can lead to undefined behavior and unpredictable data changes.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:47",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:65",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:108"
+      ],
+      "Explanation": "HomeController.blobContainer is a static field shared across concurrent MVC requests. Index assigns it while UploadAsync and other actions read it, with no synchronization or safe initialization, so requests can observe an inconsistent lifecycle state."
+    },
+    {
+      "Id": "CWE-732",
+      "Name": "Incorrect Permission Assignment for Critical Resource",
+      "Category": "Credentials & Secrets",
+      "Severity": "optional",
+      "StoryPoint": 5,
+      "Description": "The product specifies permissions for a security-critical resource in a way that allows that resource to be read or modified by unintended actors.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:66"
+      ],
+      "Explanation": "HomeController.Index creates the blob container with PublicAccessType.Blob, granting anonymous public read access to blob contents. This permission is broader than an access-controlled photo gallery resource."
+    },
+    {
+      "Id": "CWE-778",
+      "Name": "Insufficient Logging",
+      "Category": "Credentials & Secrets",
+      "Severity": "potential",
+      "StoryPoint": 3,
+      "Description": "When a security-critical event occurs, the product either does not record the event or omits important details about the event when logging it.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:97",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:128",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:154"
+      ],
+      "Explanation": "UploadAsync, DeleteImage, and DeleteAll perform security-relevant storage changes, but their exception handlers only copy exception text/stack trace into ViewData and do not record upload or deletion events in an application log or audit trail."
+    },
+    {
+      "Id": "CWE-434",
+      "Name": "Unrestricted Upload of File with Dangerous Type",
+      "Category": "File & Path Security",
+      "Severity": "mandatory",
+      "StoryPoint": 8,
+      "Description": "The product allows the upload or transfer of dangerous file types that are automatically processed within its environment.",
+      "Files": [
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:97",
+        "WebApp-Storage-DotNet/Controllers/HomeController.cs:109"
+      ],
+      "Explanation": "HomeController.UploadAsync accepts every item in Request.Files without checking its extension or content type and uploads it to the blob container using the submitted filename extension. The container is initialized with public blob access in HomeController.Index (line 66), allowing arbitrary uploaded content to be served publicly without a file-type restriction."
+    },
+    {
+      "Id": "CWE-79",
+      "Name": "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')",
+      "Category": "Injection Attacks",
+      "Severity": "optional",
+      "StoryPoint": 8,
+      "Description": "The product does not neutralize or incorrectly neutralizes user-controllable input before it is placed in output that is used as a web page that is served to other users.",
+      "Files": [
+        "WebApp-Storage-DotNet/Views/Home/Index.cshtml:80",
+        "WebApp-Storage-DotNet/Views/Home/Index.cshtml:85"
+      ],
+      "Explanation": "DisplayFilesToUpload concatenates the browser-supplied file.name directly into an HTML string, then assigns that string to FilesToUpload.innerHTML. A specially named local file can therefore inject markup or script into the page when the user selects it."
+    }
+  ]
+}
